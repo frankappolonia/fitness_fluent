@@ -1,0 +1,1 @@
+This folder is for any helper or misc. files, for example a validations.js file for error checking,

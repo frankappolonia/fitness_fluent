@@ -1,0 +1,1 @@
+this folder is for error page handlebars templates i.e. a 404 template

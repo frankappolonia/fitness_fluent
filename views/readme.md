@@ -1,0 +1,1 @@
+This folder is for all static HTML and dynamic HTML templates with handlebars.js

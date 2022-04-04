@@ -1,0 +1,1 @@
+This folder is for the main template we use for handlebars 

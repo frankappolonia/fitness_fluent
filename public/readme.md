@@ -1,0 +1,1 @@
+This folder is for all public js and css assets.
