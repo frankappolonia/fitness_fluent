@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/frankappolonia/nutritionApp_CS546#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.3",
     "express-handlebars": "^6.0.4",
     "mongodb": "^4.5.0"
