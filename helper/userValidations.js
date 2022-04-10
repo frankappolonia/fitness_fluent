@@ -31,10 +31,10 @@ function emailPasswordValidation(email, password){
 }
 
 function dobValidation(date){
-    /**Checks date. Must be in MM/DD/YYYY format */
+    /**Checks date. Must be in YYYY-MM-DD format */
     date = date.trim()
     if (date.length !== 10 ) throw "Incorrect date length!"
-    if(date.charAt(2) !== "/" || date.charAt(5) !== '/') throw "Incorrect date format!"
+    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format!"
     function numberCheck(num){
         if(isNaN(num)) throw "Date is not a valid number!"
         if(num%1 !== 0) throw "Date cannot be a decimal ID!"
@@ -42,9 +42,9 @@ function dobValidation(date){
     }
     const monthKey = {'1':31, '2':28, '3':31, '4':30, '5':31, '6':30, 
     '7':31, '8':31, '9':30, '10':31, '11':30, '12':31}
-    let month = parseInt(numberCheck(date.slice(0, 2)))
-    let day = parseInt(numberCheck(date.slice(3, 5)))
-    let year = parseInt(numberCheck(date.slice(6)))
+    let month = parseInt(numberCheck(date.slice(5, 7)))
+    let day = parseInt(numberCheck(date.slice(8)))
+    let year = parseInt(numberCheck(date.slice(0,4)))
     if (month < 1 || month > 12) throw "Invalid month!"
     if (year < 1900 || year > 2022) throw "Invalid year"
     if(day > monthKey[month] || day < 1){throw "Invalid day!"}
@@ -102,6 +102,30 @@ function createUserValidation(firstName, lastName, email, password, dob, height,
     weeklyGoalValidation(weeklyWeightGoal)
 }
 
+
+function signUpRouteValidation(requestBody){
+    /**Validates the request body data of the /signup post route */
+    if(! requestBody.firstName) throw "No first name given!"
+    if(! requestBody.lastName) throw "No last name given!"
+    if(! requestBody.email) throw "No email given!"
+    if(! requestBody.password) throw "No password given!"
+    if(! requestBody.passwordCheck) throw "Must re-enter password!"
+    if(! requestBody.dob) throw "No date of birth given!"
+    if(! requestBody.height) throw "No height given!"
+    if(! requestBody.weight) throw "No weight given!"
+    if(! requestBody.gender) throw "No gender specified!"
+    if(! requestBody.activityLevel) throw "No activty level given!"
+    if(! requestBody.goal) throw "No goal specified!"
+
+    if (requestBody.password !== requestBody.passwordCheck) throw "Passwords do not match!"
+
+
+
+    createUserValidation(requestBody.firstName, requestBody.lastName, requestBody.email, requestBody.password,
+        requestBody.dob,requestBody.height,requestBody.weight,requestBody.gender,requestBody.activityLevel, requestBody.goal )
+
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -112,5 +136,6 @@ module.exports = {
     activityLevelValidation,
     genderValidation,
     weeklyGoalValidation,
-    createUserValidation
+    createUserValidation,
+    signUpRouteValidation
 }
