@@ -1,5 +1,8 @@
 const appMiddleware = require('./appLevel')
 
-module.exports ={
-    appMiddleware: appMiddleware
+const constructorMethod = (app) => {
+    appMiddleware.expressSessionMiddleware(app)
+    appMiddleware.templateMiddleware(app)
 }
+
+module.exports = constructorMethod
