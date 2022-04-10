@@ -1,7 +1,7 @@
 const home = require('./home')
-const login = require('./login')
-const logout = require('./logout')
-const signup = require('./signup')
+//const login = require('./login')
+//const logout = require('./logout')
+//const signup = require('./signup')
 
 const constructorMethod = (app) => {
   //middleware function
