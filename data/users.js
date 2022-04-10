@@ -49,3 +49,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
       throw 'Could not add new user!'
 
 }
+
+module.exports = {
+    createUser
+}
