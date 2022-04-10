@@ -1,1 +1,1 @@
-MyFitnessPal clone for CS546. This web application is built using JavaScript, Node.js, express.js, MongoDB, & handlebars.js.Group members are Frank Appolonia, Leela Manoj Malella, Max Surets, Douglas Walsh.
+MyFitnessPal clone for CS546. This web application is built using JavaScript, Node.js, express.js, MongoDB, & handlebars.js. Group members are Frank Appolonia, Leela Manoj Mallela, Max Surets, Douglas Walsh.
