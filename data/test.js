@@ -5,10 +5,10 @@ const users = require('./users')
 async function testCreateUser(){
     try {
         //valid entry
-        await users.createUser('frank', 'appolonia', 'fappolonia@gmail.com', 'password12', '02/15/1999', 68, 162, 'male', 'active', 0)
+        await users.createUser('frank', '      appolonia', 'appolonia@gmail.com    ', 'password12', '02/15/1999', 68, 162, 'male', 'active', 0)
         
     } catch (e) {
-        console.log(e)
+        console.log('Error: ' + e)
         
     }
 }
