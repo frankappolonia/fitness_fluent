@@ -1,3 +1,3 @@
-let d = new Date("02/15/1999")
+let d = new Date()
 
-console.log(d)
+console.log(d.getMonth())
