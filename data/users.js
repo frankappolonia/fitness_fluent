@@ -47,7 +47,6 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let insertData = await usersCollection.insertOne(newUser)
     if (insertData.acknowldeged === 0 || !insertData.insertedId === 0)
       throw 'Could not add new user!'
-
 }
 
 module.exports = {
