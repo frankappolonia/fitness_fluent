@@ -54,7 +54,7 @@ function dobValidation(date){
 function heightWeightValidation(height, weight){
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
     if(isNaN(height) || isNaN(weight)) throw "Height and weight must be numbers!"
-    if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
+    //if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
     
     if (height < 21) throw "Must be at least 21 inches tall!"
     if (height > 107) throw "You're not that tall!"

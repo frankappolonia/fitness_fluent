@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
+const db = require('../data')
+const userFuncs = db.userFuncs
 
+router.use(express.json())
 router.route('/')
     .get(async(request, response) =>{
         try {
@@ -12,11 +15,13 @@ router.route('/')
         }
     })
     .post(async(request, response)=>{
-
+        const userData = request.body
         try{
-        console.log(request.body.dob)
 
-        validations.signUpRouteValidation(request.body)
+        validations.signUpRouteValidation(userData)
+        const {firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal} = userData
+        await userFuncs.createUser(firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal)
+        response.status(200).json('user created successfully')
 
         }catch(e){
             response.status(400).json('400: ' + e)
