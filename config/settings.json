@@ -1,7 +1,7 @@
 {
     "mongoConfig": {
       "serverUrl": "mongodb://localhost:27017/",
-      "database": "Nutrition App Final Project"
+      "database": "Nutrition_App_Final_Project"
     }
   }
   

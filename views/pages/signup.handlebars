@@ -1,0 +1,82 @@
+<div class="signup" id ="signup-page-container">
+    <div class="signup">
+        <h1>Welcome to the signup page!</h1>
+        <p>We are excited that you are choosing us to help you on your fitness journey and reach your goals.</p>
+        <p>To get started, please fill out some basic information below, so we can personalize and optimize your exprience!</p>
+        <form method="post" id="signup-form" action="/signup">
+        <section id="basic-user-info">
+            <h3>First, enter some basic information:</h3>
+            <label for="firstName">Enter first name</label>
+            <input type="text" id="firstName" name="firstName">
+            <br>
+            <label for="lastName">Enter last name</label>
+            <input type="text" id="lastName" name="lastName">
+            <br>
+            <label for="email">Enter email address (this will also be used to sign in)</label>
+            <input type="email" id="email" name="email">
+            <br>
+            <label for="password">Enter password</label>
+            <input type="password" id="password" name="password">
+            <label for="passwordCheck">Re-enter password</label>
+            <input type="password" id="passwordCheck" name="passwordCheck">
+            <br>
+            <label for="dob">Enter your date of birth</label>
+            <input type="date" id="dob" name="dob">
+        </section>
+        <br>
+        <section id="signup-health-info">
+            <h3>Next, tell us about your health and your fitness goals</h3>
+            <label for="height">Enter your height in inches</label>
+            <input type="number" id="height" name="height">
+            <br>
+            <label for="weight">Enter your current weight</label>
+            <input type="number" id="weight" name="weight">
+            <br>
+            <p>Select a gender:</p>
+            <label for="male">Male</label>
+            <input type="radio" id="male" value="male" name="gender">
+            <br>
+            <label for="female">Female</label>
+            <input type="radio" id="female" value="female" name="gender">
+
+            <p>Select an activity level (You can change this at any time):</p>
+            <div id="activity-selection">
+                <label for="sedentary">Sedentary</label>
+                <input type="radio" id="sedentary" value="sedentary" name="activityLevel">
+                <br>
+                <label for="light">Light</label>
+                <input type="radio" id="light" value="light" name="activityLevel">
+                <br>
+                <label for="moderate">Moderate</label>
+                <input type="radio" id="moderate" value="moderate" name="activityLevel">
+                <br>
+                <label for="heavy">Heavy</label>
+                <input type="radio" id="heavy" value="heavy" name="activityLevel">
+                <br>
+                <label for="hardcore">Hardcore</label>
+                <input type="radio" id="hardcore" value="hardcore" name="activityLevel"> 
+            </div>
+
+            <p>Select a fitness goal (you can change this at any time):</p>
+            <div id="fitness-goal-selection">
+                <label for="lose2">Lose 2 pounds per week</label>
+                <input type="radio" id="lose2" value="-2" name="goal">
+                <br>
+                <label for="lose1">Lose 1 pounds per week</label>
+                <input type="radio" id="lose1" value=-1 name="goal">
+                <br>
+                <label for="maintain">Maintain current weight each week</label>
+                <input type="radio" id="maintain" value="0" name="goal">
+                <br>
+                <label for="gain1">Gain 1 pound per week</label>
+                <input type="radio" id="gain1" value="1" name="goal">
+                <br>
+                <label for="gain2">Gain 2 pounds per week</label>
+                <input type="radio" id="gain2" value="2" name="goal">
+                <br>
+            </div>
+        </section>
+        <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
