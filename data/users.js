@@ -19,7 +19,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     //3. check if email is already in db
     const count = await usersCollection.countDocuments()
     if (count!== 0){ //checks if the email is already in the DB
-        const findEmail = await usersCollection.findOne({'email': email })
+        const findEmail = await usersCollection.findOne({'email': email.toLowerCase() })
         if (findEmail !== null) throw "Email is already in use!"
     }
 
@@ -31,7 +31,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let newUser = {
         firstName: firstName,
         lastName: lastName,
-        email: email,
+        email: email.toLowerCase(),
         hashedPassword: hashedPw,
         dob: new Date(dob),
         height: height,
