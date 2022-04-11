@@ -1,4 +1,6 @@
-const { type } = require("os");
+let validate = require('email-validator')
+/**Validations for creating a user/signup */
+
 
 function stringtrim(arguments){
     /**Takes the arguments object of a function and trims all string types */
@@ -25,8 +27,8 @@ function nameValidation(first, last){
 }
 
 function emailPasswordValidation(email, password){
-    if(email.search("@") === -1) throw "Invalid email!"
-    if(email.search('.')===-1) throw "Invalid email!"
+    let checkEmail = validate.validate(email)
+    if (checkEmail === false) throw "Invalid email format!"
     if(password.length<6) throw "Password must be at least 6 characters!"
 }
 
@@ -116,10 +118,7 @@ function signUpRouteValidation(requestBody){
     if(! requestBody.gender) throw "No gender specified!"
     if(! requestBody.activityLevel) throw "No activty level given!"
     if(! requestBody.goal) throw "No goal specified!"
-
     if (requestBody.password !== requestBody.passwordCheck) throw "Passwords do not match!"
-
-
 
     createUserValidation(requestBody.firstName, requestBody.lastName, requestBody.email, requestBody.password,
         requestBody.dob,requestBody.height,requestBody.weight,requestBody.gender,requestBody.activityLevel, requestBody.goal )

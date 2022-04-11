@@ -5,7 +5,6 @@ const validations = errorHandling.userValidations
 const db = require('../data')
 const userFuncs = db.userFuncs
 
-router.use(express.json())
 router.route('/')
     .get(async(request, response) =>{
         try {
