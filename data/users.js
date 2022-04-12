@@ -3,6 +3,8 @@ const users = db.usersCollection
 const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
+const nutritionFuncs = require('./nutritionFunctions')
+const { Double } = require('bson')
 
 /**Database functions for the Users Collection */
 
@@ -28,7 +30,13 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     saltRounds = 10
     const hashedPw = await bcrypt.hash(password, saltRounds)
 
-    //5. create new user obj
+    //5. Calculate initial nutrition data
+    let age = nutritionFuncs.calculateAge(dob)
+    let BMR = nutritionFuncs.calculateBMR(gender, height, initialWeight, age)
+    let TDEE = nutritionFuncs.calculateTDE(activityLevel, gender, height, initialWeight, age)
+    let calsNeeded = nutritionFuncs.calculateCalsNeeded(weeklyWeightGoal, TDEE)
+
+    //6. Create new user obj
     let newUser = {
         firstName: firstName,
         lastName: lastName,
@@ -40,11 +48,15 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
         gender: gender,
         activityLevel: activityLevel,
         weeklyWeightGoal: weeklyWeightGoal,
+        BMR: BMR,
+        TDEE: TDEE,
+        calsNeeded: calsNeeded,
         weightEntries: [{'date': Date(), 'weight': initialWeight}],
         allFoods: [],
         allExercises: []
     }
-    //6. insert user into the db
+    
+    //7. insert user into the db
     let insertData = await usersCollection.insertOne(newUser)
     if (insertData.acknowldeged === 0 || !insertData.insertedId === 0)
       throw 'Could not add new user!'

@@ -1,3 +1,4 @@
+const { builtinModules } = require('module')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 
@@ -46,4 +47,26 @@ function calculateCalsNeeded(weeklyGoal, TDEE){
         case 2: return TDEE + 1000 // gain two pounds per week
     }
 
+}
+
+function calculateAge(dob){
+    //https://www.codegrepper.com/code-examples/javascript/javascript+get+age+by+birth+date
+    if (arguments.length !== 1) throw "Invalid arguments"
+    validations.dobValidation(dob)
+    let today = new Date()
+    let birthday = new Date(dob)
+    let age = today.getFullYear()- birthday.getFullYear()
+    let month = today.getMonth() - birthday.getMonth()
+    if (month < 0 || (month === 0 && today.getDate() < birthday.getDate())){
+        age--
+    }
+    
+    return age
+}
+
+module.exports = {
+    calculateBMR, 
+    calculateTDE, 
+    calculateCalsNeeded,
+    calculateAge
 }
