@@ -38,16 +38,24 @@ function calculateTDE(activityLevel, gender, height, weight, age){
 function calculateCalsNeeded(weeklyGoal, TDEE){
     if (arguments.length !== 2) throw "Invaliad number of arguments"
     validations.weeklyGoalValidation(weeklyGoal)
+    weeklyGoal = parseInt(weeklyGoal)
 
     switch (weeklyGoal){
-        case -2: return TDEE - 1000 //lose two pounds per week
-        case -1: return TDEE - 500 // lose one pounds per week
-        case -0: return TDEE      // maintain current weight per week
-        case 1: return TDEE + 500 // gain one pounds per week
-        case 2: return TDEE + 1000 // gain two pounds per week
+        case -2: 
+            return TDEE - 1000 //lose two pounds per week
+        case -1: 
+            return TDEE - 500 // lose one pounds per week
+        case -0:
+            return TDEE      // maintain current weight per week
+        case 1:
+            return TDEE + 500 // gain one pounds per week
+        case 2:
+            return TDEE + 1000 // gain two pounds per week
     }
 
 }
+
+
 
 function calculateAge(dob){
     //https://www.codegrepper.com/code-examples/javascript/javascript+get+age+by+birth+date
