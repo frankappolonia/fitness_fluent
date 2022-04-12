@@ -22,11 +22,14 @@ function stringChecks(args){
 }
 
 function nameValidation(first, last){
+    first = first.trim()
+    last = last.trim()
     if (first.length < 2) throw "Firstname must be at least 2 characters!"
     if (last.length < 1) throw "Lastname must be at least 1 character!"
 }
 
 function emailPasswordValidation(email, password){
+    email = email.trim()
     let checkEmail = validate.validate(email)
     if (checkEmail === false) throw "Invalid email format!"
     if(password.length<6) throw "Password must be at least 6 characters!"
@@ -65,17 +68,20 @@ function heightWeightValidation(height, weight){
 }
 
 function activityLevelValidation(activity){
+    activity = activity.trim()
     let activityLevels = {'sedentary':1.2, 'light':1.375, 'moderate':1.55, 'heavy':1.725, 'hardcore':1.9}
     if(! activity in activityLevels) throw "Invalid activty level"
 }
 
 function genderValidation(gender){
+    gender = gender.trim()
     let genders = {'male': true, 'female':true}
     if (! gender in genders) throw "Invalid gender"
 }
 
 function weeklyGoalValidation(goal){
     /**Weekly weight loss/gain goal must be no more than + or - 2 pounds */
+    if(isNaN(goal)) throw "Goal must be a number!"
     if(goal > 2 || goal < -2) throw "Can only gain or lose up to a max of 2 pounds per week"
     if(goal % 1 !== 0) throw "Must be a whole number!"
 
