@@ -8,7 +8,7 @@ const userFuncs = db.userFuncs
 router.route('/')
     .get(async(request, response) =>{
         try {
-            response.status(200).render('pages/signup', {})
+            response.status(200).render('pages/signup', {script: "/public/js/signup.js"})
         } catch (e) {
             response.status(404).json('404: ' + e)
         }
