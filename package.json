@@ -1,0 +1,27 @@
+{
+  "name": "nutritionapp_cs546",
+  "version": "1.0.0",
+  "description": "Final Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankappolonia/nutritionApp_CS546.git"
+  },
+  "author": "Leela Frank Max Douglas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frankappolonia/nutritionApp_CS546/issues"
+  },
+  "homepage": "https://github.com/frankappolonia/nutritionApp_CS546#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.4",
+    "express-session": "^1.17.2",
+    "mongodb": "^4.5.0",
+    "nodemon": "^2.0.15"
+  }
+}
