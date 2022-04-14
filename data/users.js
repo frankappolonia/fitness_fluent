@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
-
+//test comment
 /**Database functions for the Users Collection */
 
 async function createUser(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal){
