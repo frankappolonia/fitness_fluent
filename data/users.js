@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
-const { Double } = require('bson')
 
 /**Database functions for the Users Collection */
 
