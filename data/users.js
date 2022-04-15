@@ -71,12 +71,11 @@ async function checkUser(username, password){
     const usersCollection = await users()
 
     //3. check if username exists
-    const user = await usersCollection.findOne({'username': username })
-        if (user === null) throw "Either the username or password is invalid"
+    const user = await usersCollection.findOne({'email': username })
+    if (user === null) throw "Either the username or password is invalid"
 
     //4. check if password is same
-
-    const pwCheck = await bcrypt.compare(password, user['password'] )
+    const pwCheck = await bcrypt.compare(password, user['hashedPassword'] )
     if(pwCheck === false) throw "Either the username or password is invalid"
 
     return {"authenticated":true}
