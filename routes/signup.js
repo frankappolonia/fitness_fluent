@@ -5,6 +5,16 @@ const validations = errorHandling.userValidations
 const db = require('../data')
 const userFuncs = db.userFuncs
 
+//if the user is authenticated, redirect to home
+router.get('/', (request, response, next)=>{
+    if (request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
+//Otherwise, run signup route as usual
 router.route('/')
     .get(async(request, response) =>{
         try {
