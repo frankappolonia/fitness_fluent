@@ -5,6 +5,16 @@ const validations = errorHandling.userValidations
 const db = require('../data')
 const userFuncs = db.userFuncs
 
+//if the user is authenticated, redirect to home
+router.get('/', (request, response, next)=>{
+    if (request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
+//Otherwise, run signup route as usual
 router.route('/')
     .get(async(request, response) =>{
         try {
@@ -20,10 +30,10 @@ router.route('/')
         validations.signUpRouteValidation(userData)
         const {firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal} = userData
         await userFuncs.createUser(firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal)
-        response.status(200).json('user created successfully')
+        response.status(200).render('partials/successfulSignup')
 
         }catch(e){
-            response.status(400).json('400: ' + e)
+            response.status(400).render('pages/signup', {script: "/public/js/signup.js", error: "Error: "+ e})
         }
 
     });

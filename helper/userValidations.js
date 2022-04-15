@@ -131,6 +131,34 @@ function signUpRouteValidation(requestBody){
 
 }
 
+function checkRequestBody(req){
+    if (! req.body.username){
+        return false
+    }
+    if (! req.body.password){
+        return false
+    }
+    return true
+}
+
+function checkUsername(username){
+    if(typeof(username) !== 'string') throw "Error! Username must be a string!"
+    username = username.trim()
+    let checkEmail = validate.validate(username)
+    if (checkEmail === false) throw "Invalid email format!"
+    
+    username = username.toLowerCase()
+    return username
+}
+
+function checkPassword(password){
+    if (typeof(password) !== 'string') throw "Error! Password must be a string!"
+    password = password.trim()
+    if(password.search(" ") !== -1) throw "Error! Password cannot contain spaces!"
+    if(password.length < 6) throw "Error! Password must be at least 6 characters!"
+    return password
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -142,5 +170,8 @@ module.exports = {
     genderValidation,
     weeklyGoalValidation,
     createUserValidation,
-    signUpRouteValidation
+    signUpRouteValidation,
+    checkRequestBody,
+    checkPassword,
+    checkUsername
 }

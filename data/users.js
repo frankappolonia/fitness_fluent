@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
-
+//test comment
 /**Database functions for the Users Collection */
 
 async function createUser(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal){
@@ -61,10 +61,33 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
       throw 'Could not add new user!'
 }
 
+async function checkUser(username, password){
+    /**This function is for validating login */
+
+    //1. validate inputs
+    if (arguments.length !== 2) throw "Error! Incorrect number of arguments given!"
+    username = validations.checkUsername(username)
+    password = validations.checkPassword(password)
+
+    //2. establish db connection
+    const usersCollection = await users()
+
+    //3. check if username exists
+    const user = await usersCollection.findOne({'email': username })
+    if (user === null) throw "Either the username or password is invalid"
+
+    //4. check if password is same
+    const pwCheck = await bcrypt.compare(password, user['hashedPassword'] )
+    if(pwCheck === false) throw "Either the username or password is invalid"
+
+    return {"authenticated":true}
+}
+
 
 
 
 
 module.exports = {
-    createUser
+    createUser,
+    checkUser
 }
