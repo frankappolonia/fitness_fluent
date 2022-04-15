@@ -62,6 +62,8 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
 }
 
 async function checkUser(username, password){
+    /**This function is for validating login */
+
     //1. validate inputs
     if (arguments.length !== 2) throw "Error! Incorrect number of arguments given!"
     username = validations.checkUsername(username)

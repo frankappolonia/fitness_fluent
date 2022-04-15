@@ -5,6 +5,16 @@ const validations = errorHandling.userValidations
 const userFuncs = require('../data')
 const db = userFuncs.userFuncs
 
+//if the user is authenticated, redirect to home
+router.get('/', (request, response, next)=>{
+    if (request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
+//otherwise, do login route as normal
 router.route('/')
     .get(async(request, response) =>{
         try {
@@ -18,7 +28,8 @@ router.route('/')
     .post(async(request, response)=>{
         //check if username and password are supplied in request body
         if(validations.checkRequestBody(request) === false){
-            response.status(400).json('400: No username or password in the request body')
+            let error = 'Error: Username or password left blank'
+            response.status(400).render('pages/login', {error})
             return
         }
 
