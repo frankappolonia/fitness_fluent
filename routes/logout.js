@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const router = express.Router();
 
 
@@ -11,7 +12,7 @@ router.route('/')
         try {
             //expire authcookie
             request.session.cookie.expires = 0
-            response.status(200).render('pages/logout', {})
+            response.status(200).render('pages/logout', {authenticated: request.session})
         } catch (e) {
             response.status(404).json("404: Page cannot be found")
         }

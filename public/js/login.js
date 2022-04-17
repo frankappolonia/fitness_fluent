@@ -1,8 +1,8 @@
 let login = $('#login-form')
 
 login.submit((event=>{
-    let email = $('#username')
-    let password = $('#password')
+    let email = $('#username').val()
+    let password = $('#password').val()
     try{
         validateLogin(email, password)
     }catch(e){
