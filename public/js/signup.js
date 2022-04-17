@@ -28,7 +28,6 @@ signUp.submit((event =>{
         $('#signup-error').append(e)
     }
 
-
 }));
 
 
