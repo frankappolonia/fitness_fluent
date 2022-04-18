@@ -9,6 +9,16 @@
     <div id="appContainer">
       <header>
           <h1>Nutrition App</h1>
+           <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            {{#if authenticated.user}}
+              <li><a href="/logout">Logout</a></li>
+              {{else}}
+              <li><a href="/login">Login/Signup</a></li>
+              {{/if}}
+          </ul>
+        </nav>
       </header>
     {{{body}}}
     <footer>
