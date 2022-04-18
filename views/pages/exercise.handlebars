@@ -1,0 +1,32 @@
+<div class="exercise-page" id="exercise-page-container">
+    <div class="exercise">
+        <h1>Welcome to Exercise Log page!</h1>
+        <p>You can see number of calories burnt based on the exercise you did and time</p>
+        <p>Please select the exercise and number of minutes.</p>
+        <form method="post" id="exercise-form" action="/exercise">
+        <section id="exercise-info">
+            <h3>Exercise Info</h3>
+            <label for="exercise-date"> Date :</label>
+            <input type="date" id="ex-date" name="exercise-date">
+            <br>
+            <label for="exercise-name">Select Exercise :</label>
+            <select name="exercise-name" id="ex-name">
+                <option value="Aerobics">Aerobics</option>
+                <option value="Bicycling">Bicycling</option>
+                <option value="Dancing">Dancing</option>
+                <option value="Golfing">Golfing</option>
+                <option value="Hiking">Hiking</option>
+                <option value="Running">Running</option>
+                <option value="Skiing">Skiing</option>
+                <option value="Swimming">Swimming</option>
+                <option value="Walking">Walking</option>
+            </select>
+            <br>
+            <label for="minutes">Enter number of minutes :</label>
+            <input type="number" id="mins" name="minutes"> 
+            <br>
+        </section>
+        <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>    

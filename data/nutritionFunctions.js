@@ -36,7 +36,7 @@ function calculateTDE(activityLevel, gender, height, weight, age){
 }
 
 function calculateCalsNeeded(weeklyGoal, TDEE){
-    if (arguments.length !== 2) throw "Invaliad number of arguments"
+    if (arguments.length !== 2) throw "Invalid number of arguments"
     validations.weeklyGoalValidation(weeklyGoal)
     weeklyGoal = parseInt(weeklyGoal)
 
