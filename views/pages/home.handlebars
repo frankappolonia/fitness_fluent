@@ -1,2 +1,9 @@
 <p>I am the homepage!</p>
-<a href="/login">Click here to login</a>
+
+<div id="login-or-logout">
+    {{#if authenticated.user}}
+    <a href="/logout">Click here to logout</a>
+    {{else}}
+    <a href="/login">Click here to login</a>
+    {{/if}}
+</div>

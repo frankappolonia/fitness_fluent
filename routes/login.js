@@ -18,7 +18,7 @@ router.get('/', (request, response, next)=>{
 router.route('/')
     .get(async(request, response) =>{
         try {
-            response.status(200).render('pages/login', {})
+            response.status(200).render('pages/login', {script: "/public/js/login.js", authenticated: request.session})
             
         } catch (e) {
             response.status(404).json('404: ' + e)
