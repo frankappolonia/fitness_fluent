@@ -21,7 +21,7 @@ signUp.submit((event =>{
 
     try{
         signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal)
-
+        $('#email').val(email.toLowerCase())
     }catch(e){
         event.preventDefault()
         $('#signup-error').empty()
@@ -84,7 +84,29 @@ function nameValidation(first, last){
 
 function emailPasswordValidation(email, password, passwordCheck){
     email = email.trim()
-    //do email validation here
+
+    if (email.search(/[.]/g) === -1) throw "Invalid domain format, must include '.' puncation!"//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search
+    if (email.search('@')=== -1) throw "Invalid, must include @"
+    if (email.search('@') === 0 || email.search(/[.]/g) === 0) throw "Invalid, cannot have . or @ at the beginning"
+
+    if(! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw "Invalid, cannot have multiple @s"
+    if(! /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/.test(email)) throw "Invalid email!"
+
+    let domain = email.slice(email.search('@'))
+    function properDotFormat(domain){
+        let lastDotIndex = 0
+        let count = 0
+        for(e of domain){
+            if(e === '.'){lastDotIndex = count}
+            if (lastDotIndex === 1) throw "Invalid, must have a character after the @"
+            count += 1
+        }
+        if ((domain.length-1) - lastDotIndex < 2) {throw "Invalid format! Must be at least two character after last '.'"}
+     
+    }
+    properDotFormat(domain)
+    
+
     if(password.length<6 || passwordCheck.length <6) throw "Password must be at least 6 characters!"
     return
 }
