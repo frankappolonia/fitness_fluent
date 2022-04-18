@@ -4,6 +4,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const userFuncs = require('../data')
 const db = userFuncs.userFuncs
+const xss = require('xss')
 
 //if the user is authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -36,7 +37,7 @@ router.route('/')
         try {
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
-            let validateUser = await db.checkUser(username, password)
+            let validateUser = await db.checkUser(xss(username), xss(password))
             if (typeof(validateUser) === 'object'){
                 if('authenticated' in validateUser && validateUser['authenticated'] === true)
                     request.session.name = 'AuthCookie'
