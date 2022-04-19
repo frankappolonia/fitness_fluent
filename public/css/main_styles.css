@@ -28,10 +28,24 @@
       text-align: center;
       display: block;
   }
+
+  #signup-form{
+    padding-top: 5%;
+    display: inline-block;
+    text-align: left;
+   
+  }
+  #signup-form label{
+    color: grey;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
   
   /*======================================================
                             Navbar
-    ======================================================*/
+    ======================================================
+    https://codepen.io/colby-friedman/pen/ERNqEe
+    */
+    
   #navbar {
     background: white;
     color: rgb(13, 26, 38);
@@ -60,7 +74,7 @@
   
   .logo {
     float: left;
-    margin-left: 28px;
+    margin-left: -40px;
     font-size: 1.5em;
     height: 60px;
     letter-spacing: 1px;
