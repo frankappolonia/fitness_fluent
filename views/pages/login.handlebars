@@ -1,14 +1,16 @@
 <div id="login-container">
-        <form method="post" id="login-form">
+    <form method="post" id="login-form">
         <label for="username">Enter username</label>
         <input type="text" id="username" name="username" >
+        <br>
         <label for="password">Enter password</label>
         <input type="password" id="password" name="password">
+        <br>
         <button type="submit">Submit</button>
-        </form>
+    </form>
+    <div id="login-error-container">
+        <p>{{{error}}}</p>
+    </div>
+    <p>Need an account?</p>
+    <a href="/signup">Click here to signup</a>
 </div>
-<div id="login-error-container">
-    <p>{{{error}}}</p>
-</div>
-<p>Need an account?</p>
-<a href="/signup">Click here to signup</a>
