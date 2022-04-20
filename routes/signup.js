@@ -4,6 +4,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const db = require('../data')
 const userFuncs = db.userFuncs
+const xss = require('xss')
 
 //if the user is authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -29,7 +30,8 @@ router.route('/')
 
         validations.signUpRouteValidation(userData)
         const {firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal} = userData
-        await userFuncs.createUser(firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal)
+        await userFuncs.createUser(xss(firstName), xss(lastName), xss(email), xss(password), xss(dob), xss(height), 
+                                    xss(weight), xss(gender), xss(activityLevel), xss(goal))
         response.status(200).render('partials/successfulSignup')
 
         }catch(e){
