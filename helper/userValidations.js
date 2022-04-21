@@ -54,6 +54,12 @@ function dobValidation(date){
     if (year < 1900 || year > 2022) throw "Invalid year"
     if(day > monthKey[month] || day < 1){throw "Invalid day!"}
 
+    let currentDay = new Date()
+    let birth = new Date(date)
+    let days = Math.abs(currentDay.getTime() - birth.getTime())
+    let years = days/(1000 * 3600 * 24)
+    if (years < 12) throw "Must be at least 12 years old to signup!"
+
 }
 
 function heightWeightValidation(height, weight){
