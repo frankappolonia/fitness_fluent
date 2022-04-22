@@ -12,7 +12,6 @@ router.route('/')
                 let cals = await userFuncs.getRemainingCalories(request.session.user)
                 authObj['calories'] = cals
             }
-            authObj['script'] = "/public/js/login.js"
 
             response.status(200).render('pages/home', authObj)
         } catch (e) {

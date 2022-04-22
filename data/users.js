@@ -44,7 +44,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
         email: email.toLowerCase(),
         hashedPassword: hashedPw,
         dob: new Date(dob),
-        height: height,
+        height: parseFloat(height),
         initialWeight: parseFloat(initialWeight),
         gender: gender,
         activityLevel: activityLevel,
