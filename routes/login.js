@@ -23,7 +23,6 @@ router.route('/')
             
         } catch (e) {
             response.status(404).json('404: ' + e)
-            
         }
     })
     .post(async(request, response)=>{
@@ -38,8 +37,7 @@ router.route('/')
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
             let validateUser = await db.checkUser(xss(username), xss(password))
-            if (typeof(validateUser) === 'object'){
-                if('authenticated' in validateUser && validateUser['authenticated'] === true)
+            if (validateUser === 'user authenticated'){
                     request.session.name = 'AuthCookie'
                     request.session.user = username
                     response.status(200).redirect('/')

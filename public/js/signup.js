@@ -75,6 +75,8 @@ function stringChecks(args){
 }
 
 function nameValidation(first, last){
+    if (arguments.length !== 2) throw "invalid number of arguments for name validation"
+
     first = first.trim()
     last = last.trim()
     if (first.length < 2) throw "Firstname must be at least 2 characters!"
@@ -83,6 +85,8 @@ function nameValidation(first, last){
 }
 
 function emailPasswordValidation(email, password, passwordCheck){
+    if (arguments.length !== 3) throw "invalid number of arguments for client side emailpassword validation"
+
     email = email.trim()
 
     if (email.search(/[.]/g) === -1) throw "Invalid domain format, must include '.' puncation!"//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search
@@ -113,6 +117,8 @@ function emailPasswordValidation(email, password, passwordCheck){
 
 function dobValidation(date){
     /**Checks date. Must be in YYYY-MM-DD format */
+    if (arguments.length !== 1) throw "invalid number of arguments for date validation"
+
     date = date.trim()
     if (date.length !== 10 ) throw "Incorrect date length!"
     if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format!"
@@ -141,26 +147,30 @@ function dobValidation(date){
 }
 
 function heightWeightValidation(height, weight){
+    if(arguments.length !== 2) throw "invalid number of arguments for heightweight validation"
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
-    if(isNaN(height) || isNaN(weight)) throw "Height and weight must be numbers!"
-    //if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
-    
+    if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
+    if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
+    height = parseInt(height)
+    weight = parseInt(weight)
+    if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
     if (height < 21) throw "Must be at least 21 inches tall!"
     if (height > 107) throw "You're not that tall!"
     if (weight < 5) throw "You must weigh at least 5 pounds!"
     if (weight > 1400) throw "You're not that heavy!"
-    return
 }
 
 function activityLevelValidation(activity){
-    activity = activity.trim()
+    if (arguments.length !== 1) throw "invalid number of arguments for activity validation"
+    activity = activity.trim().toLowerCase()
     let activityLevels = {'sedentary':1.2, 'light':1.375, 'moderate':1.55, 'heavy':1.725, 'hardcore':1.9}
     if(! activity in activityLevels) throw "Invalid activty level"
     return
 }
 
 function genderValidation(gender){
-    gender = gender.trim()
+    if (arguments.length !== 1) throw "invalid number of arguments for gender validation"
+    gender = gender.trim().toLowerCase()
     let genders = {'male': true, 'female':true}
     if (! gender in genders) throw "Invalid gender"
     return
@@ -168,10 +178,16 @@ function genderValidation(gender){
 
 function weeklyGoalValidation(goal){
     /**Weekly weight loss/gain goal must be no more than + or - 2 pounds */
-    if(isNaN(goal)) throw "Goal must be a number!"
+    if (arguments.length !== 1) throw "invalid number of arguments for goal validation"
+
+    if(goal !== goal) throw "Goal is NaN"
+    if(isNaN(parseInt(goal))) throw "Goal must be a number!"
+    if(goal%1) throw "goal be a whole number!"
+    goal = parseInt(goal)
+    if(typeof(goal) !== 'number') throw "Goal must be a number!"
+    
     if(goal > 2 || goal < -2) throw "Can only gain or lose up to a max of 2 pounds per week"
     if(goal % 1 !== 0) throw "Must be a whole number!"
-    return
 
 }
 
