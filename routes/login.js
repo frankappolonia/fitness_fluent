@@ -18,8 +18,16 @@ router.get('/', (request, response, next)=>{
 //otherwise, do login route as normal
 router.route('/')
     .get(async(request, response) =>{
+        let authObj = {}
         try {
-            response.status(200).render('pages/login', {script: "/public/js/login.js", authenticated: request.session})
+            if (request.session.user){
+                authObj.authenticated = true
+                let cals = await userFuncs.getRemainingCalories(request.session.user)
+                authObj['calories'] = cals
+            }
+            authObj['script'] = "/public/js/login.js"
+
+            response.status(200).render('pages/login', authObj)
             
         } catch (e) {
             response.status(404).json('404: ' + e)
