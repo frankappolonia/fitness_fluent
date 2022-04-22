@@ -29,6 +29,7 @@ router.route('/')
         try{
 
         validations.signUpRouteValidation(userData)
+
         const {firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal} = userData
         await userFuncs.createUser(xss(firstName), xss(lastName), xss(email), xss(password), xss(dob), xss(height), 
                                     xss(weight), xss(gender), xss(activityLevel), xss(goal))

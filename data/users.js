@@ -62,6 +62,8 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let insertData = await usersCollection.insertOne(newUser)
     if (insertData.acknowldeged === 0 || !insertData.insertedId === 0)
       throw 'Could not add new user!'
+
+    return "user created"
 }
 
 async function checkUser(username, password){
@@ -83,7 +85,7 @@ async function checkUser(username, password){
     const pwCheck = await bcrypt.compare(password, user['hashedPassword'] )
     if(pwCheck === false) throw "Either the username or password is invalid"
 
-    return {"authenticated":true}
+    return "user authenticated"
 }
 
 async function getRemainingCalories(userID){

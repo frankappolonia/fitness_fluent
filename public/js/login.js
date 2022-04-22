@@ -6,13 +6,14 @@ login.submit((event=>{
     try{
         validateLogin(email, password)
         $('#username').val(email.toLowerCase())
+      
     }catch(e){
         event.preventDefault()
         $('#login-error-container').empty()
         $('#login-error-container').append(e)
     }
 
-}))
+}));
 
 function validateLogin(username, password){
     if(! username) throw "No username given!"
