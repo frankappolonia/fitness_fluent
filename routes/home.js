@@ -5,13 +5,14 @@ const userFuncs = db.userFuncs
 
 router.route('/')
     .get(async(request, response)=>{
-        let authObj = {authenticated: false}
+        let authObj = {}
         try {
             if (request.session.user){
                 authObj.authenticated = true
                 let cals = await userFuncs.getRemainingCalories(request.session.user)
                 authObj['calories'] = cals
             }
+            authObj['script'] = "/public/js/login.js"
 
             response.status(200).render('pages/home', authObj)
         } catch (e) {

@@ -3,6 +3,7 @@ let login = $('#login-form')
 login.submit((event=>{
     let email = $('#username').val()
     let password = $('#password').val()
+    console.log('jquery test')
     try{
         validateLogin(email, password)
         $('#username').val(email.toLowerCase())
