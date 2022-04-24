@@ -1,7 +1,9 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const static = express.static(__dirname + '/public');
+let path = require('path')
+
+const static = express.static(path.join(__dirname, '../', '/public'));
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
