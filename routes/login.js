@@ -18,12 +18,19 @@ router.get('/', (request, response, next)=>{
 //otherwise, do login route as normal
 router.route('/')
     .get(async(request, response) =>{
+        let authObj = {}
         try {
-            response.status(200).render('pages/login', {script: "/public/js/login.js", authenticated: request.session})
+            if (request.session.user){
+                authObj.authenticated = true
+                let cals = await userFuncs.getRemainingCalories(request.session.user)
+                authObj['calories'] = cals
+            }
+            authObj['script'] = "/public/js/login.js"
+
+            response.status(200).render('pages/login', authObj)
             
         } catch (e) {
             response.status(404).json('404: ' + e)
-            
         }
     })
     .post(async(request, response)=>{
@@ -38,8 +45,7 @@ router.route('/')
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
             let validateUser = await db.checkUser(xss(username), xss(password))
-            if (typeof(validateUser) === 'object'){
-                if('authenticated' in validateUser && validateUser['authenticated'] === true)
+            if (validateUser === 'user authenticated'){
                     request.session.name = 'AuthCookie'
                     request.session.user = username
                     response.status(200).redirect('/')

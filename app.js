@@ -9,6 +9,7 @@ const middlewareWrapper = require('./middleware')
 const static = express.static(__dirname + '/public');
 app.use('/public', static);
 
+
 //middleware wrapper function for app-level middleware (express, express-session, handlebars, etc)
 middlewareWrapper(app)
 

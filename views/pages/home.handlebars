@@ -1,4 +1,8 @@
 <div class="homepage" id="homepage-container">
+    {{#if authenticated}}
+        {{#> dailyGoalsWidget}}
+        {{/dailyGoalsWidget}}
+    {{/if}}
     <section id="homepage-welcome">
         <img id="home-logo" src="/public/images/fitnessfluent.png">
         <h2>Welcome!</h2>

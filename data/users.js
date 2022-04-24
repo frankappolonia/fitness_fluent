@@ -62,6 +62,8 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let insertData = await usersCollection.insertOne(newUser)
     if (insertData.acknowldeged === 0 || !insertData.insertedId === 0)
       throw 'Could not add new user!'
+
+    return "user created"
 }
 
 async function checkUser(username, password){
@@ -83,25 +85,24 @@ async function checkUser(username, password){
     const pwCheck = await bcrypt.compare(password, user['hashedPassword'] )
     if(pwCheck === false) throw "Either the username or password is invalid"
 
-    return {"authenticated":true}
+    return "user authenticated"
 }
 
-async function getRemainingCalories(userID){
+async function getRemainingCalories(username){
     /**This function gets the remaining calories left in the day for the user for the
      * 'Daily Goal Summary Widget' feature
       */
 
     //1. Validate inputs
     if (arguments.length !== 1) throw "Invalid number of arguments"
-    validations.stringChecks([userID])
-    userID = userID.trim()
-    if((!ObjectId.isValid(userID))) throw 'Error! invalid object ID'; //Checks if the id argument is a valid mongo id
+    validations.stringChecks([username])
+    username = validations.checkUsername(username)
     
     //2. Establish a connection to the users collection
     const usersCollection = await users() 
 
     //3. Query the collection for a user with the specified ID
-    const user = await usersCollection.findOne({ _id: ObjectId(userID) })
+    const user = await usersCollection.findOne({ email: username })
     if (user === null) throw "Error! No band with the specified ID is found!"
 
     //4. Extract the daily remaining calories

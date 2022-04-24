@@ -3,16 +3,18 @@ let login = $('#login-form')
 login.submit((event=>{
     let email = $('#username').val()
     let password = $('#password').val()
+    console.log('jquery test')
     try{
         validateLogin(email, password)
         $('#username').val(email.toLowerCase())
+      
     }catch(e){
         event.preventDefault()
         $('#login-error-container').empty()
         $('#login-error-container').append(e)
     }
 
-}))
+}));
 
 function validateLogin(username, password){
     if(! username) throw "No username given!"
