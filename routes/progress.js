@@ -18,10 +18,10 @@ router.route('/')
         try {
             authObj.authenticated = true
             let cals = await userFuncs.getRemainingCalories(request.session.user)
-            console.log('test2')
-
             authObj['calories'] = cals
-            console.log('test')
+            authObj['script2'] = '/public/js/progress.js'
+            authObj['script'] = "https://cdn.jsdelivr.net/npm/chart.js"
+           
             response.status(200).render('pages/progress', authObj)
 
         } catch (e) {
