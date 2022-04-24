@@ -110,6 +110,38 @@ async function getRemainingCalories(username){
     return remainingCals;
 }
 
+async function logCurrentWeight(username, weight, date){
+     /**This function is for a user logging their weight
+      * date must either be the string "current" or a date in YYYY-MM-DD format
+      */
+
+    //1. Validate inputs
+    if (arguments.length !== 3) throw "Invalid number of arguments"
+    validations.stringChecks([username, date])
+    username = validations.checkUsername(username)
+    validations.heightWeightValidation(65, weight)
+    if(date !== "current"){
+        validations.dateValidation(date)
+        date = new Date(date)
+    }
+    else{
+        date = Date() //if date is "current" then it will be a new date obj at the current time
+    }
+    
+    //2. Establish a connection to the users collection
+    const usersCollection = await users() 
+
+    //3. create weight obj
+    let currentWeight = {'date': date, 'weight': weight}
+
+    //4. Query the collection for a user with the specified ID
+    const user = await usersCollection.updateOne({ email: username }, {$push: {weightEntries: currentWeight}})
+    if (user === null) throw "Error! No band with the specified ID is found!"
+
+    return true
+
+}
+
 
 
 
@@ -117,5 +149,6 @@ async function getRemainingCalories(username){
 module.exports = {
     createUser,
     checkUser,
-    getRemainingCalories
+    getRemainingCalories,
+    logCurrentWeight
 }
