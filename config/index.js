@@ -3,5 +3,6 @@ const mongoConnection = require('./mongoConnection')
 
 module.exports = {
     usersCollection: collections.users,
-    foodCollection: collections.recomendedFoods
+    foodCollection: collections.recomendedFoods,
+    connection: mongoConnection
 };
