@@ -1,0 +1,22 @@
+<div class="exercises" id="exercise-container">
+    <section id="exercisepage-welcome">
+        <h2>Exercise Journal</h2>
+        <p>Exercise Journal keeps track of all the exercises that you've done and adjusts the daily intake requirements based on the number of calories burned depending on the exercise logged.</p>
+    </section>
+     {{#if authenticated}}
+        {{#> caloriesRemainingWidget}}
+        {{/caloriesRemainingWidget}}
+    {{/if}} 
+    <br>
+    <section id = "enter-exercise-container">
+        <form method="POST" id="exercise-entry-form">
+            <h3>Log your exercise : </h3>
+            <label for="name">Enter exercise :</label>
+            <input type="text" class="exercise-form" id="exercisename" name="exercisename">
+            <br>
+            <label for="calories">Enter calories :</label>
+            <input type="number" class="exercise-form" id="calories" name="calories">
+            <button type="submit" class="btn btn-primary">Save Exercise</button>
+        </form>   
+    </section>
+</div>
