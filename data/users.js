@@ -179,6 +179,38 @@ async function getWeights(username, startDate, endDate){
             data.weights.push(entry.weight)
         }
     });
+
+    return data
+}
+
+async function getAllWeights(username){
+    /**This function returns an object all of the weights a user logged from all time
+     * (startDate & endDate)
+     */
+
+    //1. Validate inputs
+    if (arguments.length !== 1) throw "Invalid number of arguments"
+    validations.stringChecks([username])
+    username = validations.checkUsername(username)
+
+     //2. Establish a connection to the users collection
+     const usersCollection = await users() 
+
+    //3. Query the collection for a user with the specified ID
+    const user = await usersCollection.findOne({ email: username })
+    if (user === null) throw "Error! No user with the specified ID is found!"
+
+    //4. Get weight info
+    let data = {
+        weights: [], 
+        dates: []
+    }
+
+    user['weightEntries'].forEach(entry => {
+        data.dates.push(entry.date)
+        data.weights.push(entry.weight)
+        
+    });
     
     return data
 }
@@ -201,5 +233,6 @@ module.exports = {
     checkUser,
     getRemainingCalories,
     logCurrentWeight,
-    getWeights
+    getWeights,
+    getAllWeights
 }

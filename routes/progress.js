@@ -46,4 +46,16 @@ router.route('/')
 
     });
 
+router.route('/initial_data')
+    .get(async(request, response)=>{
+        try {
+            //do error checking
+            let graphData = await userFuncs.getAllWeights(request.session.user)
+            response.json(graphData)
+
+        } catch (e) {
+            response.status(404).json(e)
+        }
+
+});
 module.exports = router;
