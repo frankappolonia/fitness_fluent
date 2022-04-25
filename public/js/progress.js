@@ -44,7 +44,7 @@ let initialGraphData;
 const ctx = $('#myChart') 
 $.ajax({
     /**Ajax request for initial graph data on page load. Gets data then creates initial graph */
-    method: "GET",
+    method: "POST",
     url: '/progress/initial_data',
     contentType: 'application/json',
     success: (response)=>{

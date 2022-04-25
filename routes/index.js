@@ -12,7 +12,7 @@ const constructorMethod = (app) => {
     app.use('/signup', signup)
     app.use('/progress', progress)
     app.use('*', (req, res) => {
-      res.status(404).json({ error: 'PAGE NOT FOUND!' });
+      res.status(404).render('errors/404');
     });
   };
   

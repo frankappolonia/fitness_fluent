@@ -47,7 +47,7 @@ router.route('/')
     });
 
 router.route('/initial_data')
-    .get(async(request, response)=>{
+    .post(async(request, response)=>{
         try {
             //do error checking
             let graphData = await userFuncs.getAllWeights(request.session.user)
