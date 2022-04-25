@@ -18,10 +18,16 @@ router.get('/', (request, response, next)=>{
 //Otherwise, run signup route as usual
 router.route('/')
     .get(async(request, response) =>{
+        let authObj = {}
         try {
-            response.status(200).render('pages/signup', {script: "/public/js/signup.js", authenticated: request.session})
+            if (request.session.user){
+                authObj.authenticated = true
+            }
+            authObj['script'] = "/public/js/signup.js"
+            
+            response.status(200).render('pages/signup', authObj)
         } catch (e) {
-            response.status(404).json('404: ' + e)
+            response.status(404).render('pages/404')
         }
     })
     .post(async(request, response)=>{

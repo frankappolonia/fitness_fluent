@@ -15,7 +15,7 @@ router.route('/')
 
             response.status(200).render('pages/home', authObj)
         } catch (e) {
-            response.status(404).json("404: Page cannot be found")
+            response.status(404).render('pages/404')
         }
     });
 module.exports = router;
