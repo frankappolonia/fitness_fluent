@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../data')
 const userFuncs = db.userFuncs
+const xss = require('xss')
 
 //if the user is NOT authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -30,12 +31,13 @@ router.route('/')
     })
     .post(async(request, response)=>{
         try {
+            //do error checking
             let data = request.body
-            console.log(data)
-            response.json(' the dates are' + data.start + " and " +data.end)
+            let graphData = await userFuncs.getWeights(request.session.user, xss(data.start), xss(data.end))
+            response.json(graphData)
 
         } catch (e) {
-            response.status(404).json("404: Progress page cannot be found")
+            response.status(404).json(e)
         }
 
     });
