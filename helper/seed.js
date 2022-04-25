@@ -24,6 +24,9 @@ async function seed(){
         await userFuncs.logCurrentWeight('test@gmail.com', 189, "2022-05-15")
         await userFuncs.logCurrentWeight('test@gmail.com', 186, "2022-05-21")
 
+        await userFuncs.createUser('Erica', 'smith', 'test2@gmail.com', 'password', '2004-03-15', 60, 115, 'female', 'moderate', 0)
+        await userFuncs.logCurrentWeight('test2@gmail.com', 118, "2022-04-30")
+        await userFuncs.logCurrentWeight('test2@gmail.com', 115, "2022-05-11")
 
 
 

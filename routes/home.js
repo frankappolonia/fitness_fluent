@@ -12,7 +12,7 @@ router.route('/')
                 let cals = await userFuncs.getRemainingCalories(request.session.user)
                 authObj['calories'] = cals
             }
-
+            console.log(request.session)
             response.status(200).render('pages/home', authObj)
         } catch (e) {
             response.status(404).render('pages/404')

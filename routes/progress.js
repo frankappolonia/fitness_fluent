@@ -24,11 +24,16 @@ router.route('/')
             authObj['calories'] = cals
             authObj['script2'] = '/public/js/progress.js'
             authObj['script'] = "https://cdn.jsdelivr.net/npm/chart.js"
-           
+            
+            //this gets their overall weight progress thats initially loaded
+            let weightProgress = await userFuncs.getOverallWeightProgress(request.session.user)
+            authObj['lostOrGain'] = weightProgress.weightChange
+            authObj['weight'] = weightProgress.weight
+            
             response.status(200).render('pages/progress', authObj)
 
         } catch (e) {
-            response.status(404).json("404: Progress page cannot be found")
+            response.status(404).render("errors/404")
         }
     })
     .post(async(request, response)=>{
