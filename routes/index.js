@@ -14,7 +14,7 @@ const constructorMethod = (app) => {
     app.use('/progress', progress)
     app.use('/exercises', exercises)
     app.use('*', (req, res) => {
-      res.status(404).json({ error: 'PAGE NOT FOUND!' });
+      res.status(404).render('errors/404');
     });
   };
   
