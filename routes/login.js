@@ -30,7 +30,7 @@ router.route('/')
             response.status(200).render('pages/login', authObj)
             
         } catch (e) {
-            response.status(404).json('404: ' + e)
+            response.status(404).render('pages/404')
         }
     })
     .post(async(request, response)=>{

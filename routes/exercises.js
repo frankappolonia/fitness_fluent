@@ -4,6 +4,15 @@ const db = require("../data");
 const userFuncs = db.userFuncs;
 const xss = require("xss");
 
+//if the user is NOT authenticated, redirect to home
+router.get('/', (request, response, next)=>{
+  if (! request.session.user) {
+    return response.redirect('/');
+  } else {
+    next()
+  }
+})
+
 router.route("/").get(async (request, response) => {
   let authObj = {};
   try {
