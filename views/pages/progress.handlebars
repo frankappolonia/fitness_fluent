@@ -4,7 +4,7 @@
     <p>I am the progress page! Below is your all time weight statistics, starting from when you signed up.
         To see a different range, enter a custom date range.
     </p>
-    <form method="post">
+    <form id="progress-form" method="post">
         <div class="form-group">
             <label for="startDate">Enter starting date</label>
             <input type="date" class="form-control" id="startDate" name="startDate" >
@@ -12,6 +12,9 @@
             <input type="date" class="form-control" id="endDate" name="endDate">
             <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <div id="progress-graph-error">
+        {{{error}}}
+    </div>
     <div>
         <canvas id="myChart" width="400" height="400">
         </canvas>

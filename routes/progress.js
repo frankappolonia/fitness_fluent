@@ -27,5 +27,17 @@ router.route('/')
         } catch (e) {
             response.status(404).json("404: Progress page cannot be found")
         }
+    })
+    .post(async(request, response)=>{
+        try {
+            let data = request.body
+            console.log(data)
+            response.json(' the dates are' + data.start + " and " +data.end)
+
+        } catch (e) {
+            response.status(404).json("404: Progress page cannot be found")
+        }
+
     });
+
 module.exports = router;
