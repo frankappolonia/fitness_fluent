@@ -215,6 +215,36 @@ async function getAllWeights(username){
     return data
 }
 
+async function getOverallWeightProgress(username){
+    /**This function gets the total weight gained or lost by the user from their 
+     * starting weight, to their current weight
+     */
+    //1. validate args
+    if (arguments.length !== 1) throw "Invalid number of arguments"
+    validations.stringChecks([username])
+    username = validations.checkUsername(username)
+
+    //2. get data
+    let data = await getAllWeights(username)
+    let weights = data.weights
+
+    //3. process data
+    let startingWeight = weights[0]
+    let endingWeight = weights[weights.length-1]
+    let result = {
+                weight: Math.abs(startingWeight-endingWeight),
+                weightChange: ""
+                }
+    if(startingWeight < endingWeight)
+        result.weightChange = "gained"
+    else if(startingWeight > endingWeight)
+        result.weightChange = "lost"  
+    else if(startingWeight === endingWeight)
+        result.weightChange = "maintained"
+    
+    return result
+}
+
 /** 
 async function test(){
     try{
@@ -234,5 +264,6 @@ module.exports = {
     getRemainingCalories,
     logCurrentWeight,
     getWeights,
-    getAllWeights
+    getAllWeights,
+    getOverallWeightProgress
 }

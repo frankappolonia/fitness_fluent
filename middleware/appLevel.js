@@ -14,6 +14,9 @@ const handlebarsInstance = exphbs.create({
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
       return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+    eq: (exp1, exp2) =>{
+      return exp1 === exp2
     }
   },
   partialsDir: ['views/partials/']
