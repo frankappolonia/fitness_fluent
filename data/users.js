@@ -170,21 +170,52 @@ async function getWeights(username, startDate, endDate){
         dates: []
     }
 
-    console.log(user['weightEntries'])
-    console.log(user['dob'])
     user['weightEntries'].forEach(entry => {
-      
+        /**this loops through each weight entry object the user has in the db, and sees if it falls between
+         * the start and end dates specified. if itdoes, pushes the weight & date to the data object
+         */
         if(entry.date.getTime() >= startDate.getTime() && entry.date.getTime() <= endDate.getTime()){
             data.dates.push(entry.date)
             data.weights.push(entry.weight)
         }
     });
 
-    console.log(data)
-
     return data
 }
 
+async function getAllWeights(username){
+    /**This function returns an object all of the weights a user logged from all time
+     * (startDate & endDate)
+     */
+
+    //1. Validate inputs
+    if (arguments.length !== 1) throw "Invalid number of arguments"
+    validations.stringChecks([username])
+    username = validations.checkUsername(username)
+
+     //2. Establish a connection to the users collection
+     const usersCollection = await users() 
+
+    //3. Query the collection for a user with the specified ID
+    const user = await usersCollection.findOne({ email: username })
+    if (user === null) throw "Error! No user with the specified ID is found!"
+
+    //4. Get weight info
+    let data = {
+        weights: [], 
+        dates: []
+    }
+
+    user['weightEntries'].forEach(entry => {
+        data.dates.push(entry.date)
+        data.weights.push(entry.weight)
+        
+    });
+    
+    return data
+}
+
+/** 
 async function test(){
     try{
         console.log(await getWeights('test@gmail.com', '1999-04-03', '2022-07-03'))
@@ -193,7 +224,7 @@ async function test(){
     }
 }
 test()
-
+*/
 
 
 
@@ -202,5 +233,6 @@ module.exports = {
     checkUser,
     getRemainingCalories,
     logCurrentWeight,
-    getWeights
+    getWeights,
+    getAllWeights
 }

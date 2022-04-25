@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../data')
 const userFuncs = db.userFuncs
+const errorHandling = require('../helper')
+const validations = errorHandling.userValidations
 const xss = require('xss')
 
 //if the user is NOT authenticated, redirect to home
@@ -30,10 +32,12 @@ router.route('/')
         }
     })
     .post(async(request, response)=>{
+        let data = request.body
+
         try {
             //do error checking
-            let data = request.body
-            let graphData = await userFuncs.getWeights(request.session.user, xss(data.start), xss(data.end))
+            validations.progressRouteValidation(data)
+            let graphData = await userFuncs.getWeights(request.session.user, xss(data.start).trim(), xss(data.end).trim())
             response.json(graphData)
 
         } catch (e) {
@@ -42,4 +46,16 @@ router.route('/')
 
     });
 
+router.route('/initial_data')
+    .get(async(request, response)=>{
+        try {
+            //do error checking
+            let graphData = await userFuncs.getAllWeights(request.session.user)
+            response.json(graphData)
+
+        } catch (e) {
+            response.status(404).json(e)
+        }
+
+});
 module.exports = router;
