@@ -170,21 +170,20 @@ async function getWeights(username, startDate, endDate){
         dates: []
     }
 
-    console.log(user['weightEntries'])
-    console.log(user['dob'])
     user['weightEntries'].forEach(entry => {
-      
+        /**this loops through each weight entry object the user has in the db, and sees if it falls between
+         * the start and end dates specified. if itdoes, pushes the weight & date to the data object
+         */
         if(entry.date.getTime() >= startDate.getTime() && entry.date.getTime() <= endDate.getTime()){
             data.dates.push(entry.date)
             data.weights.push(entry.weight)
         }
     });
-
-    console.log(data)
-
+    
     return data
 }
 
+/** 
 async function test(){
     try{
         console.log(await getWeights('test@gmail.com', '1999-04-03', '2022-07-03'))
@@ -193,7 +192,7 @@ async function test(){
     }
 }
 test()
-
+*/
 
 
 

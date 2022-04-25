@@ -1,4 +1,5 @@
-let validate = require('email-validator')
+let validate = require('email-validator');
+const { request } = require('express');
 /**Validations for creating a user/signup */
 
 
@@ -210,6 +211,14 @@ function checkPassword(password){
     return password
 }
 
+function progressRouteValidation(requestBody){
+    if(! requestBody.start) throw "No start date given!"
+    if(! requestBody.end) throw "No end date given!"
+    stringChecks([requestBody.start, requestBody.end])
+    dateValidation(requestBody.start.trim())
+    dateValidation(requestBody.end.trim())
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -225,5 +234,6 @@ module.exports = {
     checkRequestBody,
     checkPassword,
     checkUsername,
-    dateValidation
+    dateValidation,
+    progressRouteValidation
 }
