@@ -62,8 +62,10 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let insertData = await usersCollection.insertOne(newUser)
     if (insertData.acknowldeged === 0 || !insertData.insertedId === 0)
       throw 'Could not add new user!'
-
-    return "user created"
+    
+    //8. get user id
+    let user = await usersCollection.findOne({email: email.toLowerCase()})
+    return user['_id'].toString()
 }
 
 async function checkUser(username, password){
@@ -89,6 +91,23 @@ async function checkUser(username, password){
     let auth = {userId: id, authenticated: true}
     return auth
 }
+
+async function getUserById(id) {
+    //1. validate
+    if(arguments.length!== 1) throw "invalid number of arguments!"
+    validations.stringChecks([id])
+    id = validations.checkId(id)
+
+    //2. establish connection to db
+    const userCollection = await users();
+
+    //3. query db for user
+    const user = await userCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw 'Error: User not found';
+
+    //4. return the user
+    return user;
+  }
 
 async function getRemainingCalories(id){
     /**This function gets the remaining calories left in the day for the user for the
@@ -244,22 +263,13 @@ async function getOverallWeightProgress(id){
     return result
 }
 
-/** 
-async function test(){
-    try{
-        console.log(await getWeights('test@gmail.com', '1999-04-03', '2022-07-03'))
-    }catch(e){
-        console.log(e)
-    }
-}
-test()
-*/
 
 
 
 module.exports = {
     createUser,
     checkUser,
+    getUserById,
     getRemainingCalories,
     logCurrentWeight,
     getWeights,
