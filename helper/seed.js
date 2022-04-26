@@ -23,11 +23,12 @@ async function deleteAllPosts(){
 
 async function seed(){
     await deleteAllUsers()
+    await deleteAllPosts()
     console.log("Users collection Emptied. Beginning seeding:")
 
     try {
         //users
-        let joeId = await userFuncs.createUser('joe', 'smith', 'test@gmail.com', 'password', '1999-02-15', 72, 185, 'male', 'sedentary', 1)
+        let joeId = await userFuncs.createUser('joe', 'smith', 'test@gmail.com', 'password', '1994-02-15', 72, 185, 'male', 'sedentary', 1)
         await userFuncs.logCurrentWeight(joeId, 187, "2022-04-30")
         await userFuncs.logCurrentWeight(joeId, 188, "2022-05-07")
         await userFuncs.logCurrentWeight(joeId, 189, "2022-05-11")
@@ -38,12 +39,27 @@ async function seed(){
         await userFuncs.logCurrentWeight(ericaId, 118, "2022-04-30")
         await userFuncs.logCurrentWeight(ericaId, 115, "2022-05-11")
 
-        await postFuncs.addPost('Are carbs good for you?', 
-        'Hi, i was wondering what your guys opion on carbs is?', ericaId)
+        let frankId = await userFuncs.createUser('Frank', 'Jones', 'test3@gmail.com', 'password', '1999-02-15', 68, 162, 'male', 'heavy', 0)
+        await userFuncs.logCurrentWeight(frankId, 160, "2021-12-30")
+        await userFuncs.logCurrentWeight(frankId, 161, "2022-01-11")
+        await userFuncs.logCurrentWeight(frankId, 162, "2022-02-11")
+        await userFuncs.logCurrentWeight(frankId, 163, "2022-03-11")
+        await userFuncs.logCurrentWeight(frankId, 163, "2022-04-11")
+        await userFuncs.logCurrentWeight(frankId, 163, "2022-04-26")
 
-        await postFuncs.addPost('Best exercises for chest', 
+
+        let post1 = await postFuncs.addPost('Are carbs good for you?', 
+        'Hi, i was wondering what your guys opion on carbs is?', ericaId)
+        await postFuncs.addComment(post1, joeId, "I think carbs are very good for you. To lose weight, what is most important is calories in and calories out, rather then macros.")
+        let comment1 = await postFuncs.addComment(post1, ericaId, "Thats a good point, thanks Joe!")
+        //await postFuncs.deleteComment(comment1, frankId)
+
+        let post2 = await postFuncs.addPost('Best exercises for chest', 
         'Greetings! I am a bodybuilder looking to add mass to my chest. I was wondering what chest exercises you find to be most effective?',
         joeId)
+        await postFuncs.addComment(post2, frankId, "Overall, i'd say the barbell bench press is the best exercise for growing chest mass. This is because it is the exercise that you can most consistently progressivley overload on.")
+
+       
 
 
     } catch (error) {
@@ -56,9 +72,6 @@ async function seed(){
     await connection.closeConnection();
 
 }
-
-
-
 
 
 seed()
