@@ -1,5 +1,5 @@
 let validate = require('email-validator');
-const { request } = require('express');
+const { ObjectId } = require('mongodb');
 /**Validations for creating a user/signup */
 
 
@@ -22,6 +22,16 @@ function stringChecks(args){
         
     });
 }
+
+function checkId(id) {
+    if (!id) throw 'Error: You must provide an id to search for';
+    if (typeof id !== 'string') throw 'Error: id must be a string';
+    id = id.trim();
+    if (id.length === 0)
+      throw 'Error: id cannot be an empty string or just spaces';
+    if (!ObjectId.isValid(id)) throw 'Error: invalid object ID';
+    return id;
+  }
 
 function nameValidation(first, last){
     if (arguments.length !== 2) throw "invalid number of arguments for name validation"
@@ -235,5 +245,6 @@ module.exports = {
     checkPassword,
     checkUsername,
     dateValidation,
-    progressRouteValidation
+    progressRouteValidation,
+    checkId
 }

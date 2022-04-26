@@ -20,9 +20,8 @@ router.route('/')
     .get(async(request, response) =>{
         let authObj = {}
         try {
-            if (request.session.user){
-                authObj.authenticated = true
-            }
+           
+            authObj.authenticated = true
             authObj['script'] = "/public/js/signup.js"
             
             response.status(200).render('pages/signup', authObj)

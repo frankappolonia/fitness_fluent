@@ -12,7 +12,7 @@ router.route('/')
         try {
             //expire authcookie
             request.session.cookie.expires = 0
-            response.status(200).render('pages/logout', {authenticated: request.session})
+            response.status(200).render('pages/logout', {})
         } catch (e) {
             response.status(404).render("pages/404")
         }
