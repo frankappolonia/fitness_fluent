@@ -59,8 +59,6 @@ async function seed(){
         joeId)
         await postFuncs.addComment(post2, frankId, "Overall, i'd say the barbell bench press is the best exercise for growing chest mass. This is because it is the exercise that you can most consistently progressivley overload on.")
 
-       
-
 
     } catch (error) {
         console.log(error)
