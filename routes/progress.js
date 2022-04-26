@@ -42,7 +42,7 @@ router.route('/')
         try {
             //do error checking
             validations.progressRouteValidation(data)
-            let graphData = await userFuncs.getWeights(request.session.user, xss(data.start).trim(), xss(data.end).trim())
+            let graphData = await userFuncs.getWeights(xss(request.session.user), xss(data.start).trim(), xss(data.end).trim())
             response.json(graphData)
 
         } catch (e) {
@@ -55,7 +55,7 @@ router.route('/initial_data')
     .post(async(request, response)=>{
         try {
             //do error checking
-            let graphData = await userFuncs.getAllWeights(request.session.user)
+            let graphData = await userFuncs.getAllWeights(xss(request.session.user))
             response.json(graphData)
 
         } catch (e) {
