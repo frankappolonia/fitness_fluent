@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require("../data");
 const userFuncs = db.userFuncs;
 const xss = require("xss");
+const errorHandling = require('../helper')
+const validations = errorHandling.userValidations
 
 //if the user is NOT authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -16,12 +18,13 @@ router.get('/', (request, response, next)=>{
 router.route("/").get(async (request, response) => {
   let authObj = {};
   try {
-    if (request.session.user) {
-      authObj.authenticated = true;
-      let cals = await userFuncs.getRemainingCalories(request.session.user);
-      authObj["calories"] = cals;
-    }
+    let id = validations.checkId(request.session.user)
+    authObj.authenticated = true;
+    let cals = await userFuncs.getRemainingCalories(id);
+    authObj["calories"] = cals;
+    
     response.status(200).render("pages/exercises", authObj);
+    
   } catch (e) {
     response.status(404).json("404: Page cannot be found");
   }

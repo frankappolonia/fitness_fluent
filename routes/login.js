@@ -20,17 +20,12 @@ router.route('/')
     .get(async(request, response) =>{
         let authObj = {}
         try {
-            if (request.session.user){
-                authObj.authenticated = true
-                let cals = await userFuncs.getRemainingCalories(request.session.user)
-                authObj['calories'] = cals
-            }
             authObj['script'] = "/public/js/login.js"
 
             response.status(200).render('pages/login', authObj)
             
         } catch (e) {
-            response.status(404).render('pages/404')
+            response.status(404).render('errors/404')
         }
     })
     .post(async(request, response)=>{
@@ -45,9 +40,9 @@ router.route('/')
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
             let validateUser = await db.checkUser(xss(username), xss(password))
-            if (validateUser === 'user authenticated'){
+            if (validateUser.authenticated === true){
                     request.session.name = 'AuthCookie'
-                    request.session.user = username
+                    request.session.user = validateUser.userId
                     response.status(200).redirect('/')
                     return
             }
