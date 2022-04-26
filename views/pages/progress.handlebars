@@ -1,22 +1,46 @@
-<div class="progress-page-container">
-    {{#> dailyGoalsWidget}}
-    {{/dailyGoalsWidget}}
-    <p>I am the progress page! Below is your all time weight statistics, starting from when you signed up.
-        To see a different range, enter a custom date range.
-    </p>
-    <form id="progress-form" method="post">
-        <div class="form-group">
-            <label for="startDate">Enter starting date</label>
-            <input type="date" class="form-control" id="startDate" name="startDate" >
-            <label for="password">Enter ending date</label>
-            <input type="date" class="form-control" id="endDate" name="endDate">
-            <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <div id="progress-graph-error">
-        {{{error}}}
+<div class="progress-page-container container-fluid">
+    <div class="row">
+            {{#> dailyGoalsWidget}}
+            {{/dailyGoalsWidget}}
+     
+        <div class="col-sm-4">
+            <h2>Progress page</h2>
+            <p>I am the progress page! Below is your all time weight statistics. The default chart shows your total
+                weight loss or weight gain journey from your starting weight upon sign up, to your most recently logged
+                or current weight.
+            </p>
+            {{#if (eq lostOrGain "maintained")}}
+            <p>To date, you have {{{lostOrGain}}} your initial starting weight!</p>
+            {{else}}
+            <p>To date, you have {{{lostOrGain}}} a total of {{{weight}}} pounds!</p>
+            {{/if}}
+        </div>
     </div>
-    <div>
-        <canvas id="myChart" width="400" height="400">
-        </canvas>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-offset-3">
+            <form class="form-inline" id="progress-form" method="post">
+                <div class="form-group mb-2">
+                    <label for="startDate">Enter starting date</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" >
+                </div>
+                <div class="form-group mb-2"></div>
+                    <label for="password">Enter ending date</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate">
+                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </div>
+            </form>
+            <div id="progress-graph-error">
+                {{{error}}}
+            </div>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+    
 </div>

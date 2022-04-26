@@ -20,24 +20,31 @@ router.route('/')
         let authObj = {}
         try {
             authObj.authenticated = true
-            let cals = await userFuncs.getRemainingCalories(request.session.user)
+            let id = validations.checkId(request.session.user)
+
+            let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
             authObj['script2'] = '/public/js/progress.js'
             authObj['script'] = "https://cdn.jsdelivr.net/npm/chart.js"
-           
+            
+            //this gets their overall weight progress thats initially loaded
+            let weightProgress = await userFuncs.getOverallWeightProgress(id)
+            authObj['lostOrGain'] = weightProgress.weightChange
+            authObj['weight'] = weightProgress.weight
+            
             response.status(200).render('pages/progress', authObj)
 
         } catch (e) {
-            response.status(404).json("404: Progress page cannot be found")
+            response.status(404).render("errors/404")
         }
     })
     .post(async(request, response)=>{
         let data = request.body
 
         try {
-            //do error checking
+            let id = validations.checkId(request.session.user)
             validations.progressRouteValidation(data)
-            let graphData = await userFuncs.getWeights(request.session.user, xss(data.start).trim(), xss(data.end).trim())
+            let graphData = await userFuncs.getWeights(xss(id), xss(data.start).trim(), xss(data.end).trim())
             response.json(graphData)
 
         } catch (e) {
@@ -49,8 +56,8 @@ router.route('/')
 router.route('/initial_data')
     .post(async(request, response)=>{
         try {
-            //do error checking
-            let graphData = await userFuncs.getAllWeights(request.session.user)
+            let id = validations.checkId(request.session.user)
+            let graphData = await userFuncs.getAllWeights(xss(id))
             response.json(graphData)
 
         } catch (e) {

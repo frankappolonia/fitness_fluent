@@ -1,6 +1,7 @@
 
 $('#progress-form').submit((event=>{
     event.preventDefault()
+    $('#progress-graph-error').empty()
     let startDate = $('#startDate').val()
     let endDate = $('#endDate').val()
     try{
@@ -9,16 +10,6 @@ $('#progress-form').submit((event=>{
         $('#progress-graph-error').empty()
         $('#progress-graph-error').append(e)
     }
-    let requestConfig = {
-        method: 'GET',
-        url: '/progress/customrange',
-        contentType: 'application/json',
-        data: JSON.stringify({
-          start: startDate,
-          end: endDate
-        })
-      };
-
       $.ajax({
           method: "POST",
           url: '/progress',
@@ -42,6 +33,7 @@ $('#progress-form').submit((event=>{
 /**Graph functions */
 let initialGraphData;
 const ctx = $('#myChart') 
+let myChart
 $.ajax({
     /**Ajax request for initial graph data on page load. Gets data then creates initial graph */
     method: "POST",
@@ -50,7 +42,7 @@ $.ajax({
     success: (response)=>{
         initialGraphData = response
         //this creates the initial graph on the page load
-        let myChart = new Chart(ctx, {
+        myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: initialGraphData.dates,
@@ -96,43 +88,47 @@ function drawChart(data){
     //this function draws a new graph over the initially loaded graph, based upon specified dates
     let weights = data.weights
     let dates = data.dates
-
-    myChart.destroy()
-    myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: dates,
-            datasets: [{
-                label: 'Weight (lbs)',
-                data: weights,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+    if (weights.length === 0){
+        $('#progress-graph-error').empty()
+        $('#progress-graph-error').append("No weights found within the specified range!")
+    }
+    else{
+        myChart.destroy()
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Weight (lbs)',
+                    data: weights,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
-
+        });
+    }
 }
 
 
