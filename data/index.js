@@ -1,5 +1,7 @@
 const userFuncs = require('./users')
+const postFuncs = require('./posts')
 
 module.exports = {
-    userFuncs: userFuncs
+    userFuncs: userFuncs,
+    postFuncs: postFuncs
 }
