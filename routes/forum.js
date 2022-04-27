@@ -85,7 +85,8 @@ router.route('/:id')
             
             let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
-
+            
+            authObj['script'] = "/public/js/existingPost.js"
             let postId = validations.checkId(request.params.id)
             let post = await postsFuncs.getPostById(postId)
 

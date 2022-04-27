@@ -1,33 +1,36 @@
 
-let postForm = $('#new-post-form')
+/**JS validations for new comments on existing posts, and updating or deleting exists posts */
+
+//validation for new comment
+
+
+let commentForm = $('#new-comment-form')
 
 //new post form validation
-postForm.submit((event=>{
-    let title = $('#title').val()
-    let postBody = $('#postBody').val()
+commentForm.submit((event=>{
+    let commentBody = $('#comment').val()
     try {
-        newPostCheck(title, postBody)
+        newCommentCheck(commentBody)
         
     } catch (e) {
         event.preventDefault()
-        $('#newPost-error').empty()
-        $('#newPost-error').append(e)
+        $('#newComment-error').empty()
+        $('#newComment-error').append(e)
         
     }
 
 }))
 
-function newPostCheck(title, body){
-    if(arguments.length !== 2) throw "Invalid number of arguments"
-    if(! title) throw "No title given!"
-    if(! body) throw "No body given!"
-    stringChecks([title, body])
-    stringtrim(arguments)
-    if (title.length < 6) throw "Title must be at least 6 characters!"
-    if(body.length <25) throw "Post must be 25 characters minimum!"  
-    return
 
+//helper functions
+function newCommentCheck(commentBody){
+    if(arguments.length !== 1) throw "Invalid number of arguments"
+    if(! commentBody) throw "No comment entered!"
+    stringChecks([commentBody])
+    stringtrim(arguments)
+    if(commentBody.length <7) throw "Comment must be 7 characters minimum!" 
 }
+
 function stringtrim(argsObj){
     /**Takes the arguments object of a function and trims all string types */
     for (arg in argsObj){
