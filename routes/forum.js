@@ -5,7 +5,9 @@ const postsFuncs = db.postFuncs
 const userFuncs = db.userFuncs
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
-const xss = require('xss')
+const forumValidations = errorHandling.forumValidations
+const xss = require('xss');
+const { response } = require('express');
 
 //if the user is NOT authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -36,6 +38,42 @@ router.route('/')
         }
     });
 
+router.route('/new') //route for a new post
+    .get(async(request, response)=>{
+        let authObj = {}
+        try {
+            authObj.authenticated = true
+            let id = validations.checkId(request.session.user)
+            
+            let cals = await userFuncs.getRemainingCalories(id)
+            authObj['calories'] = cals
+
+            response.status(200).render('pages/newPost', authObj)
+
+        } catch (e) {
+            response.status(404).render("errors/404")
+        }
+    })
+    .post(async(request, response)=>{
+        try {
+            let id = validations.checkId(request.session.user)
+            forumValidations.newPostRouteCheck(request.body, id)
+            let title = request.body.title.trim()
+            let postBody = request.body.postBody.trim()
+
+            let newPost = await postsFuncs.addPost(title, postBody, id)
+            console.log('3')
+
+            response.status(200).redirect(`/forum/${newPost}`)
+
+            
+        } catch (e) {
+            response.status(404).render("errors/400", {error: e})
+            
+        }
+
+    });
+
 router.route('/:id')
     .get(async(request, response) =>{
         let authObj = {}
@@ -50,7 +88,7 @@ router.route('/:id')
             let postId = validations.checkId(request.params.id)
             let post = await postsFuncs.getPostById(postId)
 
-            response.status(200).render("pages/forumPost", post)
+            response.status(200).render("pages/forumPost", {...authObj, ...post})
 
         }catch(e){
             response.status(404).render("errors/404")

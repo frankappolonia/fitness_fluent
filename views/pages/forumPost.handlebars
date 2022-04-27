@@ -1,4 +1,8 @@
 <div>
+    {{#if authenticated}}
+    {{#> caloriesRemainingWidget}}
+    {{/caloriesRemainingWidget}}
+    {{/if}} 
     <article>
         <section id="main-post">
         <h2>{{{title}}}</h2>

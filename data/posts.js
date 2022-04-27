@@ -3,6 +3,7 @@ const posts = db.postsCollection
 const userFuncs = require('./users')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
+const forumValidaitons = errorHandling.forumValidations
 const { ObjectId} = require('mongodb');
 
 
@@ -13,8 +14,7 @@ async function addPost(title, body, posterId) {
 
     //1. validate arguments
     if(arguments.length !== 3) throw "Invalid number of arguments!"
-    validations.stringChecks([title, body, posterId])
-    validations.stringtrim(arguments)
+    forumValidaitons.newPostCheck(title, body, posterId)
     posterId = validations.checkId(posterId)
     
     //2. establish connection to db
