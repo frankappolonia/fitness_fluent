@@ -12,8 +12,9 @@ async function searchFood(food){
       };
       
       let {data} = await axios.request(options)
-      console.log(JSON.stringify(data))
+      let foods = data.hints //this is an array of food objects, each object being a food that came up in the search
+      console.log(foods)
 
 }
 
-//searchFood('corn')
+searchFood('cheeseburger')

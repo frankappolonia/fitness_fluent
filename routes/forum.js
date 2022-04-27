@@ -25,7 +25,7 @@ router.route('/') //route for all posts/forum home
             authObj.authenticated = true
             let id = validations.checkId(request.session.user)
             
-            let cals = await userFuncs.getRemainingCalories(id)
+            let cals = await userFuncs.getRemainingCalories(xss(id))
             authObj['calories'] = cals
 
             let allPosts = await postsFuncs.getAllPosts()
@@ -44,7 +44,7 @@ router.route('/new') //route for a new post
             authObj.authenticated = true
             let id = validations.checkId(request.session.user)
             
-            let cals = await userFuncs.getRemainingCalories(id)
+            let cals = await userFuncs.getRemainingCalories(xss(id))
             authObj['calories'] = cals
 
             authObj['script'] = "/public/js/newPost.js"
@@ -89,7 +89,7 @@ router.route('/:id')
             
             authObj['script'] = "/public/js/existingPost.js"
             let postId = validations.checkId(request.params.id)
-            let post = await postsFuncs.getPostById(postId)
+            let post = await postsFuncs.getPostById(xss(postId))
 
             authObj['userIdEmbed'] = id
             authObj['ogPosterIdEmbed'] = post.poster.id
@@ -126,7 +126,7 @@ router.route('/:id')
             let userId = validations.checkId(request.session.user)
             let postId = validations.checkId(request.params.id)
 
-            let post = await postsFuncs.getPostById(postId)
+            let post = await postsFuncs.getPostById(xss(postId))
             let ogPoster = post.poster.id
 
             if(userId !== ogPoster){
@@ -134,7 +134,7 @@ router.route('/:id')
                 return
             }
 
-            await postsFuncs.deletePost(userId, postId)
+            await postsFuncs.deletePost(xss(userId), xss(postId))
             response.status(200).json('post deleted')
 
         } catch (e) {
