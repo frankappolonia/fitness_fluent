@@ -88,6 +88,28 @@ async function deletePost(userId, postId){
     return true
 }
 
+async function getAllPosts(){
+    /**returns an array of all posts */
+
+    //1.validate args
+    if (arguments.length !== 0) throw "Error! getAll() takes no arguments!"
+
+    //2. query all posts
+     const postCollection = await posts() 
+
+    const allPosts = await postCollection.find({}).toArray()
+    if(! allPosts) throw "Error! Could not fetch all posts from the db!"   
+
+    if (allPosts.length === 0) return []
+
+    //3. format object ids
+    allPosts.forEach(postObj =>{ 
+        postObj['_id'] = postObj["_id"].toString()
+    })
+    return allPosts;
+
+}
+
 async function addComment(postId, userId, body){
     /**Adds a comment to an existing post */
 
@@ -163,6 +185,7 @@ async function deleteComment(commentId, posterId){
 module.exports ={
     addPost,
     getPostById,
+    getAllPosts,
     deletePost,
     addComment,
     deleteComment

@@ -1,0 +1,18 @@
+<div>
+    <article>
+        <section id="main-post">
+        <h2>{{{title}}}</h2>
+        <h3>Author: {{{poster.name}}}</h3>
+        <p>{{{body}}}</p>
+        </section>
+        <section id="comments">
+            {{#each comments}}
+            <div>
+                <h3>Author: {{{this.poster.name}}}</h3>
+                <p>{{{this.body}}}</p>
+            </div>
+            {{/each}}
+        </section>
+    </article>
+    <a href="/forum">Back to all posts</a>
+</div>
