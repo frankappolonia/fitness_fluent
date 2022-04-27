@@ -1,4 +1,8 @@
 <div>
+    {{#if authenticated}}
+    {{#> caloriesRemainingWidget}}
+    {{/caloriesRemainingWidget}}
+    {{/if}} 
     <article>
         <section id="main-post">
         <h2>{{{title}}}</h2>
@@ -14,5 +18,18 @@
             {{/each}}
         </section>
     </article>
+    <div>
+        <form method="post" id="new-comment-form">
+            <div class="form-group">
+                <h4>Comment on this post</h4>
+                <label for="comment">Post</label>
+                <input type="text" class="form-control" id="comment" name="comment">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+    </form>
+    <div id="newComment-error">
+        {{{error}}}
+    </div>
+    </div>
     <a href="/forum">Back to all posts</a>
 </div>

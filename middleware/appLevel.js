@@ -39,7 +39,7 @@ function expressSessionMiddleware(app){
           secret: "the most secret string ",
           resave: false,
           saveUninitialized: true,
-          cookie: { maxAge: 60000 }
+          cookie: { maxAge: 7200000 }
         })
       );
 
