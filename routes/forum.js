@@ -48,6 +48,8 @@ router.route('/new') //route for a new post
             let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
 
+            authObj['script'] = "/public/js/newPost.js"
+
             response.status(200).render('pages/newPost', authObj)
 
         } catch (e) {
@@ -61,8 +63,7 @@ router.route('/new') //route for a new post
             let title = request.body.title.trim()
             let postBody = request.body.postBody.trim()
 
-            let newPost = await postsFuncs.addPost(title, postBody, id)
-            console.log('3')
+            let newPost = await postsFuncs.addPost(xss(title), xss(postBody), xss(id))
 
             response.status(200).redirect(`/forum/${newPost}`)
 
