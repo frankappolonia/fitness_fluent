@@ -53,6 +53,7 @@ async function seed(){
         await postFuncs.addComment(post1, joeId, "I think carbs are very good for you. To lose weight, what is most important is calories in and calories out, rather then macros.")
         let comment1 = await postFuncs.addComment(post1, ericaId, "Thats a good point, thanks Joe!")
         //await postFuncs.deleteComment(comment1, frankId)
+        console.log(await postFuncs.getPostById(post1))
 
         let post2 = await postFuncs.addPost('Best exercises for chest', 
         'Greetings! I am a bodybuilder looking to add mass to my chest. I was wondering what chest exercises you find to be most effective?',

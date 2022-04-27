@@ -1,0 +1,20 @@
+<div>
+    <h2>Health and Fitness Forum</h2>
+    <p>Welcome! The goal of this forum is to be a centralized location for FitnessFluent users to 
+        discuss anything related to fitness, nutrition, exercise or general health. We encourage productive
+        conversations and positive attitudes! Please be respectful to others when using the forum, and keep
+        the posts relevant to fitness or nutrition related topics.
+    </p>
+    <h3>Recent Posts</h3>
+    {{#if posts}}
+        <ul>
+        {{#each posts}}
+            <li><a href="/forum/{{this._id}}"> {{this.title}} </a></li>
+        </ul>
+        {{/each}}
+        <p class="posts-not-found">We're sorry, but no posts were found!</p>
+    {{else}}
+    {{/if}}
+
+
+</div>
