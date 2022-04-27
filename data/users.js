@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
-const { ObjectId} = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 //test comment
 /**Database functions for the Users Collection */

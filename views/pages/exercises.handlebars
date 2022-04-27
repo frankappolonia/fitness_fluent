@@ -8,15 +8,17 @@
         {{/caloriesRemainingWidget}}
     {{/if}} 
     <br>
-    <section id = "enter-exercise-container">
+    <div id = "exercise-container">
         <form method="POST" id="exercise-entry-form">
+            <div class="form-group">
             <h3>Log your exercise : </h3>
             <label for="name">Enter exercise :</label>
             <input type="text" class="exercise-form" id="exercisename" name="exercisename">
-            <br>
+            
             <label for="calories">Enter calories :</label>
             <input type="number" class="exercise-form" id="calories" name="calories">
             <button type="submit" class="btn btn-primary">Save Exercise</button>
+            </div>
         </form>   
-    </section>
+    </div>
 </div>
