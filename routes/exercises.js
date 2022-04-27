@@ -25,7 +25,7 @@ router.route("/").get(async (request, response) => {
     authObj["calories"] = cals;
 
     response.status(200).render("pages/exercises", authObj);
-    
+
   } catch (e) {
     //console.log(e);
     response.status(404).json("404: Page cannot be found");
@@ -47,4 +47,5 @@ router.route("/").post(async (request, response) => {
     response.status(404).json("404: Page cannot be found");
   }
 });
+
 module.exports = router;
