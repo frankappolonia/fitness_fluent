@@ -19,7 +19,52 @@ commentForm.submit((event=>{
         
     }
 
-}))
+}));
+
+
+/**Function for deleting a post */
+let url = window.location.href
+let postId = url.substring(url.lastIndexOf('/')+1) //https://stackoverflow.com/questions/3730359/get-id-from-url-with-jquery
+
+let userId = $('#userIdEmbed').text()
+let posterId = $('#ogPosterIdEmbed').text()
+
+//1. first, when the page loads, we will show a delete post button if the user on the page is the owner of the post
+if (posterId === userId){
+    let deleteButton = $('<button type="submit" id="delete-post-btn" class="btn btn-danger">Delete post</button>')
+    bindEventsToTodoItem(deleteButton)
+    $('#main-post').append(deleteButton)
+
+}
+
+function bindEventsToTodoItem(btn) {
+    btn.on('click', function (event) {
+      //1. prevent default
+      event.preventDefault()
+      $.ajax({
+        method: "DELETE",
+        url: `/forum/${postId}`,
+        success: (response)=>{
+            console.log(response)
+            $('#post-thread').empty()
+            $('#comment-form-container').empty()
+            $('#post-thread').append('<p>Post deleted successfully</p>')
+        },
+        error: (response)=>{
+         console.log('unsuccsessful deletion')
+         $('#main-post-error').empty()
+          $('#main-post-error').append("Could not delete post")
+
+            }
+        })
+    })
+}
+
+
+        
+
+
+
 
 
 //helper functions

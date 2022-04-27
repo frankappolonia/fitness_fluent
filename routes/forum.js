@@ -68,7 +68,8 @@ router.route('/new') //route for a new post
 
             
         } catch (e) {
-            response.status(404).render("errors/400", {error: e})
+            let error = {error: e}
+            response.status(404).render("errors/400", e)
             
         }
 
@@ -80,15 +81,18 @@ router.route('/:id')
 
         try{
             validations.checkId(request.params.id)
-            authObj.authenticated = true
             let id = validations.checkId(request.session.user)
-            
+
+            authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
             
             authObj['script'] = "/public/js/existingPost.js"
             let postId = validations.checkId(request.params.id)
             let post = await postsFuncs.getPostById(postId)
+
+            authObj['userIdEmbed'] = id
+            authObj['ogPosterIdEmbed'] = post.poster.id
 
             response.status(200).render("pages/forumPost", {...authObj, ...post})
 
@@ -105,13 +109,37 @@ router.route('/:id')
             forumValidations.newCommentRouteCheck(request.body, postId, userId)
             let commentBody = request.body.comment.trim()
 
-            let newComment = await postsFuncs.addComment(xss(postId), xss(userId), commentBody)
+            let newComment = await postsFuncs.addComment(xss(postId), xss(userId), xss(commentBody))
 
             response.status(200).redirect(`/forum/${postId}`)
 
             
         } catch (e) {
-            response.status(404).render("errors/400", {error: e})
+            let error ={error: e}
+            response.status(400).render("errors/400", error)
+            
+        }
+
+    })
+    .delete(async(request, response)=>{
+        try {
+            let userId = validations.checkId(request.session.user)
+            let postId = validations.checkId(request.params.id)
+
+            let post = await postsFuncs.getPostById(postId)
+            let ogPoster = post.poster.id
+
+            if(userId !== ogPoster){
+                response.status(400).render("You are not authorized to delete this post!")
+                return
+            }
+
+            await postsFuncs.deletePost(userId, postId)
+            response.status(200).json('post deleted')
+
+        } catch (e) {
+            let error = {error: e} 
+            response.status(400).render('errors/400', error )
             
         }
 
