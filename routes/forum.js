@@ -18,7 +18,7 @@ router.get('/', (request, response, next)=>{
     }
 })
 
-router.route('/')
+router.route('/') //route for all posts/forum home
     .get(async(request, response)=>{
         let authObj = {}
         try {
@@ -30,7 +30,6 @@ router.route('/')
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
-            //response.status(200).json(posts)
             response.status(200).render('pages/forumHome', authObj)
 
         } catch (e) {
@@ -55,7 +54,7 @@ router.route('/new') //route for a new post
         } catch (e) {
             response.status(404).render("errors/404")
         }
-    })
+    }) 
     .post(async(request, response)=>{
         try {
             let id = validations.checkId(request.session.user)
@@ -76,10 +75,11 @@ router.route('/new') //route for a new post
     });
 
 router.route('/:id')
-    .get(async(request, response) =>{
+    .get(async(request, response) =>{ //route for a particular post
         let authObj = {}
 
         try{
+            validations.checkId(request.params.id)
             authObj.authenticated = true
             let id = validations.checkId(request.session.user)
             
@@ -93,6 +93,25 @@ router.route('/:id')
 
         }catch(e){
             response.status(404).render("errors/404")
+        }
+
+    })
+    .post(async(request, response)=>{ //route for posting a comment
+        try {
+            let userId = validations.checkId(request.session.user)
+            let postId = validations.checkId(request.params.id)
+
+            forumValidations.newCommentRouteCheck(request.body, postId, userId)
+            let commentBody = request.body.comment.trim()
+
+            let newComment = await postsFuncs.addComment(xss(postId), xss(userId), commentBody)
+
+            response.status(200).redirect(`/forum/${postId}`)
+
+            
+        } catch (e) {
+            response.status(404).render("errors/400", {error: e})
+            
         }
 
     });
