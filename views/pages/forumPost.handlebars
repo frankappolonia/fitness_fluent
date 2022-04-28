@@ -1,0 +1,38 @@
+<div>
+    {{#if authenticated}}
+    {{#> caloriesRemainingWidget}}
+    {{/caloriesRemainingWidget}}
+    {{/if}} 
+    <article id="post-thread">
+        <section id="main-post">
+        <h2>{{{title}}}</h2>
+        <h3>Author: {{{poster.name}}}</h3>
+        <p>{{{body}}}</p>
+        <div id="main-post-error"></div>
+        </section>
+        <section id="comments">
+            {{#each comments}}
+            <div>
+                <h3>Author: {{{this.poster.name}}}</h3>
+                <p>{{{this.body}}}</p>
+            </div>
+            {{/each}}
+        </section>
+    </article>
+    <div id="comment-form-container">
+        <form method="post" id="new-comment-form">
+            <div class="form-group">
+                <h4>Comment on this post</h4>
+                <label for="comment">Post</label>
+                <input type="text" class="form-control" id="comment" name="comment">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+    </form>
+    <div id="newComment-error">
+        {{{error}}}
+    </div>
+    </div>
+    <a href="/forum">Back to all posts</a>
+    <div id="userIdEmbed" hidden>{{{userIdEmbed}}}</div>
+    <div id="ogPosterIdEmbed" hidden>{{{ogPosterIdEmbed}}}</div>
+</div>

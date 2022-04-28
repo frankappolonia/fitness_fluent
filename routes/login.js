@@ -4,6 +4,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const userFuncs = require('../data')
 const db = userFuncs.userFuncs
+const xss = require('xss')
 
 //if the user is authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -17,12 +18,14 @@ router.get('/', (request, response, next)=>{
 //otherwise, do login route as normal
 router.route('/')
     .get(async(request, response) =>{
+        let authObj = {}
         try {
-            response.status(200).render('pages/login', {})
+            authObj['script'] = "/public/js/login.js"
+
+            response.status(200).render('pages/login', authObj)
             
         } catch (e) {
-            response.status(404).json('404: ' + e)
-            
+            response.status(404).render('errors/404')
         }
     })
     .post(async(request, response)=>{
@@ -36,11 +39,10 @@ router.route('/')
         try {
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
-            let validateUser = await db.checkUser(username, password)
-            if (typeof(validateUser) === 'object'){
-                if('authenticated' in validateUser && validateUser['authenticated'] === true)
+            let validateUser = await db.checkUser(xss(username), xss(password))
+            if (validateUser.authenticated === true){
                     request.session.name = 'AuthCookie'
-                    request.session.user = username
+                    request.session.user = validateUser.userId
                     response.status(200).redirect('/')
                     return
             }

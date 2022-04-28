@@ -20,7 +20,7 @@ function calculateBMR(gender, height, weight, age){
    else if (gender === 'female'){
         BMR = 655.1 + (4.35 * weight) + (4.7 * height) - (4.7 * age)
    }
-   return BMR
+   return Math.round(BMR)
 }
 
 function calculateTDE(activityLevel, gender, height, weight, age){
@@ -31,7 +31,7 @@ function calculateTDE(activityLevel, gender, height, weight, age){
 
     let activityLevels = {'sedentary':1.2, 'light':1.375, 'moderate':1.55, 'heavy':1.725, 'hardcore':1.9}
     let TDEE = activityLevels[activityLevel] * BMR
-    return TDEE
+    return Math.round(TDEE)
 
 }
 
