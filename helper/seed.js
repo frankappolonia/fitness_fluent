@@ -53,12 +53,17 @@ async function seed(){
         await postFuncs.addComment(post1, joeId, "I think carbs are very good for you. To lose weight, what is most important is calories in and calories out, rather then macros.")
         let comment1 = await postFuncs.addComment(post1, ericaId, "Thats a good point, thanks Joe!")
         //await postFuncs.deleteComment(comment1, frankId)
-        console.log(await postFuncs.getPostById(post1))
 
         let post2 = await postFuncs.addPost('Best exercises for chest', 
         'Greetings! I am a bodybuilder looking to add mass to my chest. I was wondering what chest exercises you find to be most effective?',
         joeId)
         await postFuncs.addComment(post2, frankId, "Overall, i'd say the barbell bench press is the best exercise for growing chest mass. This is because it is the exercise that you can most consistently progressivley overload on.")
+
+        let post3 = await postFuncs.addPost('Best exercises for legs', 
+        'What do you guys think will build up your quad muscles the most?',
+        joeId)
+        await postFuncs.addComment(post3, frankId, "Overall, i'd say the barbell squat. It is a compound movement that does a good job recruiting all of the muscles in your legs.")
+        await postFuncs.addComment(post3, ericaId, "I'd also add that the deadlift is another great compound movement that recruits leg muscles efficiently.")
 
 
     } catch (error) {

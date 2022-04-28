@@ -8,6 +8,7 @@ const validations = errorHandling.userValidations
 const forumValidations = errorHandling.forumValidations
 const xss = require('xss');
 const { response } = require('express');
+const res = require('express/lib/response');
 
 //if the user is NOT authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -91,8 +92,7 @@ router.route('/:id')
             let postId = validations.checkId(request.params.id)
             let post = await postsFuncs.getPostById(xss(postId))
 
-            authObj['userIdEmbed'] = id
-            authObj['ogPosterIdEmbed'] = post.poster.id
+            response.cookie("idCookie", JSON.stringify({userId: id, ogPoster: post.poster.id}))
 
             response.status(200).render("pages/forumPost", {...authObj, ...post})
 

@@ -2,8 +2,6 @@
 /**JS validations for new comments on existing posts, and updating or deleting exists posts */
 
 //validation for new comment
-
-
 let commentForm = $('#new-comment-form')
 
 //new post form validation
@@ -26,8 +24,10 @@ commentForm.submit((event=>{
 let url = window.location.href
 let postId = url.substring(url.lastIndexOf('/')+1) //https://stackoverflow.com/questions/3730359/get-id-from-url-with-jquery
 
-let userId = $('#userIdEmbed').text()
-let posterId = $('#ogPosterIdEmbed').text()
+let cookie = (decodeURIComponent(document.cookie))
+
+let userId = cookie.slice(20,44)
+let posterId = cookie.slice(58,cookie.length-2)
 
 //1. first, when the page loads, we will show a delete post button if the user on the page is the owner of the post
 if (posterId === userId){
