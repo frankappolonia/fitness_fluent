@@ -6,27 +6,27 @@ $('#progress-form').submit((event=>{
     let endDate = $('#endDate').val()
     try{
         progressValidation(startDate, endDate)
+        $.ajax({
+            method: "POST",
+            url: '/progress',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              start: startDate,
+              end: endDate
+            }),
+            success: (response)=>{
+                drawChart(response)
+  
+            },
+            error: (response)=>{
+              $('#progress-graph-error').append(response)
+  
+            }
+        })
     }catch(e){
         $('#progress-graph-error').empty()
         $('#progress-graph-error').append(e)
     }
-      $.ajax({
-          method: "POST",
-          url: '/progress',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            start: startDate,
-            end: endDate
-          }),
-          success: (response)=>{
-              drawChart(response)
-
-          },
-          error: (response)=>{
-            $('#progress-graph-error').append(response)
-
-          }
-      })
     
 }));
 
@@ -141,6 +141,10 @@ function progressValidation(start, end){
     stringChecks([start, end])
     dateValidation(start)
     dateValidation(end)
+
+    let startDate = new Date(start).getTime()
+    let endDate = new Date(end).getTime()
+    if (startDate > endDate) throw "Start date can't be before end date!"
 }
 
 function stringtrim(arguments){

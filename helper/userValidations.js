@@ -1,4 +1,5 @@
 let validate = require('email-validator');
+const { request } = require('express');
 const { ObjectId } = require('mongodb');
 /**Validations for creating a user/signup */
 
@@ -229,6 +230,10 @@ function progressRouteValidation(requestBody){
     stringChecks([requestBody.start, requestBody.end])
     dateValidation(requestBody.start.trim())
     dateValidation(requestBody.end.trim())
+
+    let startDate = new Date(requestBody.start.trim()).getTime()
+    let endDate = new Date(requestBody.end.trim()).getTime()
+    if (startDate > endDate) throw "Start date can't be before end date!"
 }
 
 module.exports = {
