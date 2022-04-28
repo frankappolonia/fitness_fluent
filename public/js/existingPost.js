@@ -37,6 +37,8 @@ if (posterId === userId){
 
 }
 
+//store in session storage
+
 function bindEventsToTodoItem(btn) {
     btn.on('click', function (event) {
       //1. prevent default

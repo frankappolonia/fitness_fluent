@@ -134,7 +134,10 @@ router.route('/:id')
                 return
             }
 
+            //res.cookie
+
             await postsFuncs.deletePost(xss(userId), xss(postId))
+            //response.status(200).render('partials/successfulPostDelete')
             response.status(200).json('post deleted')
 
         } catch (e) {
