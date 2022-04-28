@@ -1,14 +1,18 @@
 <div id="login-container">
-        <form method="post" id="login-form">
-        <label for="username">Enter username</label>
-        <input type="text" id="username" name="username" >
-        <label for="password">Enter password</label>
-        <input type="password" id="password" name="password">
-        <button type="submit">Submit</button>
-        </form>
+    <form method="post" id="login-form">
+        <div class="form-group">
+            <label for="username">Enter username</label>
+            <input type="email" class="form-control" id="username" name="username" >
+            <label for="password">Enter password</label>
+            <input type="password" class="form-control" id="password" name="password">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <div id="login-error-container">
+        <p>{{{error}}}</p>
+    </div>
+    <p>Need an account?</p>
+    <a href="/signup">Click here to signup</a>
 </div>
-<div id="400-login-error-container">
-    <p>{{{error}}}</p>
-</div>
-<p>Need an account?</p>
-<a href="/signup">Click here to signup</a>
+

@@ -1,5 +1,61 @@
-<p>I am the homepage!</p>
-<a href="/exercise">Click here to visit Exercise Log</a>
-<br>
-<br>
-<a href="/login">Click here to login</a>
+<div class="homepage" id="homepage-container">
+    {{#if authenticated}}
+        {{#> dailyGoalsWidget}}
+        {{/dailyGoalsWidget}}
+    {{/if}}
+    <section id="homepage-welcome">
+        <img id="home-logo" src="/public/images/fitnessfluent.png">
+        <h2>Welcome!</h2>
+        <p>FitnessFluent is an pplication for helping people achieve their weight gain, weight loss, or weight maintencence fitnes goals.
+        </p>
+        <p>This is achieved by providing a simple interface for people of all lifestyles to keep track of their
+            daily exercises and daily food intake. Our goal is to make achieving your goals easy and fun!
+        </p>
+        <img id="home-1" src="/public/images/homepage1.jpg">
+        <a href="/signup"><button>Sign up!</button></a>
+
+    </section>
+    <section id="homepage-features">
+        <h2>Feature Highlights</h2>
+        <p>FitnessFluent has several interactive and highly customizable features that make tracking progress towards
+            your fitness goals intuitve and fluid.
+        </p>
+        <div>
+            <h3 class="feature-heading">Custom Nutrition Profile</h3>
+            <p>When you sign up for FitnessFluent, you will have the ability to create and utilize and fully customizable
+                Nutrition Profile. Your profile will be autmaticlaly configued to suit your fitness goals, based upon 
+                factors like your current weight, height, age, and activity level. In addition, you will have the flexibility
+                to change your fitness goals at any time, and your nutrition profile will update accordingly.
+                <img id="profile-stock" src="/public/images/profile-stock.jpg">
+            </p>
+        </div>
+        <div>
+            <h3 class="feature-heading">Food Journal</h3>
+            <p>Every user has their own unique digital food journal. Here, you can enter the foods you ate on a particular
+                day, along with the number of calories they contained. This will provide you with an easy way to keep
+                track of your daily caloric requirements for your weight gain or weight loss goals. In addition, our 
+                FoodSmart reccomendation system will reccomend foods to you based upon the number of calories you 
+                have remaining on a particular day! 
+            </p>
+        </div>
+        <div>
+            <h3 class="feature-heading">Exercise Log</h3>
+            <p>In addition to the capbility to log your daily food consumption, you will also have your own personal
+                exercise log. Here, you can enter all of the different exercises you completed in a particular day, and 
+                the number of calories you burned. When you enter exercise calories, it adjusts your daily caloric intake,
+                allowing you to eat more food and still meet your goals!
+            </p>
+        </div>
+        <div>
+            <h3 class="feature-heading">Progress Statistics</h3>
+            <p>Sometimes, its' hard to appreciate how far you've come when working towards a long term goal. That's why
+                FitnessFluent offers a progress page, where you can see a long term statistical display of your weight gain
+                or weight loss journey. 
+            </p>
+        </div>
+    </section>
+
+
+</div>
+
+
