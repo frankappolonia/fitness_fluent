@@ -20,7 +20,7 @@ async function addExercise(name, calories, id) {
     {
       $push: {
         allExercises: {
-          name: name,
+          name: exercisename,
           calories: calories,
         },
       },
@@ -31,7 +31,17 @@ async function addExercise(name, calories, id) {
   }
   return addingExercise;
 }
+async function getAllExercises(id){
+    let currId = new ObjectId(id);
+    const usersCollection = await users();
+    const data = await usersCollection.findOne({ _id: currId });
+    console.log("hello");
+    console.log(data);
+    let everyExercise = data.allExercises;
+    return everyExercise
+}
 
 module.exports = {
   addExercise,
+  getAllExercises
 };
