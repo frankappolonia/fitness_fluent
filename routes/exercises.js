@@ -6,6 +6,7 @@ const exerciseFuncs = db.exerciseFuncs;
 const xss = require("xss");
 const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
+const { response } = require("express");
 
 //if the user is NOT authenticated, redirect to home
 router.get("/", (request, response, next) => {
@@ -23,15 +24,15 @@ router.route("/").get(async (request, response) => {
     authObj.authenticated = true;
     let cals = await userFuncs.getRemainingCalories(id);
     authObj["calories"] = cals;
-
-    response.status(200).render("pages/exercises", authObj);
-    
+    let allExercises = await exerciseFuncs.getAllExercises(id);
+    authObj["allExercises"] = allExercises;
+    response.status(200).render("pages/exerciseHome", authObj);
   } catch (e) {
-    //console.log(e);
-    response.status(404).json("404: Page cannot be found");
+    console.log(e);
+    response.status(404).render("errors/404");
   }
 });
-router.route("/").post(async (request, response) => {
+router.route("/new").post(async (request, response) => {
   let data = request.body;
   try {
     let id = validations.checkId(request.session.user);
@@ -41,10 +42,11 @@ router.route("/").post(async (request, response) => {
       xss(data.calories),
       xss(id)
     );
-    response.status(200).render("pages/exercises", data);
+    response.status(200).render("pages/newExercise", data);
   } catch (e) {
-    console.log(e);
-    response.status(404).json("404: Page cannot be found");
+    // console.log(e);
+    response.status(404).render("errors/404");
   }
 });
+
 module.exports = router;
