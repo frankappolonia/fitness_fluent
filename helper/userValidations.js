@@ -105,6 +105,7 @@ function dateValidation(date){
 function heightWeightValidation(height, weight){
     if(arguments.length !== 2) throw "invalid number of arguments for heightweight validation"
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
+    if(isNaN(height) || isNaN(weight)) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
     height = parseInt(height)
@@ -128,7 +129,7 @@ function genderValidation(gender){
     if (arguments.length !== 1) throw "invalid number of arguments for gender validation"
     gender = gender.trim().toLowerCase()
     let genders = {'male': true, 'female':true}
-    if (! gender in genders) throw "Invalid gender"
+    if (!(gender in genders)) throw "Invalid gender"
 }
 
 function weeklyGoalValidation(goal){
