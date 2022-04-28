@@ -176,6 +176,8 @@ async function getWeights(id, startDate, endDate){
     validations.dateValidation(endDate)
     startDate = new Date(startDate)
     endDate = new Date(endDate)
+    if (startDate.getTime() > endDate.getTime()) throw "Start date can't be before end date!"
+
 
      //2. Establish a connection to the users collection
      const usersCollection = await users() 

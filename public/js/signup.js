@@ -120,11 +120,11 @@ function dobValidation(date){
     if (arguments.length !== 1) throw "invalid number of arguments for date validation"
 
     date = date.trim()
-    if (date.length !== 10 ) throw "Incorrect date length!"
-    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format!"
+    if (date.length !== 10 ) throw "Incorrect date length! Must be YYYY-MM-DD"
+    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format! Must be YYYY-MM-DD"
     function numberCheck(num){
         if(isNaN(num)) throw "Date is not a valid number!"
-        if(num%1 !== 0) throw "Date cannot be a decimal ID!"
+        if(num%1 !== 0) throw "Date cannot be a decimal!"
         return num
     }
     const monthKey = {'1':31, '2':28, '3':31, '4':30, '5':31, '6':30, 
