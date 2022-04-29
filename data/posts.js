@@ -43,6 +43,8 @@ async function addPost(title, body, posterId) {
 }
 
 async function getPostById(postId){
+  /**This functions gets a post by its ObjectId */
+
     //1. validate arguments
     if (arguments.length!== 1) throw "Invalid number of arguments"
     validations.stringChecks([postId])
@@ -57,6 +59,39 @@ async function getPostById(postId){
 
     //4.return the post
     return findPost
+
+}
+
+async function updatePost(userId, postId, postBody, title){
+  /**Updates a post from the db collection. The userId passed in must match the poster
+   * id in the post document
+   */
+  //1. validate arguments
+  if(arguments.length !== 4) throw "Invalid number of arguments"
+  userId = validations.checkId(userId)
+  postId = validations.checkId(postId)
+  forumValidaitons.newPostCheck(title, postBody, userId)
+
+  //2. establish connection to db
+  const postCollection = await posts();
+
+  //3. ensure that the post exists
+  let findPost = await getPostById(postId)
+  if (findPost === null) throw "Post not found!"
+
+  //4. ensure that the person updating the post owns it
+  if(findPost.poster.id.toString() !== userId) throw "Error! You are not authorized to edit this post!"
+
+  //5. update post
+  let updatedPost = {title: title,
+                body: postBody}
+  const update = await postCollection.updateOne(  { _id: ObjectId(postId) }, { $set: updatedPost })
+  if (update["modifiedCount" === 0]) throw "Error! Could not edit post!"
+
+  //6. get the newly updated post
+  let newlyUpdatedPost = await getPostById(postId)
+
+  return newlyUpdatedPost
 
 }
 
@@ -89,7 +124,7 @@ async function deletePost(userId, postId){
 }
 
 async function getAllPosts(){
-    /**returns an array of all posts */
+    /**returns an array of all posts in the collection */
 
     //1.validate args
     if (arguments.length !== 0) throw "Error! getAll() takes no arguments!"
@@ -188,5 +223,6 @@ module.exports ={
     getAllPosts,
     deletePost,
     addComment,
-    deleteComment
+    deleteComment,
+    updatePost
 }

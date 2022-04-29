@@ -1,41 +1,13 @@
 
-$('#progress-form').submit((event=>{
-    event.preventDefault()
-    $('#progress-graph-error').empty()
-    let startDate = $('#startDate').val()
-    let endDate = $('#endDate').val()
-    try{
-        progressValidation(startDate, endDate)
-    }catch(e){
-        $('#progress-graph-error').empty()
-        $('#progress-graph-error').append(e)
-    }
-      $.ajax({
-          method: "POST",
-          url: '/progress',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            start: startDate,
-            end: endDate
-          }),
-          success: (response)=>{
-              drawChart(response)
-
-          },
-          error: (response)=>{
-            $('#progress-graph-error').append(response)
-
-          }
-      })
-    
-}));
-
-/**Graph functions */
+/**Graph Stuff */
 let initialGraphData;
 const ctx = $('#myChart') 
 let myChart
+
 $.ajax({
-    /**Ajax request for initial graph data on page load. Gets data then creates initial graph */
+    /**Ajax request for initial graph data which is executed upon page load. This request
+     * gets the user's overall weight progress data, and then creates an initial graph 
+     * showing their overall weight progress*/
     method: "POST",
     url: '/progress/initial_data',
     contentType: 'application/json',
@@ -84,8 +56,49 @@ $.ajax({
 });
 
 
+
+$('#progress-form').submit((event=>{
+    /**This prevents the default action on the form submit. Instead, the form makes an AJAX
+     * request with specified start and end date. The data returned will be the users weight
+     * progress between those specifed dates, and then a new graph will be drawn with that data
+     * upon successful request
+     */
+    event.preventDefault()
+    $('#progress-graph-error').empty()
+    let startDate = $('#startDate').val()
+    let endDate = $('#endDate').val()
+    try{
+        progressValidation(startDate, endDate)
+        $.ajax({
+            method: "POST",
+            url: '/progress',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              start: startDate,
+              end: endDate
+            }),
+            success: (response)=>{
+                drawChart(response)
+  
+            },
+            error: (response)=>{
+              $('#progress-graph-error').append(response)
+  
+            }
+        })
+    }catch(e){
+        $('#progress-graph-error').empty()
+        $('#progress-graph-error').append(e)
+    }
+    
+}));
+
+
 function drawChart(data){
-    //this function draws a new graph over the initially loaded graph, based upon specified dates
+    /**this function draws a new graph over the initially loaded graph. It is called 
+    whenever the user submits to the form. The ajax request gets data for the specific date range
+    entered by the user, rather than showing overall progress like on the initial page load
+    */
     let weights = data.weights
     let dates = data.dates
     if (weights.length === 0){
@@ -133,7 +146,9 @@ function drawChart(data){
 
 
 
-/**Validations */
+/**Validations for above 
+ * -----------------------
+*/
 function progressValidation(start, end){
     /**Wrapper function for the form validations of the progress page */
     if(arguments.length !== 2) throw "Invalid"
@@ -141,6 +156,10 @@ function progressValidation(start, end){
     stringChecks([start, end])
     dateValidation(start)
     dateValidation(end)
+
+    let startDate = new Date(start).getTime()
+    let endDate = new Date(end).getTime()
+    if (startDate > endDate) throw "Start date can't be before end date!"
 }
 
 function stringtrim(arguments){
@@ -156,7 +175,7 @@ function stringtrim(arguments){
 function stringChecks(args){
     /**Takes an array as an argument, where the array contains the data you want to validate */
     args.forEach(e => {
-        if(typeof(e)!== 'string') throw "An argument is not a string!"
+        if(!(isNaN(e))) throw "Date must be a string in YYYY-MM-DD format!"
         e = e.trim()
         if(e.length < 1) throw "All strings must be at least 1 character!"
         
@@ -169,8 +188,8 @@ function dateValidation(date){
     if (arguments.length !== 1) throw "invalid number of arguments for date validation"
 
     date = date.trim()
-    if (date.length !== 10 ) throw "Incorrect date length!"
-    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format!"
+    if (date.length !== 10 ) throw "Incorrect date length! Must be YYYY-MM-DD"
+    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format! Must be YYYY-MM-DD"
     function numberCheck(num){
         if(isNaN(num)) throw "Date is not a valid number!"
         if(num%1 !== 0) throw "Date cannot be a decimal ID!"

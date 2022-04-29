@@ -4,7 +4,10 @@ let signUp = $('#signup-form')
 
 //signup form validation
 signUp.submit((event =>{
-    //basic info
+    /**This callback funciton gets the values from the signup form, and runs the validations
+     * functions on all of them. Prevents default and appends an error to the DOM if 
+     * any input checks fail
+     */
     let firstName = $('#firstName').val()
     let lastName = $('#lastName').val()
     let email = $('#email').val()
@@ -31,7 +34,7 @@ signUp.submit((event =>{
 }));
 
 
-/**All error checking functions for signup */
+/**All error checking validations for signup */
 
 function signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal){
     /**Validates the request body data of the /signup post route */
@@ -66,7 +69,7 @@ function stringtrim(arguments){
 function stringChecks(args){
     /**Takes an array as an argument, where the array contains the data you want to validate */
     args.forEach(e => {
-        if(typeof(e)!== 'string') throw "An argument is not a string!"
+        if(!(isNaN(e))) throw "An argument is not a string!"
         e = e.trim()
         if(e.length < 1) throw "All strings must be at least 1 character!"
         
@@ -120,11 +123,11 @@ function dobValidation(date){
     if (arguments.length !== 1) throw "invalid number of arguments for date validation"
 
     date = date.trim()
-    if (date.length !== 10 ) throw "Incorrect date length!"
-    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format!"
+    if (date.length !== 10 ) throw "Incorrect date length! Must be YYYY-MM-DD"
+    if(date.charAt(4) !== "-" || date.charAt(7) !== '-') throw "Incorrect date format! Must be YYYY-MM-DD"
     function numberCheck(num){
         if(isNaN(num)) throw "Date is not a valid number!"
-        if(num%1 !== 0) throw "Date cannot be a decimal ID!"
+        if(num%1 !== 0) throw "Date cannot be a decimal!"
         return num
     }
     const monthKey = {'1':31, '2':28, '3':31, '4':30, '5':31, '6':30, 
@@ -149,6 +152,7 @@ function dobValidation(date){
 function heightWeightValidation(height, weight){
     if(arguments.length !== 2) throw "invalid number of arguments for heightweight validation"
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
+    if(isNaN(height) || isNaN(weight)) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
     height = parseInt(height)
@@ -164,7 +168,7 @@ function activityLevelValidation(activity){
     if (arguments.length !== 1) throw "invalid number of arguments for activity validation"
     activity = activity.trim().toLowerCase()
     let activityLevels = {'sedentary':1.2, 'light':1.375, 'moderate':1.55, 'heavy':1.725, 'hardcore':1.9}
-    if(! activity in activityLevels) throw "Invalid activty level"
+    if(!(activity in activityLevels)) throw "Invalid activty level"
     return
 }
 
@@ -172,7 +176,7 @@ function genderValidation(gender){
     if (arguments.length !== 1) throw "invalid number of arguments for gender validation"
     gender = gender.trim().toLowerCase()
     let genders = {'male': true, 'female':true}
-    if (! gender in genders) throw "Invalid gender"
+    if (!(gender in genders)) throw "Invalid gender"
     return
 }
 

@@ -1,6 +1,9 @@
 let login = $('#login-form')
 
 login.submit((event=>{
+    /**Callback function that gets the values from the login form and runs validations.
+     * Prevents the default action if any checks fail
+     */
     let email = $('#username').val()
     let password = $('#password').val()
     console.log('jquery test')
@@ -16,6 +19,8 @@ login.submit((event=>{
 
 }));
 
+/**Validations for above */
+
 function validateLogin(username, password){
     if(! username) throw "No username given!"
     if(! password) throw "No password given!"
@@ -25,7 +30,7 @@ function validateLogin(username, password){
 }
 
 function checkUsername(username){
-    if(typeof(username) !== 'string') throw "Error! Username must be a string!"
+    if(!(isNaN(username))) throw "Error! Username must be a string!"
 
     let email = username.trim()
     email = email.trim()
@@ -33,9 +38,8 @@ function checkUsername(username){
     if (email.search('@')=== -1) throw "Invalid, must include @"
     if (email.search('@') === 0 || email.search(/[.]/g) === 0) throw "Invalid, cannot have . or @ at the beginning"
 
-    if(! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw "Invalid, cannot have multiple @s"
     if(! /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/.test(email)) throw "Invalid email!"
-
+    if((email.match(/@/g) || []).length > 1) throw "Invalid, cannot have multiple @s"
     let domain = email.slice(email.search('@'))
     function properDotFormat(domain){
         let lastDotIndex = 0
@@ -55,7 +59,7 @@ function checkUsername(username){
 }
 
 function checkPassword(password){
-    if (typeof(password) !== 'string') throw "Error! Password must be a string!"
+    if (! (isNaN(password))) throw "Error! Password must be a string!"
     password = password.trim()
     if(password.search(" ") !== -1) throw "Error! Password cannot contain spaces!"
     if(password.length < 6) throw "Error! Password must be at least 6 characters!"

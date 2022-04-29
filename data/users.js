@@ -93,6 +93,8 @@ async function checkUser(username, password){
 }
 
 async function getUserById(id) {
+    /**This function is for getting a user by their ObjectID */
+
     //1. validate
     if(arguments.length!== 1) throw "invalid number of arguments!"
     validations.stringChecks([id])
@@ -110,8 +112,7 @@ async function getUserById(id) {
   }
 
 async function getRemainingCalories(id){
-    /**This function gets the remaining calories left in the day for the user for the
-     * 'Daily Goal Summary Widget' feature
+    /**This function gets the remaining calories left in the day for the user 
       */
 
     //1. Validate inputs
@@ -176,6 +177,8 @@ async function getWeights(id, startDate, endDate){
     validations.dateValidation(endDate)
     startDate = new Date(startDate)
     endDate = new Date(endDate)
+    if (startDate.getTime() > endDate.getTime()) throw "Start date can't be before end date!"
+
 
      //2. Establish a connection to the users collection
      const usersCollection = await users() 
@@ -235,7 +238,7 @@ async function getAllWeights(id){
 }
 
 async function getOverallWeightProgress(id){
-    /**This function gets the total weight gained or lost by the user from their 
+    /**This function calculates the total weight gained or lost by the user from their 
      * starting weight, to their current weight
      */
     //1. validate args
