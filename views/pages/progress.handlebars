@@ -1,7 +1,7 @@
 <div class="progress-page-container container-fluid">
     <div class="row">
-            {{#> dailyGoalsWidget}}
-            {{/dailyGoalsWidget}}
+            {{#> caloriesRemainingWidget}}
+            {{/caloriesRemainingWidget}}
      
         <div class="col-sm-4">
             <h2>Progress page</h2>
@@ -10,9 +10,9 @@
                 or current weight.
             </p>
             {{#if (eq lostOrGain "maintained")}}
-            <p>To date, you have {{{lostOrGain}}} your initial starting weight!</p>
+            <p>From when you initially signed up, until to today, you have {{{lostOrGain}}} your initial starting weight!</p>
             {{else}}
-            <p>To date, you have {{{lostOrGain}}} a total of {{{weight}}} pounds!</p>
+            <p>From when you initially signed up, until to today, you have {{{lostOrGain}}} a total of {{{weight}}} pounds!</p>
             {{/if}}
         </div>
     </div>
@@ -40,7 +40,11 @@
         <div class="col-sm-6 col-sm-offset-3">
             <canvas id="myChart"></canvas>
         </div>
+        <div id="results-div"class="col-sm-6 col-sm-offset-3">
+        </div>
+
     </div>
+
 
     
 </div>

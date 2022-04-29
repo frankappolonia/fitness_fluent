@@ -203,6 +203,19 @@ async function getWeights(id, startDate, endDate){
         }
     });
 
+    //5/ process data
+    let startingWeight = data.weights[0]
+    let endingWeight = data.weights[data.weights.length-1]
+
+    data['weightChange'] = Math.abs(startingWeight-endingWeight)
+  
+    if(startingWeight < endingWeight)
+        data['descriptor'] = "gained"
+    else if(startingWeight > endingWeight)
+        data['descriptor'] = "lost"  
+    else if(startingWeight === endingWeight)
+        data['descriptor'] = "maintained"
+
     return data
 }
 
