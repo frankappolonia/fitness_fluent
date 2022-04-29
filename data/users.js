@@ -94,7 +94,7 @@ async function checkUser(username, password){
     if(pwCheck === false) throw "Either the username or password is invalid"
 
     let id = user['_id'].toString()
-    let auth = {userId: id, authenticated: true}
+    let auth = {userId: id, authenticated: true, admin: user.admin}
     return auth
 }
 

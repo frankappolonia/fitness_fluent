@@ -43,6 +43,9 @@ router.route('/')
             if (validateUser.authenticated === true){
                     request.session.name = 'AuthCookie'
                     request.session.user = validateUser.userId
+                    request.session.admin = validateUser.admin
+                    response.clearCookie('adminCookie')
+                    response.cookie('adminCookie', request.session.admin)
                     response.status(200).redirect('/')
                     return
             }

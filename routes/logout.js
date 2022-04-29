@@ -11,7 +11,11 @@ router.route('/')
         }
         try {
             //expire authcookie
+            response.clearCookie('adminCookie')
+            response.clearCookie('idCookie')
+            response.clearCookie('authCookie')
             request.session.cookie.expires = 0
+
             response.status(200).render('pages/logout', {})
         } catch (e) {
             response.status(404).render("pages/404")

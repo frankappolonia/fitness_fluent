@@ -79,8 +79,12 @@ async function updatePost(userId, postId, postBody, title){
   let findPost = await getPostById(postId)
   if (findPost === null) throw "Post not found!"
 
-  //4. ensure that the person updating the post owns it
-  if(findPost.poster.id.toString() !== userId) throw "Error! You are not authorized to edit this post!"
+  //4. check if the user is an admin or owns the post
+  let findUser = await userFuncs.getUserById(userId)
+  if(findUser['admin'] === false){
+    //4b. if the user is NOT an admin, ensure that the person deleting the post owns it
+    if(findPost.poster.id.toString() !== userId) throw "Error! You are not authorized to edit this post!"
+  }
 
   //5. update post
   let updatedPost = {title: title,
@@ -112,9 +116,13 @@ async function deletePost(userId, postId){
     let findPost = await getPostById(postId)
     if (findPost === null) throw "Post not found!"
 
-    //4. ensure that the person deleting the post owns it
-    if(findPost.poster.id.toString() !== userId) throw "Error! You are not authorized to delete this post!"
-
+    //4. check if the user is an admin or owns the post
+    let findUser = await userFuncs.getUserById(userId)
+    if(findUser['admin'] === false){
+      //4b. if the user is NOT an admin, ensure that the person deleting the post owns it
+      if(findPost.poster.id.toString() !== userId) throw "Error! You are not authorized to delete this post!"
+    }
+    
     //5. delete the post
     let del = await postCollection.deleteOne({ _id: ObjectId(postId) })
     if (del.deletedCount === 0)
