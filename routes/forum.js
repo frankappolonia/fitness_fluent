@@ -121,23 +121,41 @@ router.route('/:id')
         }
 
     })
+    .put(async(request, response)=>{
+        try {
+            let userId = validations.checkId(request.session.user)
+            let postId = validations.checkId(request.params.id)
+            forumValidations.newPostRouteCheck(request.body, userId)
+            
+            let post = await postsFuncs.getPostById(xss(postId))
+            if(userId !== post.poster.id){
+                response.status(400).render("You are not authorized to edit this post!")
+                return
+            }
+
+            let title = request.body.title.trim()
+            let postBody = request.body.postBody.trim()
+
+            let editPost = await postsFuncs.updatePost(xss(userId), xss(postId), xss(postBody), xss(title))
+            response.status(200).json(editPost)
+            
+        } catch (e) {
+            let error = {error: e} 
+            response.status(400).render('errors/400', error )   
+        }
+    })
     .delete(async(request, response)=>{
         try {
             let userId = validations.checkId(request.session.user)
             let postId = validations.checkId(request.params.id)
 
             let post = await postsFuncs.getPostById(xss(postId))
-            let ogPoster = post.poster.id
-
-            if(userId !== ogPoster){
+            if(userId !== post.poster.id){
                 response.status(400).render("You are not authorized to delete this post!")
                 return
             }
 
-            //res.cookie
-
             await postsFuncs.deletePost(xss(userId), xss(postId))
-            //response.status(200).render('partials/successfulPostDelete')
             response.status(200).json('post deleted')
 
         } catch (e) {

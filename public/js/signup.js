@@ -66,7 +66,7 @@ function stringtrim(arguments){
 function stringChecks(args){
     /**Takes an array as an argument, where the array contains the data you want to validate */
     args.forEach(e => {
-        if(typeof(e)!== 'string') throw "An argument is not a string!"
+        if(!(isNaN(e))) throw "An argument is not a string!"
         e = e.trim()
         if(e.length < 1) throw "All strings must be at least 1 character!"
         
