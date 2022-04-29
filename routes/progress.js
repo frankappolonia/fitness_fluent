@@ -19,15 +19,20 @@ router.route('/')
     .get(async(request, response)=>{
         let authObj = {}
         try {
-            authObj.authenticated = true
+            //validations
             let id = validations.checkId(request.session.user)
 
+            //stuff for daily goals widget
+            authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
+            //---------------------------------------
+
+            //scripts
             authObj['script2'] = '/public/js/progress.js'
             authObj['script'] = "https://cdn.jsdelivr.net/npm/chart.js"
             
-            //this gets their overall weight progress thats initially loaded
+            //this gets their overall weight progress when the page is initially loaded
             let weightProgress = await userFuncs.getOverallWeightProgress(id)
             authObj['lostOrGain'] = weightProgress.weightChange
             authObj['weight'] = weightProgress.weight
@@ -42,6 +47,7 @@ router.route('/')
         let data = request.body
 
         try {
+            //validations
             let id = validations.checkId(request.session.user)
             validations.progressRouteValidation(data)
             let graphData = await userFuncs.getWeights(xss(id), xss(data.start).trim(), xss(data.end).trim())
@@ -56,6 +62,7 @@ router.route('/')
 router.route('/initial_data')
     .post(async(request, response)=>{
         try {
+            //validations
             let id = validations.checkId(request.session.user)
             let graphData = await userFuncs.getAllWeights(xss(id))
             response.json(graphData)

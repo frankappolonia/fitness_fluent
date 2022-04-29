@@ -3,6 +3,9 @@ let postForm = $('#new-post-form')
 
 //new post form validation
 postForm.submit((event=>{
+    /**Simple callback function that is used to validate the new post form submit, and, if
+     * there is erronous input, prevent the default action
+     */
     let title = $('#title').val()
     let postBody = $('#postBody').val()
     try {
@@ -17,6 +20,7 @@ postForm.submit((event=>{
 
 }))
 
+/**Validation functions for above */
 function newPostCheck(title, body){
     if(arguments.length !== 2) throw "Invalid number of arguments"
     if(! title) throw "No title given!"
@@ -40,7 +44,7 @@ function stringtrim(argsObj){
 function stringChecks(strings){
     /**Takes an array as an argument, where the array contains the data you want to validate */
     strings.forEach(e => {
-        if(typeof(e)!== 'string') throw "An argument is not a string!"
+        if(!(isNaN(e))) throw "Title and body must be strings!"
         e = e.trim()
         if(e.length < 1) throw "All strings must be at least 1 character!"
         

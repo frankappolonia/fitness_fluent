@@ -21,12 +21,17 @@ router.route("/").get(async (request, response) => {
   let authObj = {};
   try {
     let id = validations.checkId(request.session.user);
-    authObj.authenticated = true;
-    let cals = await userFuncs.getRemainingCalories(id);
-    authObj["calories"] = cals;
+
+    //stuff for daily goals widget
+    authObj.authenticated = true        
+    let cals = await userFuncs.getRemainingCalories(id)
+    authObj['calories'] = cals
+    //---------------------------------------authObj.authenticated = true;
+
     let allExercises = await exerciseFuncs.getAllExercises(id);
     authObj["allExercises"] = allExercises;
     response.status(200).render("pages/exerciseHome", authObj);
+    
   } catch (e) {
     console.log(e);
     response.status(404).render("errors/404");

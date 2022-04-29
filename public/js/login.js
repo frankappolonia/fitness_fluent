@@ -1,6 +1,9 @@
 let login = $('#login-form')
 
 login.submit((event=>{
+    /**Callback function that gets the values from the login form and runs validations.
+     * Prevents the default action if any checks fail
+     */
     let email = $('#username').val()
     let password = $('#password').val()
     console.log('jquery test')
@@ -15,6 +18,8 @@ login.submit((event=>{
     }
 
 }));
+
+/**Validations for above */
 
 function validateLogin(username, password){
     if(! username) throw "No username given!"
