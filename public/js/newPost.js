@@ -3,6 +3,9 @@ let postForm = $('#new-post-form')
 
 //new post form validation
 postForm.submit((event=>{
+    /**Simple callback function that is used to validate the new post form submit, and, if
+     * there is erronous input, prevent the default action
+     */
     let title = $('#title').val()
     let postBody = $('#postBody').val()
     try {
@@ -17,6 +20,7 @@ postForm.submit((event=>{
 
 }))
 
+/**Validation functions for above */
 function newPostCheck(title, body){
     if(arguments.length !== 2) throw "Invalid number of arguments"
     if(! title) throw "No title given!"

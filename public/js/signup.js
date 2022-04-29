@@ -4,7 +4,10 @@ let signUp = $('#signup-form')
 
 //signup form validation
 signUp.submit((event =>{
-    //basic info
+    /**This callback funciton gets the values from the signup form, and runs the validations
+     * functions on all of them. Prevents default and appends an error to the DOM if 
+     * any input checks fail
+     */
     let firstName = $('#firstName').val()
     let lastName = $('#lastName').val()
     let email = $('#email').val()
@@ -31,7 +34,7 @@ signUp.submit((event =>{
 }));
 
 
-/**All error checking functions for signup */
+/**All error checking validations for signup */
 
 function signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal){
     /**Validates the request body data of the /signup post route */

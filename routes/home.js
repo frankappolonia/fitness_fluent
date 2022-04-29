@@ -11,10 +11,12 @@ router.route('/')
         try {
             if (request.session.user){
                 let id = validations.checkId(request.session.user)
-                authObj.authenticated = true
+                //stuff for daily goals widget
+                authObj.authenticated = true        
                 let cals = await userFuncs.getRemainingCalories(id)
                 authObj['calories'] = cals
-            }
+                //---------------------------------------
+                }
             console.log(request.session)
             response.status(200).render('pages/home', authObj)
         } catch (e) {

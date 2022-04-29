@@ -43,6 +43,8 @@ async function addPost(title, body, posterId) {
 }
 
 async function getPostById(postId){
+  /**This functions gets a post by its ObjectId */
+
     //1. validate arguments
     if (arguments.length!== 1) throw "Invalid number of arguments"
     validations.stringChecks([postId])
@@ -122,7 +124,7 @@ async function deletePost(userId, postId){
 }
 
 async function getAllPosts(){
-    /**returns an array of all posts */
+    /**returns an array of all posts in the collection */
 
     //1.validate args
     if (arguments.length !== 0) throw "Error! getAll() takes no arguments!"

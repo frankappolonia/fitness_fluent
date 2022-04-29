@@ -23,11 +23,14 @@ router.route('/') //route for all posts/forum home
     .get(async(request, response)=>{
         let authObj = {}
         try {
-            authObj.authenticated = true
+            //validations
             let id = validations.checkId(request.session.user)
             
-            let cals = await userFuncs.getRemainingCalories(xss(id))
+            //stuff for daily goals widget
+            authObj.authenticated = true        
+            let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
+            //---------------------------------------
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
@@ -42,11 +45,14 @@ router.route('/new') //route for a new post
     .get(async(request, response)=>{
         let authObj = {}
         try {
-            authObj.authenticated = true
+            //validations
             let id = validations.checkId(request.session.user)
-            
-            let cals = await userFuncs.getRemainingCalories(xss(id))
+           
+            //stuff for daily goals widget
+            authObj.authenticated = true        
+            let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
+            //---------------------------------------
 
             authObj['script'] = "/public/js/newPost.js"
 
@@ -58,6 +64,7 @@ router.route('/new') //route for a new post
     }) 
     .post(async(request, response)=>{
         try {
+            //validations
             let id = validations.checkId(request.session.user)
             forumValidations.newPostRouteCheck(request.body, id)
             let title = request.body.title.trim()
@@ -81,15 +88,16 @@ router.route('/:id')
         let authObj = {}
 
         try{
-            validations.checkId(request.params.id)
             let id = validations.checkId(request.session.user)
+            let postId = validations.checkId(request.params.id)
 
+            //stuff for daily goals widget
             authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
+            //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"
-            let postId = validations.checkId(request.params.id)
             let post = await postsFuncs.getPostById(xss(postId))
 
             response.cookie("idCookie", JSON.stringify({userId: id, ogPoster: post.poster.id}))
@@ -103,12 +111,13 @@ router.route('/:id')
     })
     .post(async(request, response)=>{ //route for posting a comment
         try {
+            //validations
             let userId = validations.checkId(request.session.user)
             let postId = validations.checkId(request.params.id)
-
             forumValidations.newCommentRouteCheck(request.body, postId, userId)
             let commentBody = request.body.comment.trim()
 
+            //db call
             let newComment = await postsFuncs.addComment(xss(postId), xss(userId), xss(commentBody))
 
             response.status(200).redirect(`/forum/${postId}`)
@@ -123,10 +132,12 @@ router.route('/:id')
     })
     .put(async(request, response)=>{
         try {
+            //validations
             let userId = validations.checkId(request.session.user)
             let postId = validations.checkId(request.params.id)
             forumValidations.newPostRouteCheck(request.body, userId)
             
+            //checks if the user owns the post
             let post = await postsFuncs.getPostById(xss(postId))
             if(userId !== post.poster.id){
                 response.status(400).render("You are not authorized to edit this post!")
@@ -146,9 +157,11 @@ router.route('/:id')
     })
     .delete(async(request, response)=>{
         try {
+            //validations
             let userId = validations.checkId(request.session.user)
             let postId = validations.checkId(request.params.id)
 
+            //checks if user owns the post
             let post = await postsFuncs.getPostById(xss(postId))
             if(userId !== post.poster.id){
                 response.status(400).render("You are not authorized to delete this post!")

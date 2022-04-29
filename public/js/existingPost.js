@@ -20,7 +20,6 @@ commentForm.submit((event=>{
 }));
 
 
-/**Function for deleting a post */
 let url = window.location.href
 let postId = url.substring(url.lastIndexOf('/')+1) //https://stackoverflow.com/questions/3730359/get-id-from-url-with-jquery
 
@@ -35,7 +34,7 @@ let editButton = $('<button type="submit" id="edit-post-btn" class="btn btn-warn
 editButtonClick(editButton)
 deletePostEvent(deleteButton)
 
-//1. first, when the page loads, we will show a delete post button if the user on the page is the owner of the post
+//1. first, when the page loads, we will show a delete/edit post button if the user on the page is the owner of the post
 if (posterId === userId){
     $('#main-post').append(editButton)
     $('#main-post').append(deleteButton)
@@ -43,6 +42,10 @@ if (posterId === userId){
 }
 
 function editButtonClick(btn){
+    /**This function handles the click event for when a user clicks edit post. What happens is
+     * that the original post content is emptied, and a form is created to update the post.
+     * The form is by default populated with the posts current content, so you can "edit" the post
+     */
     btn.on('click', function (event) {
         event.preventDefault()
         let ogPostBody = $('#post-body').text()
@@ -67,6 +70,11 @@ function editButtonClick(btn){
 }
 
 function editPost(btn) {
+    /**This function handles the click event of the edit post form thats created above.
+     * It sends an ajax request to the server to update the post in the db. Upon successful PUT,
+     * it creates new html content with the updated post, removes the edit post form,
+     *  and appends the updated post to the <section> html
+     */
     btn.on('click', function (event) {
       //1. prevent default
       event.preventDefault()
@@ -119,10 +127,8 @@ function editPost(btn) {
     })
 }
 
-
-
-
 function deletePostEvent(btn) {
+    /**This function sends a delete request to the server, deleting the main post. */
     btn.on('click', function (event) {
       //1. prevent default
       event.preventDefault()
