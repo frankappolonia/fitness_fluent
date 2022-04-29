@@ -19,14 +19,19 @@ commentForm.submit((event=>{
 
 }));
 
+const getCookieValue = (name) => (
+    document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+  )
 
 let url = window.location.href
 let postId = url.substring(url.lastIndexOf('/')+1) //https://stackoverflow.com/questions/3730359/get-id-from-url-with-jquery
 
-let cookie = (decodeURIComponent(document.cookie))
+let idCookie = (decodeURIComponent(getCookieValue("idCookie")))
+let adminBool = getCookieValue("adminCookie")
+console.log(adminBool)
 
-let userId = cookie.slice(20,44)
-let posterId = cookie.slice(58,cookie.length-2)
+let userId = idCookie.slice(11,35)
+let posterId = idCookie.slice(49,idCookie.length-2)
 
 let deleteButton = $('<button type="submit" id="delete-post-btn" class="btn btn-danger">Delete post</button>')
 let editButton = $('<button type="submit" id="edit-post-btn" class="btn btn-warning">Edit post</button>')
@@ -35,7 +40,7 @@ editButtonClick(editButton)
 deletePostEvent(deleteButton)
 
 //1. first, when the page loads, we will show a delete/edit post button if the user on the page is the owner of the post
-if (posterId === userId){
+if (posterId === userId || adminBool == "true"){
     $('#main-post').append(editButton)
     $('#main-post').append(deleteButton)
 
@@ -112,9 +117,9 @@ function editPost(btn) {
             
             },
             error: (response)=>{
-            console.log('unsuccsessful edit')
+            console.log(response)
             $('#main-post-error').empty()
-            $('#main-post-error').append("Error: " + response)
+            $('#main-post-error').append("Error: " + response.responseText)
                 }
             });
 

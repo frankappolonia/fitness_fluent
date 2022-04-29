@@ -101,6 +101,7 @@ router.route('/:id')
             let post = await postsFuncs.getPostById(xss(postId))
 
             response.cookie("idCookie", JSON.stringify({userId: id, ogPoster: post.poster.id}))
+            response.cookie('adminCookie', JSON.stringify(request.session.admin))
 
             response.status(200).render("pages/forumPost", {...authObj, ...post})
 
@@ -137,12 +138,15 @@ router.route('/:id')
             let postId = validations.checkId(request.params.id)
             forumValidations.newPostRouteCheck(request.body, userId)
             
-            //checks if the user owns the post
-            let post = await postsFuncs.getPostById(xss(postId))
-            if(userId !== post.poster.id){
-                response.status(400).render("You are not authorized to edit this post!")
-                return
-            }
+             //checks if user owns the post or is an admin
+             let post = await postsFuncs.getPostById(xss(postId))
+             let admin = request.session.admin
+             if(admin === false){
+                 if(userId !== post.poster.id){
+                     response.status(400).send("You are not authorized to edit this post!")
+                     return
+                 }
+             }  
 
             let title = request.body.title.trim()
             let postBody = request.body.postBody.trim()
@@ -151,8 +155,8 @@ router.route('/:id')
             response.status(200).json(editPost)
             
         } catch (e) {
-            let error = {error: e} 
-            response.status(400).render('errors/400', error )   
+            let error = e
+            response.status(400).send('Error: ' + error )   
         }
     })
     .delete(async(request, response)=>{
@@ -161,19 +165,22 @@ router.route('/:id')
             let userId = validations.checkId(request.session.user)
             let postId = validations.checkId(request.params.id)
 
-            //checks if user owns the post
+            //checks if user owns the post or is an admin
             let post = await postsFuncs.getPostById(xss(postId))
-            if(userId !== post.poster.id){
-                response.status(400).render("You are not authorized to delete this post!")
-                return
+            let admin = request.session.admin
+            if(admin === false){
+                if(userId !== post.poster.id){
+                    response.status(400).send("You are not authorized to delete this post!")
+                    return
+                }
             }
 
             await postsFuncs.deletePost(xss(userId), xss(postId))
             response.status(200).json('post deleted')
 
         } catch (e) {
-            let error = {error: e} 
-            response.status(400).render('errors/400', error )
+            let error = e
+            response.status(400).send('Error: ' + error ) 
             
         }
 
