@@ -79,6 +79,13 @@ $('#progress-form').submit((event=>{
             }),
             success: (response)=>{
                 drawChart(response)
+
+                let weightChange = response.weightChange
+                let descriptor = response.descriptor
+                let htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} ${weightChange} pounds!</p>`)
+
+                $('#results-div').empty()
+                $('#results-div').append(htmlDescriptor)
   
             },
             error: (response)=>{

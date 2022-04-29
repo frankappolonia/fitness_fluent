@@ -1,5 +1,6 @@
 let validate = require('email-validator');
 const { request } = require('express');
+const { type } = require('express/lib/response');
 const { ObjectId } = require('mongodb');
 /**Validations for creating a user/signup */
 
@@ -148,10 +149,24 @@ function weeklyGoalValidation(goal){
 
 }
 
-function createUserValidation(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal){
+function adminCodeValidation(code){
+    if(arguments.length !== 1) throw "Invalid number of arguments"
+    if(code !== code) throw "Admin code must be a number"
+    if(isNaN(parseInt(code))) throw "Admin code must be a number"
+    if(code % 1 !== 0) throw "Admin code must be a whole number!"
+    code = parseInt(code)
+    if(typeof(code) !== 'number') throw "Admin code must be a number!"
+
+    if (code === 0) return
+    else if (code === 1234) return
+    else throw "Error! Admin code invalid! You must either enter the corret code, or enter a 0 to be a regular user!"
+
+}
+
+function createUserValidation(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
     
-    if(arguments.length !== 10) throw "Incorrect number of arguments!"
+    if(arguments.length !== 11) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, email, password, dob, activityLevel, gender])
 
@@ -170,6 +185,8 @@ function createUserValidation(firstName, lastName, email, password, dob, height,
     activityLevelValidation(activityLevel)
     //weekly weight goal check
     weeklyGoalValidation(weeklyWeightGoal)
+
+    adminCodeValidation(adminCode)
     return
 }
 
@@ -188,9 +205,10 @@ function signUpRouteValidation(requestBody){
     if(! requestBody.activityLevel) throw "No activty level given!"
     if(! requestBody.goal) throw "No goal specified!"
     if (requestBody.password !== requestBody.passwordCheck) throw "Passwords do not match!"
+    if(! requestBody.adminCode) throw "Must either enter the admin code, or a 0 for regular users!"
 
     createUserValidation(requestBody.firstName, requestBody.lastName, requestBody.email, requestBody.password,
-        requestBody.dob,requestBody.height,requestBody.weight,requestBody.gender,requestBody.activityLevel, requestBody.goal )
+        requestBody.dob,requestBody.height,requestBody.weight,requestBody.gender,requestBody.activityLevel, requestBody.goal, requestBody.adminCode )
 
 }
 
