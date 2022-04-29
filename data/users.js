@@ -9,12 +9,12 @@ const { ObjectId } = require('mongodb');
 //test comment
 /**Database functions for the Users Collection */
 
-async function createUser(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal){
+async function createUser(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**This function is for initital user signup  */
 
     //1. validate arguments
-    if(arguments.length !== 10) throw "Incorrect number of arguments!"
-    validations.createUserValidation(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal)
+    if(arguments.length !== 11) throw "Incorrect number of arguments!"
+    validations.createUserValidation(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode)
     validations.stringtrim(arguments)
 
     //2. establish db connection
@@ -37,7 +37,12 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let TDEE = nutritionFuncs.calculateTDE(activityLevel, gender, height, initialWeight, age)
     let calsNeeded = nutritionFuncs.calculateCalsNeeded(weeklyWeightGoal, TDEE)
 
-    //6. Create new user obj
+    //6. check if admin
+    let adminBoolean = false
+    if(parseInt(adminCode) === 1234)
+        adminBoolean = true
+ 
+    //7. Create new user obj
     let newUser = {
         firstName: firstName,
         lastName: lastName,
@@ -55,15 +60,16 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
         dailyCaloriesRemaining: calsNeeded,
         weightEntries: [{'date': new Date(), 'weight': initialWeight}],
         allFoods: [],
-        allExercises: []
+        allExercises: [],
+        admin: adminBoolean
     }
     
-    //7. insert user into the db
+    //8. insert user into the db
     let insertData = await usersCollection.insertOne(newUser)
     if (insertData.acknowldeged === 0 || !insertData.insertedId === 0)
       throw 'Could not add new user!'
     
-    //8. get user id
+    //9. get user id
     let user = await usersCollection.findOne({email: email.toLowerCase()})
     return user['_id'].toString()
 }

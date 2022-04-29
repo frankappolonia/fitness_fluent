@@ -32,12 +32,11 @@ router.route('/')
     .post(async(request, response)=>{
         const userData = request.body
         try{
-
         validations.signUpRouteValidation(userData)
 
-        const {firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal} = userData
+        const {firstName, lastName, email, password, dob, height, weight, gender, activityLevel, goal, adminCode} = userData
         await userFuncs.createUser(xss(firstName), xss(lastName), xss(email), xss(password), xss(dob), xss(height), 
-                                    xss(weight), xss(gender), xss(activityLevel), xss(goal))
+                                    xss(weight), xss(gender), xss(activityLevel), xss(goal), xss(adminCode))
         response.status(200).render('partials/successfulSignup')
 
         }catch(e){
