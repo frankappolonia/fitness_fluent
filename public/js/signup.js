@@ -21,9 +21,10 @@ signUp.submit((event =>{
     let gender = $('input[name=gender]:checked').val();
     let activityLevel = $('input[name=activityLevel]:checked').val();
     let goal = $('input[name=goal]:checked').val();
+    let adminCode = $('#adminCode').val()
 
     try{
-        signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal)
+        signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode)
         $('#email').val(email.toLowerCase())
     }catch(e){
         event.preventDefault()
@@ -36,7 +37,7 @@ signUp.submit((event =>{
 
 /**All error checking validations for signup */
 
-function signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal){
+function signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode){
     /**Validates the request body data of the /signup post route */
     if(! firstName) throw "No first name given!"
     if(! lastName) throw "No last name given!"
@@ -50,8 +51,9 @@ function signUpValidation(firstName, lastName, email, password, passwordCheck, d
     if(! activityLevel) throw "No activty level given!"
     if(! goal) throw "No goal specified!"
     if ( password !== passwordCheck) throw "Passwords do not match!"
+    if(! adminCode) throw "No admin goal entered! Must be the correct code, or 0 by default for non-admin users!"
 
-    createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal)
+    createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode)
 
     return true
 }
@@ -152,7 +154,6 @@ function dobValidation(date){
 function heightWeightValidation(height, weight){
     if(arguments.length !== 2) throw "invalid number of arguments for heightweight validation"
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
-    if(isNaN(height) || isNaN(weight)) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
     height = parseInt(height)
@@ -195,10 +196,24 @@ function weeklyGoalValidation(goal){
 
 }
 
-function createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal){
+function adminCodeValidation(code){
+    if(arguments.length !== 1) throw "Invalid number of arguments"
+    if(code !== code) throw "Admin code must be a number"
+    if(isNaN(parseInt(code))) throw "Admin code must be a number!"
+    if(code % 1 !== 0) throw "Admin code must be a whole number!"
+
+    code = parseInt(code)
+    if (code === 0) return
+    else if (code === 1234) return
+    else throw "Error! Admin code invalid! You must either enter the corret code, or enter a 0 to be a regular user!"
+
+}
+
+
+function createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
     
-    if(arguments.length !== 11) throw "Incorrect number of arguments!"
+    if(arguments.length !== 12) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, email, password, passwordCheck, dob, activityLevel, gender])
     stringtrim(arguments)
@@ -216,5 +231,7 @@ function createUserValidation(firstName, lastName, email, password, passwordChec
     activityLevelValidation(activityLevel)
     //weekly weight goal check
     weeklyGoalValidation(weeklyWeightGoal)
+
+    adminCodeValidation(adminCode)
     return
 }
