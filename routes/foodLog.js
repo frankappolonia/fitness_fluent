@@ -29,16 +29,16 @@ router.route("/:date?").get(async (request, response) => {
   }
 });
 
-router.route("/").post(async (request, response) => {
+router.route("/:date").post(async (request, response) => {
   try {
     let { date, food, calories } = request.body;
     let id = request.session.user;
     // error checking
 
     await foodFunctions.addFoodEntry(id, date, food, calories);
-    response.status(200);
+    response.status(200).redirect("/food-log");
   } catch (e) {
-    console.log(e);
+    console.error(e);
     response.status(400).send();
   }
 });
@@ -50,9 +50,9 @@ router.route("/:date").delete(async (request, response) => {
     let id = request.session.user;
     // error checking
     await foodFunctions.removeFoodEntry(id, date, food);
-    response.status(200);
+    response.sendStatus(200);
   } catch (e) {
-    console.log(e);
+    console.error(e);
     response.status(400).send();
   }
 });
@@ -67,7 +67,7 @@ router.route("/calories/:date").get(async (request, response) => {
     let cals = await foodFunctions.calculateDailyFoodCalories(id, date);
     response.status(200).json(cals);
   } catch (e) {
-    console.log(e);
+    console.error(e);
     response.status(400).send();
   }
 })

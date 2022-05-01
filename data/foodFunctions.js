@@ -38,7 +38,6 @@ async function getFoodsByDate(id, dateString) {
   let user = await usersCollection.findOne({ _id: id });
   if (!user) throw `User not found! ${id}`;
   for (foodLog of user.allFoods) {
-    console.log(foodLog.date);
     if (foodLog.date == dateString) {
       return foodLog.foods;
     }
@@ -51,8 +50,10 @@ async function removeFoodEntry(id, date, foodEntry) {
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: id });
   if (!user) throw "User not found!";
+  let foundEntry = false;
   for (foodLog of user.allFoods) {
     if (foodLog.date === date) {
+      foundEntry = true;
       for (food of foodLog.foods) {
         if (
           food.foodName == foodEntry.foodName &&
@@ -66,6 +67,9 @@ async function removeFoodEntry(id, date, foodEntry) {
         { $set: { "allFoods.$.foods": foodLog.foods } }
       );
     }
+  }
+  if (!foundEntry) {
+    throw "Food entry not found!";
   }
 }
 
