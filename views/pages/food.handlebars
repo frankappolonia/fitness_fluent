@@ -1,15 +1,19 @@
 <div id="food-log-container">
     <form method="post" id="food-log-form" action="/food-log/{{date}}">
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date" value="{{date}}" />
-        <label for="food">Food</label>
-        <input type="text" id="food" name="food" />
-        <label for="calories">Calories</label>
-        <input type="number" id="calories" name="calories" />
+        <div>
+            <label for="date">Date</label>
+            <input class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}" />
+            <label for="food">Food</label>
+            <input class="form-control form-control-sm" type="text" id="food" name="food" />
+            <label for="calories">Calories</label>
+            <input class="form-control form-control-sm" type="number" id="calories" name="calories" />
+            
+        </div>
 
-        <button type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
     </form>
 
+    {{#if food.[0]}}
     <table class="food-log">
         <tr>
             <th>Food</th>
@@ -25,6 +29,8 @@
         </tr>
         {{/each}}
     </table>
+    {{/if}}
+
 </div>
 <div id="error">
     <p>{{{error}}}</p>

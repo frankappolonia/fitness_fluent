@@ -5,18 +5,18 @@ const foodFunctions = data.foodFuncs;
 const moment = require("moment");
 
 //if the user is NOT authenticated, redirect to home
-router.get('/', (request, response, next)=>{
-  if (! request.session.user) {
-    return response.redirect('/');
+router.get("/", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
   } else {
-    next()
+    next();
   }
 });
-router.get('/:date?', (request, response, next)=>{
-  if (! request.session.user) {
-    return response.redirect('/');
+router.get("/:date?", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
   } else {
-    next()
+    next();
   }
 });
 //---------------------------------------------------------------------
@@ -43,6 +43,7 @@ router.route("/:date?").get(async (request, response) => {
       date: dateString,
       authenticated: true,
       script: "/public/js/foodLog.js",
+      css: "/public/css/foodlog.css",
     });
   } catch (e) {
     console.error(e);
@@ -91,6 +92,6 @@ router.route("/calories/:date").get(async (request, response) => {
     console.error(e);
     response.status(400).send();
   }
-})
+});
 
 module.exports = router;
