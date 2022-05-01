@@ -4,8 +4,28 @@ const data = require("../data");
 const foodFunctions = data.foodFuncs;
 const moment = require("moment");
 
+//if the user is NOT authenticated, redirect to home
+router.get('/', (request, response, next)=>{
+  if (! request.session.user) {
+    return response.redirect('/');
+  } else {
+    next()
+  }
+});
+router.get('/:date?', (request, response, next)=>{
+  if (! request.session.user) {
+    return response.redirect('/');
+  } else {
+    next()
+  }
+});
+//---------------------------------------------------------------------
+
 router.route("/:date?").get(async (request, response) => {
+ 
+
   try {
+
     let date = moment(request.params.date);
     let dateString = "";
     if (!date) {
@@ -21,11 +41,12 @@ router.route("/:date?").get(async (request, response) => {
     response.status(200).render("pages/food", {
       food: food,
       date: dateString,
+      authenticated: true,
       script: "/public/js/foodLog.js",
     });
   } catch (e) {
     console.error(e);
-    response.status(404).json("404: Page cannot be found");
+    response.status(404).render("errors/404");
   }
 });
 

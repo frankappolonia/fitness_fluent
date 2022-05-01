@@ -6,7 +6,7 @@ let path = require('path')
 const static = express.static(path.join(__dirname, '../', '/public'));
 
 const handlebarsInstance = exphbs.create({
-  defaultLayout: 'testMain',
+  defaultLayout: 'main',
   // Specify helpers which are only registered on this instance.
   helpers: {
     asJSON: (obj, spacing) => {
