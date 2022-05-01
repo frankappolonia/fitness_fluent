@@ -1,8 +1,7 @@
 <div id="food-log-container">
-
     <form method="post" id="food-log-form" action="/food-log">
         <label for="date">Date</label>
-        <input type="date" id="date" name="date" />
+        <input type="date" id="date" name="date" value="{{date}}" />
         <label for="food">Food</label>
         <input type="text" id="food" name="food" />
         <label for="calories">Calories</label>
@@ -10,8 +9,23 @@
 
         <button type="submit">Submit</button>
     </form>
+
+    <table class="food-log">
+        <tr>
+            <th>Food</th>
+            <th>Calories</th>
+            <th>Delete</th>
+        </tr>
+
+        {{#each food}}
+        <tr id="row{{@index}}">
+            <td>{{this.foodName}}</td>
+            <td>{{this.calories}}</td>
+            <td><button id="{{@index}}">Delete</button></td>
+        </tr>
+        {{/each}}
+    </table>
 </div>
 <div id="error">
     <p>{{{error}}}</p>
 </div>
-<script src="/public/js/foodLog.js" />

@@ -43,6 +43,19 @@ router.route("/").post(async (request, response) => {
   }
 });
 
+router.route("/:date").delete(async (request, response) => {
+  try {
+    let date = request.params.date;
+    let food = request.body;
+    let id = request.session.user;
+    // error checking
+    await foodFunctions.removeFoodEntry(id, date, food);
+    response.status(200);
+  } catch (e) {
+    console.log(e);
+    response.status(400).send();
+  }
+});
     
     await foodFunctions.addFoodEntry(
       "email@email.com",

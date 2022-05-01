@@ -45,6 +45,31 @@ async function getFoodsByDate(id, dateString) {
   }
   return [];
 }
+
+async function removeFoodEntry(id, date, foodEntry) {
+  id = ObjectId(id);
+  const usersCollection = await users();
+  let user = await usersCollection.findOne({ _id: id });
+  if (!user) throw "User not found!";
+  for (foodLog of user.allFoods) {
+    if (foodLog.date === date) {
+      for (food of foodLog.foods) {
+        if (
+          food.foodName == foodEntry.foodName &&
+          food.calories == foodEntry.calories
+        ) {
+          foodLog.foods.splice(foodLog.foods.indexOf(food), 1);
+        }
+      }
+      await usersCollection.updateOne(
+        { _id: id, "allFoods.date": date },
+        { $set: { "allFoods.$.foods": foodLog.foods } }
+      );
+    }
+  }
+}
 module.exports = {
   addFoodEntry,
+  getFoodsByDate,
+  removeFoodEntry,
 };
