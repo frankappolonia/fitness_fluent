@@ -24,7 +24,7 @@ router.route('/')
             authObj['script'] = "/public/js/signup.js"
             authObj['css'] = "/public/css/signup.css"
             
-            response.status(200).render('pages/testSignup', authObj)
+            response.status(200).render('pages/signup', authObj)
         } catch (e) {
             response.status(404).render('pages/404')
         }
