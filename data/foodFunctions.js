@@ -68,8 +68,28 @@ async function removeFoodEntry(id, date, foodEntry) {
     }
   }
 }
+
+async function calculateDailyFoodCalories(id, dateString) {
+  // remove dailyCaloriesRemaining field in document
+  id = ObjectId(id);
+  const usersCollection = await users();
+  let user = await usersCollection.findOne({ _id: id });
+  if (!user) throw "User not found!";
+  let totalCalories = 0;
+  for (foodLog of user.allFoods) {
+    if (foodLog.date === dateString) {
+      for (food of foodLog.foods) {
+        totalCalories += food.calories;
+      }
+    }
+  }
+  return totalCalories;
+
+}
+
 module.exports = {
   addFoodEntry,
   getFoodsByDate,
   removeFoodEntry,
+  calculateDailyFoodCalories
 };

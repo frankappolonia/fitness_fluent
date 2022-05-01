@@ -56,17 +56,20 @@ router.route("/:date").delete(async (request, response) => {
     response.status(400).send();
   }
 });
-    
-    await foodFunctions.addFoodEntry(
-      "email@email.com",
-      date,
-      food,
-      calories
-    );
-    response.sendStatus(200);
+
+router.route("/calories/:date").get(async (request, response) => {
+  try {
+    let date = request.params.date;
+    let id = request.session.user;
+    if (!id) {
+      throw "User not found!";
+    }
+    let cals = await foodFunctions.calculateDailyFoodCalories(id, date);
+    response.status(200).json(cals);
   } catch (e) {
     console.log(e);
     response.status(400).send();
   }
-});
+})
+
 module.exports = router;
