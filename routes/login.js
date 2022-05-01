@@ -21,7 +21,7 @@ router.route('/')
         let authObj = {}
         try {
             authObj['script'] = "/public/js/login.js"
-
+            authObj['css'] = "/public/css/signup.css"
             response.status(200).render('pages/login', authObj)
             
         } catch (e) {

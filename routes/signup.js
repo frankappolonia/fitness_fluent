@@ -21,8 +21,8 @@ router.route('/')
         let authObj = {}
         try {
            
-            authObj.authenticated = true
             authObj['script'] = "/public/js/signup.js"
+            authObj['css'] = "/public/css/signup.css"
             
             response.status(200).render('pages/signup', authObj)
         } catch (e) {

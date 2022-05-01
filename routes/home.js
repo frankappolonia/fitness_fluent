@@ -18,7 +18,7 @@ router.route('/')
                 //---------------------------------------
                 }
             console.log(request.session)
-            response.status(200).render('pages/home', authObj)
+            response.status(200).render('pages/homepage', authObj)
         } catch (e) {
             response.status(404).render('pages/404')
         }
