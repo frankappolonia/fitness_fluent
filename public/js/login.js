@@ -1,5 +1,7 @@
 let login = $('#login-form')
 
+$('#login-error-container').hide()
+
 login.submit((event=>{
     /**Callback function that gets the values from the login form and runs validations.
      * Prevents the default action if any checks fail
@@ -10,11 +12,14 @@ login.submit((event=>{
     try{
         validateLogin(email, password)
         $('#username').val(email.toLowerCase())
+
       
     }catch(e){
         event.preventDefault()
+        $('#login-error-container').show()
         $('#login-error-container').empty()
         $('#login-error-container').append(e)
+
     }
 
 }));

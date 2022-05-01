@@ -1,81 +1,102 @@
-<div class="container d-flex justify-content-center">
-    <div class="d-flex flex-column justify-content-between">
-        <div class="card mt-3 p-5">
-            <div>
-                <p class="mb-1">Start managing your</p>
-                <h3 class="mb-5 text-white">fitness journey with us!</h3>
-            </div><a class="btn btn-primary btn-large" href="/login" role="button">Already signed up? Login</a>
-
+<div class="signup" id ="signup-page-container">
+    <div class="signup">
+        <h1>Welcome to the signup page!</h1>
+        <p>We are excited that you are choosing us to help you on your fitness journey and reach your goals.</p>
+        <p>To get started, please fill out some basic information below, so we can personalize and optimize your exprience!</p>
+         <div id="signup-error">
+        {{{error}}}
         </div>
-        <div class="card two bg-white px-5 py-4 mb-3">
-            <div class="form-group">
-                <input type="text" class="form-control" id="firstName" name="firstName" required>
-                <label class="form-control-placeholder" for="firstName">First Name</label>
+
+        <form method="post" id="signup-form" action="/signup">
+        <h3>First, enter some basic information:</h3>
+
+            <div class="form row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName" class="col-sm-1 col-form-label">Last name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
+                 </div>
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="lastName" name="lastName" required>
-                <label class="form-control-placeholder" for="lastName">Last Name</label>
-            </div>
-            <div class="form-group">
+  
+
+            <div class="form-group col-md-4">
+                <label for="dob">Enter your date of birth</label>
                 <input type="date" class="form-control" id="dob" name="dob" required>
-                <label class="form-control-placeholder" for="dob">Date of Birth</label>
             </div>
-            <div class="form-group">
-                <input type="email" class="form-control" id="email"  name="email" required>
-                <label class="form-control-placeholder" for="email">Email</label>
-            </div> 
-            <div class="form-group">
-                <input type="password" class="form-control" id="password"  name="password" required>
-                <label class="form-control-placeholder" for="password">Password</label>
-            </div> 
-            <div class="form-group">
-                <input type="password" class="form-control" id="passwordCheck"  name="passwordCheck" required>
-                <label class="form-control-placeholder" for="passwordCheck">Re-enter password</label>
-            </div> 
-            <div class="form-group">
-                <input type="number" class="form-control" id="adminCode"  name="adminCode" value="0" required>
-                <label class="form-control-placeholder" for="adminCode">Admin Code</label>
-                <p>Note: leave the default value as 0 if you are not an admin</p>
-            </div>
-            <div class="form-group">
-                <input type="number" class="form-control" id="height"  name="height" required>
-                <label class="form-control-placeholder" for="height">Height</label>
-            </div> 
-            <div class="form-group">
-                <input type="number" class="form-control" id="weight"  name="weight" required>
-                <label class="form-control-placeholder" for="weight">Weight</label>
-            </div> 
-            <div class="form-group">
-                <label for="gender">Gender: </label>
-                <select name="gender" id ="gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-             <div class="form-group">
-                <label for="activityLevel">Activity level: </label>
-                <select name="activityLevel" id ="activityLevel">
-                    <option value="sedentary">Sedentary</option>
-                    <option value="light">Light</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="heavy">Heavy</option>
-                    <option value="hardcore">Hardcore</option>
-                </select>
-            </div> 
-            <div class="form-group">
-                <label for="goal">Fitness Goal: </label>
-                <select name="goal" id ="goal">
-                    <option value="-2">Lose 2 pounds per week</option>
-                    <option value="-1">Lose 1 pound per week</option>
-                    <option value="0">Maintain weight</option>
-                    <option value="1">Gain 1 pound per week</option>
-                    <option value="2">Gain 2 pounds per week</option>
-                </select>
-            </div> 
-            
-
-
-                <button class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span>Get started<i class="fas fa-long-arrow-alt-right ml-2"></i></span></button>
         </div>
+        
+        <div class="form-row">
+        
+        
+
+            <label for="email">Enter email address (this will also be used to sign in)</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+           
+            <label for="password">Enter password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+            <label for="passwordCheck">Re-enter password</label>
+            <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" required>
+
+            <label for="adminCode" class="col-sm-1 col-form-label">Admin Code</label>
+            <input type="number" class="form-control" id="adminCode" name="adminCode" value="0" required>
+            <p>Note: leave the default value as 0 if you are not an admin</p>
+        </div>
+
+            <h3>Next, tell us about your health and your fitness goals</h3>
+            <label for="height">Enter your height in inches</label>
+            <input type="number" class="form-control" id="height" name="height" required>
+           
+            <label for="weight">Enter your current weight</label>
+            <input type="number" class="form-control" id="weight" name="weight" required>
+            
+            <p>Select a gender:</p>
+            <label for="male">Male</label>
+            <input type="radio" id="male" value="male" name="gender" required>
+            <br>
+            <label for="female">Female</label>
+            <input type="radio"  id="female" value="female" name="gender" required>
+
+            <p>Select an activity level (You can change this at any time):</p>
+            <div id="activity-selection">
+                <label for="sedentary">Sedentary</label>
+                <input type="radio" id="sedentary" value="sedentary" name="activityLevel" required>
+                <br>
+                <label for="light">Light</label>
+                <input type="radio" id="light" value="light" name="activityLevel" required>
+                <br>
+                <label for="moderate">Moderate</label>
+                <input type="radio" id="moderate" value="moderate" name="activityLevel" required>
+                <br>
+                <label for="heavy">Heavy</label>
+                <input type="radio" id="heavy" value="heavy" name="activityLevel" required>
+                <br>
+                <label for="hardcore">Hardcore</label>
+                <input type="radio" id="hardcore" value="hardcore" name="activityLevel" required> 
+            </div>
+
+            <p>Select a fitness goal (you can change this at any time):</p>
+            <div id="fitness-goal-selection">
+                <label for="lose2">Lose 2 pounds per week</label>
+                <input type="radio" id="lose2" value="-2" name="goal" required>
+                <br>
+                <label for="lose1">Lose 1 pounds per week</label>
+                <input type="radio" id="lose1" value="-1" name="goal" required>
+                <br>
+                <label for="maintain">Maintain current weight each week</label>
+                <input type="radio" id="maintain" value="0" name="goal" required>
+                <br>
+                <label for="gain1">Gain 1 pound per week</label>
+                <input type="radio" id="gain1" value="1" name="goal" required>
+                <br>
+                <label for="gain2">Gain 2 pounds per week</label>
+                <input type="radio" id="gain2" value="2" name="goal" required>
+                <br>
+            </div>
+        </div>
+        <button type="submit">Submit</button>
+        </form>
     </div>
 </div>
