@@ -32,9 +32,16 @@ router.route("/:date?").get(async (request, response) => {
 router.route("/").post(async (request, response) => {
   try {
     let { date, food, calories } = request.body;
-
+    let id = request.session.user;
     // error checking
 
+    await foodFunctions.addFoodEntry(id, date, food, calories);
+    response.status(200);
+  } catch (e) {
+    console.log(e);
+    response.status(400).send();
+  }
+});
 
     
     await foodFunctions.addFoodEntry(
