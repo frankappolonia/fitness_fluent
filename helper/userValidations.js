@@ -75,9 +75,9 @@ function dobValidation(date){
 
     let currentDay = new Date()
     let birth = new Date(date)
-    let days = Math.abs(currentDay.getTime() - birth.getTime())
-    let years = days/(1000 * 3600 * 24)
+    let years = Math.abs(currentDay.getTime() - birth.getTime())/1000/60/60/24/365
     if (years < 12) throw "Must be at least 12 years old to signup!"
+   
 
 }
 

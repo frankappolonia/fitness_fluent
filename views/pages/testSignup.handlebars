@@ -7,6 +7,7 @@
             </div><a class="btn btn-primary btn-large" href="/login" role="button">Already signed up? Login</a>
 
         </div>
+        <form id="signup-form" method="post">
         <div class="card two bg-white px-5 py-4 mb-3">
             <div class="form-group">
                 <input type="text" class="form-control" id="firstName" name="firstName" required>
@@ -72,10 +73,9 @@
                     <option value="2">Gain 2 pounds per week</option>
                 </select>
             </div> 
-            
-
-
-                <button class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span>Get started<i class="fas fa-long-arrow-alt-right ml-2"></i></span></button>
+            <div id="signup-error" class="alert alert-danger" role="alert"></div>
+            <button class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span>Get started<i class="fas fa-long-arrow-alt-right ml-2"></i></span></button>
+        </form>
         </div>
     </div>
 </div>

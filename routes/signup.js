@@ -24,7 +24,7 @@ router.route('/')
             authObj['script'] = "/public/js/signup.js"
             authObj['css'] = "/public/css/signup.css"
             
-            response.status(200).render('pages/signup', authObj)
+            response.status(200).render('pages/testSignup', authObj)
         } catch (e) {
             response.status(404).render('pages/404')
         }
@@ -40,7 +40,11 @@ router.route('/')
         response.status(200).render('partials/successfulSignup')
 
         }catch(e){
-            response.status(400).render('pages/signup', {script: "/public/js/signup.js", error: "Error: "+ e})
+            let authObj = {}
+            authObj['script'] = "/public/js/signup.js"
+            authObj['css'] = "/public/css/signup.css"
+            authObj['error'] = "Error: " + e
+            response.status(400).render('pages/signup', authObj)
         }
 
     });
