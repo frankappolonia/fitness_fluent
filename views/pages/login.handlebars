@@ -1,18 +1,24 @@
-<div id="login-container">
-    <form method="post" id="login-form">
-        <div class="form-group">
-            <label for="username">Enter username</label>
-            <input type="email" class="form-control" id="username" name="username" >
-            <label for="password">Enter password</label>
-            <input type="password" class="form-control" id="password" name="password">
-            <button type="submit" class="btn btn-primary">Submit</button>
+<div class="container d-flex justify-content-center">
+    <div class="d-flex flex-column justify-content-between">
+        <div class="card mt-3 p-5">
+            <div>
+                <p class="mb-1">Start managing your</p>
+                <h3 class="mb-5 text-white">fitness journey with us!</h3>
+            </div>
+            <a class="btn btn-primary btn-large" href="/signup" role="button">Need to sign up?</a>
         </div>
-    </form>
-
-    <div id="login-error-container">
-        <p>{{{error}}}</p>
+        <form method="post" id="login-form">
+        <div class="card two bg-white px-5 py-4 mb-3">
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" name="username" required>
+                <label class="form-control-placeholder" for="username">Username</label>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" required>
+                <label class="form-control-placeholder" for="password">Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span>Log In</span></button>
+        </div>
+        </form>
     </div>
-    <p>Need an account?</p>
-    <a href="/signup">Click here to signup</a>
 </div>
-

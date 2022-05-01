@@ -21,7 +21,7 @@ router.route('/')
         let authObj = {}
         try {
             authObj['script'] = "/public/js/login.js"
-
+            authObj['css'] = "/public/css/signup.css"
             response.status(200).render('pages/login', authObj)
             
         } catch (e) {
@@ -31,8 +31,7 @@ router.route('/')
     .post(async(request, response)=>{
         //check if username and password are supplied in request body
         if(validations.checkRequestBody(request) === false){
-            let error = 'Error: Username or password left blank'
-            response.status(400).render('pages/login', {error})
+            response.status(400).render('pages/login', )
             return
         }
 
