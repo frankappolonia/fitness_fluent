@@ -273,6 +273,20 @@ function checkCalories(calories){
     if(calories > 2000) throw "Maximum calorie value is 2000!"
 }
 
+function exercisePostRouteValidation(requestBody){
+    if(! requestBody.date) throw "No date given!"
+    if(! requestBody.exercise) throw "No exercise given!"
+    if(! requestBody.calories) throw "No calories given!"
+
+    let { date, exercise, calories } = requestBody;
+
+    stringChecks([date, exercise])
+    stringtrim(arguments)
+    checkCalories(calories)
+    exerciseFoodLogDateValidation(date)
+
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -292,5 +306,6 @@ module.exports = {
     progressRouteValidation,
     checkId,
     checkCalories,
-    exerciseFoodLogDateValidation
+    exerciseFoodLogDateValidation,
+    exercisePostRouteValidation
 }
