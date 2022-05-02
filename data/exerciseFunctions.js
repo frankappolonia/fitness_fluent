@@ -121,16 +121,16 @@ async function calculateDailyExerciseCalories(id, currentDate) {
   id = validations.checkId(id)
   validations.exerciseFoodLogDateValidation(currentDate)
 
-  //2. get the exercises from the current date (if any)
-  id = ObjectId(id);
+  //2. check if the user exists
   const usersCollection = await users();
-  let user = await usersCollection.findOne({ _id: id });
+  let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
 
-  let exercises = getExercisesByDate(id, currentDate)
+  //3. get the exercies
+  let exercises = await getExercisesByDate(id, currentDate)
   if(exercises.length === 0) return 0 //if there are no exerices, then 0 calories were burned
 
-  //3. calculate the total calories burned
+  //4. calculate the total calories burned
   let caloriesBurned = 0
   exercises.forEach(exerciseObj => {
     caloriesBurned += exerciseObj.calories

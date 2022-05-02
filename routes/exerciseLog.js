@@ -110,12 +110,15 @@ router.route("/:date").delete(async (request, response) => {
 router.route("/calories/:date").get(async (request, response) => {
   try {
     //validations
-    let date = validations.exerciseFoodLogDateValidation(request.params.date);
+    validations.exerciseFoodLogDateValidation(request.params.date);
+    let date = moment(request.params.date).format("YYYY-MM-DD");
+
     let id = validations.checkId(request.session.user);
     
     //db call
     let totalCalories = await exerciseFunctions.calculateDailyExerciseCalories(xss(id), xss(date));
     response.status(200).json(totalCalories);
+    
   } catch (e) {
     console.error(e);
     response.status(400).render('partials/badExercise', {error: e});
