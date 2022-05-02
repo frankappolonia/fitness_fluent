@@ -88,12 +88,11 @@ async function calculateDailyFoodCalories(id, dateString) {
     }
   }
   return totalCalories;
-
 }
 
 module.exports = {
   addFoodEntry,
   getFoodsByDate,
   removeFoodEntry,
-  calculateDailyFoodCalories
+  calculateDailyFoodCalories,
 };
