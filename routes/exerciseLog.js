@@ -3,6 +3,21 @@ const router = express.Router();
 const data = require("../data");
 const exerciseFunctions = data.exerciseFuncs;
 const moment = require("moment");
+//if the user is NOT authenticated, redirect to home
+router.get('/', (request, response, next)=>{
+  if (! request.session.user) {
+    return response.redirect('/');
+  } else {
+    next()
+  }
+});
+router.get('/:date?', (request, response, next)=>{
+  if (! request.session.user) {
+    return response.redirect('/');
+  } else {
+    next()
+  }
+});
 
 router.route("/:date?").get(async (request, response) => {
   try {
