@@ -23,14 +23,14 @@
             <a class="navbar-brand" href="#">
               <img id="home-logo" alt="fitness fluent company logo" src="/public/images/fitnessfluent.png">
             </a>
-            <a class="navbar-brand" href="/">Home</a>
+              <a class="navbar-brand" href="/">Home</a>
                   {{#if authenticated}}
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/food-log">Food Journal</a></li>
-                    <li><a href="/exercise-log">Exercise Journal</a></li>
-                    <li><a href="/progress">Fitness Progress</a></li>
-                    <li><a href="/forum">Forum</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <a class="navbar-brand" href="/profile">Profile</a>
+                    <a class="navbar-brand" href="/food-log">Food Journal</a>
+                    <a class="navbar-brand" href="/exercises">Exercise Journal</a>
+                    <a class="navbar-brand" href="/progress">Fitness Progress</a>
+                    <a class="navbar-brand" href="/forum">Forum</a>
+                    <a class="btn btn-primary" href="/logout">Logout</a>
                     {{else}}
                     <a class="btn btn-primary" href="/login">Login/Signup</a>
                     {{/if}}
