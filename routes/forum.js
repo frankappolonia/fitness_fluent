@@ -30,11 +30,12 @@ router.route('/') //route for all posts/forum home
             authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
             authObj['calories'] = cals
+            authObj['css'] = "/public/css/forum_styles.css"
             //---------------------------------------
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
-            response.status(200).render('pages/forumHome', authObj)
+            response.status(200).render('pages/testForum', authObj)
 
         } catch (e) {
             response.status(404).render("errors/404")
