@@ -18,7 +18,7 @@ router.route('/')
 
             response.status(200).render('pages/logout', {})
         } catch (e) {
-            response.status(404).render("pages/404")
+            response.status(404).render("error/404")
         }
     });
 module.exports = router;

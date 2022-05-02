@@ -2,6 +2,8 @@
 //form
 let signUp = $('#signup-form')
 
+$('#signup-error').hide()
+
 //signup form validation
 signUp.submit((event =>{
     /**This callback funciton gets the values from the signup form, and runs the validations
@@ -18,9 +20,9 @@ signUp.submit((event =>{
     //health info
     let height = $('#height').val()
     let weight = $('#weight').val()
-    let gender = $('input[name=gender]:checked').val();
-    let activityLevel = $('input[name=activityLevel]:checked').val();
-    let goal = $('input[name=goal]:checked').val();
+    let gender = $('select[name=gender] option').filter(':selected').val()
+    let activityLevel = $('select[name=activityLevel] option').filter(':selected').val()
+    let goal = $('select[name=goal] option').filter(':selected').val()
     let adminCode = $('#adminCode').val()
 
     try{
@@ -28,6 +30,8 @@ signUp.submit((event =>{
         $('#email').val(email.toLowerCase())
     }catch(e){
         event.preventDefault()
+        console.log('im here')
+        $('#signup-error').show()
         $('#signup-error').empty()
         $('#signup-error').append(e)
     }
@@ -143,8 +147,7 @@ function dobValidation(date){
 
     let currentDay = new Date()
     let birth = new Date(date)
-    let days = Math.abs(currentDay.getTime() - birth.getTime())
-    let years = days/(1000 * 3600 * 24)
+    let years = Math.abs(currentDay.getTime() - birth.getTime())/1000/60/60/24/365
     if (years < 12) throw "Must be at least 12 years old to signup!"
     
     return
