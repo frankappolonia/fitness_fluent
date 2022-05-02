@@ -8,7 +8,9 @@ $("button").click(function () {
       };
       let date = $("#date").val();
   
-      $.ajax({ type: "DELETE", url: `/exercise-log/${date}`, data: exerciseData }).done(
+      $.ajax({ type: "DELETE", 
+                url: `/exercise-log/${date}`, 
+                data: exerciseData }).done(
         function (data, status) {
           if (status !== "success") {
             alert("Error: " + status);
