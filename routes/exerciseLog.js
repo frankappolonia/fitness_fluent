@@ -60,30 +60,37 @@ router.route("/:date?").get(async (request, response) => {
     });
 
   } catch (e) {
-    response.status(400).render("partials/badExerciseDate", {error: e});
+    response.status(400).render("partials/badExercise", {error: e});
   }
 });
 
 router.route("/:date").post(async (request, response) => {
   try {
+    //validations
+    let id = validations.checkId(request.session.user)
+    validations.exercisePostRouteValidation(request.body)
     let { date, exercise, calories } = request.body;
-    let id = request.session.user;
-    // error checking
-    await exerciseFunctions.addExercise(id, date, exercise, calories);
+
+    //db call
+    await exerciseFunctions.addExercise(xss(id), xss(date), xss(exercise), xss(calories));
     response.status(200).redirect("/exercise-log");
   } catch (e) {
     console.error(e);
-    response.status(400).send();
+    response.status(400).render('partials/badExercise', {error: e});
   }
 });
 
 router.route("/:date").delete(async (request, response) => {
+  //need validations still
   try {
-    let date = request.params.date;
+    //validations
+    let id = validations.checkId(request.session.user);
+    let date = validations.exerciseFoodLogDateValidation(request.params.date)
+
     let exercise = request.body;
-    let id = request.session.user;
-    // error checking
-    await exerciseFunctions.removeExercise(id, date, exercise);
+    
+    //db call
+    await exerciseFunctions.removeExercise(xss(id), xss(date), xss(exercise));
     response.sendStatus(200);
   } catch (e) {
     console.error(e);
@@ -91,18 +98,20 @@ router.route("/:date").delete(async (request, response) => {
   }
 });
 
+
+
 router.route("/calories/:date").get(async (request, response) => {
   try {
-    let date = request.params.date;
-    let id = request.session.user;
-    if (!id) {
-      throw "User not found!";
-    }
-    let cals = await exerciseFunctions.calculateDailyExerciseCalories(id, date);
-    response.status(200).json(cals);
+    //validations
+    let date = validations.exerciseFoodLogDateValidation(request.params.date);
+    let id = validations.checkId(request.session.user);
+    
+    //db call
+    let totalCalories = await exerciseFunctions.calculateDailyExerciseCalories(xss(id), xss(date));
+    response.status(200).json(totalCalories);
   } catch (e) {
     console.error(e);
-    response.status(400).send();
+    response.status(400).render('partials/badExercise', {error: e});
   }
 })
 
