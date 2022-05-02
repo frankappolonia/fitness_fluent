@@ -287,6 +287,14 @@ function exercisePostRouteValidation(requestBody){
 
 }
 
+function deleteFoodExerciseRouteValidation(requestBody){
+    if(! requestBody.exerciseName) throw "No exercise given!"
+    if(! requestBody.calories) throw "No calories given!"
+    let {exerciseName, calories } = requestBody;
+    stringChecks([exerciseName])
+    checkCalories(calories)
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -307,5 +315,6 @@ module.exports = {
     checkId,
     checkCalories,
     exerciseFoodLogDateValidation,
-    exercisePostRouteValidation
+    exercisePostRouteValidation,
+    deleteFoodExerciseRouteValidation
 }

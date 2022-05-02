@@ -77,29 +77,27 @@ async function removeExercise(id, date, exerciseEntry) {
 
   //1. validations 
   if(arguments.length !== 3) throw "Invalid number of arguments"
-  validations.stringChecks([id, date, exerciseEntry])
+  validations.stringChecks([id, date, exerciseEntry.exerciseName])
   validations.stringtrim(arguments)
   id = validations.checkId(id)
   validations.exerciseFoodLogDateValidation(date)
+  validations.checkCalories(exerciseEntry.calories)
 
   id = ObjectId(id);
+
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: id });
   if (!user) throw "User not found!";
+
 
   let foundEntry = false;
   for (exerciseLog of user.allExercises) {
     if (exerciseLog.date === date) {
       foundEntry = true;
+
       for (exercise of exerciseLog.exercises) {
-        if (
-          exercise.exerciseName == exerciseEntry.exerciseName &&
-          exercise.calories == exerciseEntry.calories
-        ) {
-          exerciseLog.exercises.splice(
-            exerciseLog.exercises.indexOf(exercise),
-            1
-          );
+        if (exercise.exerciseName == exerciseEntry.exerciseName && exercise.calories == parseInt(exerciseEntry.calories)) {
+            exerciseLog.exercises.splice(exerciseLog.exercises.indexOf(exercise),1);
         }
       }
       await usersCollection.updateOne(

@@ -85,16 +85,23 @@ router.route("/:date").delete(async (request, response) => {
   try {
     //validations
     let id = validations.checkId(request.session.user);
-    let date = validations.exerciseFoodLogDateValidation(request.params.date)
-
-    let exercise = request.body;
+    validations.deleteFoodExerciseRouteValidation(request.body)
+    
+    let date = "";
+    if (! request.params.date)
+      date = moment().format("YYYY-MM-DD");
+    else {
+      validations.exerciseFoodLogDateValidation(request.params.date)
+      date = moment(request.params.date).format("YYYY-MM-DD");
+    }
+    let exercise = {exerciseName: xss(request.body.exerciseName), calories: parseInt(xss(request.body.calories))}
     
     //db call
-    await exerciseFunctions.removeExercise(xss(id), xss(date), xss(exercise));
+    await exerciseFunctions.removeExercise(xss(id), xss(date), exercise);
     response.sendStatus(200);
   } catch (e) {
     console.error(e);
-    response.status(400).send();
+    response.status(400).render('partials/badExercise');
   }
 });
 
