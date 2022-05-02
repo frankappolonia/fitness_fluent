@@ -266,9 +266,9 @@ function checkCalories(calories){
     if(arguments.length !== 1) throw "Invalid number of arguments!"
     if(calories !== calories) throw "Calories is not a number!"
     if(isNaN(parseInt(calories))) throw "Calories is not a number!"
+    if(calories%1 !== 0) throw "Calories must be a whole number!"
     calories = parseInt(calories)
     if(typeof(calories) !== 'number') throw "Calories must be a number!"
-    if(calories%1 !== 0) throw "Calories must be a whole number!"
     if(calories < 1) throw "Calories must be a number greater than 1!"
     if(calories > 2000) throw "Maximum calorie value is 2000!"
 }
