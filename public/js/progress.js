@@ -85,8 +85,13 @@ $('#progress-form').submit((event=>{
 
                 let weightChange = response.weightChange
                 let descriptor = response.descriptor
-                let htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} ${weightChange} pounds!</p>`)
-
+                let htmlDescriptor
+                if(weightChange == 0){
+                    htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} your weight! There was no change!</p>`)
+                }
+                else{
+                    htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} ${weightChange} pounds!</p>`)
+                }
                 $('#results-div').empty()
                 $('#results-div').append(htmlDescriptor)
   
@@ -166,6 +171,7 @@ function progressValidation(start, end){
     stringChecks([start, end])
     dateValidation(start)
     dateValidation(end)
+    endDateValidation(end)
 
     let startDate = new Date(start).getTime()
     let endDate = new Date(end).getTime()
@@ -226,3 +232,9 @@ function trimDates(datesArray){
     })
     return newDates
 }
+
+function endDateValidation(date){
+      date = new Date(date)
+      if(date.getTime() > new Date().getTime()) throw "Cannot use a date later than the current date!"
+    }
+    
