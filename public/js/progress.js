@@ -15,11 +15,12 @@ $.ajax({
     contentType: 'application/json',
     success: (response)=>{
         initialGraphData = response
+        let dates = trimDates(initialGraphData.dates)
         //this creates the initial graph on the page load
         myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: initialGraphData.dates,
+                labels: dates,
                 datasets: [{
                     label: 'Weight (lbs)',
                     data: initialGraphData.weights,
@@ -109,7 +110,7 @@ function drawChart(data){
     entered by the user, rather than showing overall progress like on the initial page load
     */
     let weights = data.weights
-    let dates = data.dates
+    let dates = trimDates(data.dates)
     if (weights.length === 0){
         $('#progress-graph-error').empty()
         $('#progress-graph-error').append("No weights found within the specified range!")
@@ -217,4 +218,11 @@ function dateValidation(date){
 }
 
 
+function trimDates(datesArray){
+    let newDates = []
 
+    datesArray.forEach(date =>{
+        newDates.push(date.slice(0,10))
+    })
+    return newDates
+}
