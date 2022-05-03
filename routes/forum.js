@@ -7,8 +7,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const forumValidations = errorHandling.forumValidations
 const xss = require('xss');
-const { response } = require('express');
-const res = require('express/lib/response');
+
 
 //if the user is NOT authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -29,12 +28,14 @@ router.route('/') //route for all posts/forum home
             //stuff for daily goals widget
             authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals
+            authObj['calories'] = cals.cals
+            authObj['name'] = cals.name
+            authObj['css'] = "/public/css/forum_styles.css"
             //---------------------------------------
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
-            response.status(200).render('pages/forumHome', authObj)
+            response.status(200).render('pages/testForum', authObj)
 
         } catch (e) {
             response.status(404).render("errors/404")
@@ -94,7 +95,8 @@ router.route('/:id')
             //stuff for daily goals widget
             authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals
+            authObj['calories'] = cals.cals
+            authObj['name'] = cals.name
             //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"

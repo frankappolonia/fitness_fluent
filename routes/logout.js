@@ -16,7 +16,8 @@ router.route('/')
             response.clearCookie('authCookie')
             request.session.cookie.expires = 0
 
-            response.status(200).render('pages/logout', {})
+            response.status(200).render('pages/logout', {'script': "/public/js/filler.js",
+            'script2':"/public/js/filler.js"})
         } catch (e) {
             response.status(404).render("error/404")
         }

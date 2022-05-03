@@ -93,3 +93,10 @@ p.mb-1 {
 .logo1{
     max-height: 100px;
 }
+
+
+#login-error-container2{
+    background-color: rgb(245, 155, 155);
+    color: rgb(160, 0, 0);
+    border: rgb(255, 99, 99);
+}

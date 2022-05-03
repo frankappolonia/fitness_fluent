@@ -75,9 +75,9 @@ function dobValidation(date){
 
     let currentDay = new Date()
     let birth = new Date(date)
-    let days = Math.abs(currentDay.getTime() - birth.getTime())
-    let years = days/(1000 * 3600 * 24)
+    let years = Math.abs(currentDay.getTime() - birth.getTime())/1000/60/60/24/365
     if (years < 12) throw "Must be at least 12 years old to signup!"
+   
 
 }
 
@@ -102,6 +102,13 @@ function dateValidation(date){
        if (year < 1900 || year > 2022) throw "Invalid year"
        if(day > monthKey[month] || day < 1){throw "Invalid day!"}
    
+}
+
+function exerciseFoodLogDateValidation(date){
+    //first checks if its a valid date
+    dateValidation(date)
+    date = new Date(date)
+    if(date.getTime() > new Date().getTime()) throw "Cannot add entry later than the current date!"
 }
 
 function heightWeightValidation(height, weight){
@@ -254,6 +261,40 @@ function progressRouteValidation(requestBody){
     if (startDate > endDate) throw "Start date can't be before end date!"
 }
 
+
+function checkCalories(calories){
+    if(arguments.length !== 1) throw "Invalid number of arguments!"
+    if(calories !== calories) throw "Calories is not a number!"
+    if(isNaN(parseInt(calories))) throw "Calories is not a number!"
+    if(calories%1 !== 0) throw "Calories must be a whole number!"
+    calories = parseInt(calories)
+    if(typeof(calories) !== 'number') throw "Calories must be a number!"
+    if(calories < 1) throw "Calories must be a number greater than 1!"
+    if(calories > 2000) throw "Maximum calorie value is 2000!"
+}
+
+function exercisePostRouteValidation(requestBody){
+    if(! requestBody.date) throw "No date given!"
+    if(! requestBody.exercise) throw "No exercise given!"
+    if(! requestBody.calories) throw "No calories given!"
+
+    let { date, exercise, calories } = requestBody;
+
+    stringChecks([date, exercise])
+    stringtrim(arguments)
+    checkCalories(calories)
+    exerciseFoodLogDateValidation(date)
+
+}
+
+function deleteFoodExerciseRouteValidation(requestBody){
+    if(! requestBody.exerciseName) throw "No exercise given!"
+    if(! requestBody.calories) throw "No calories given!"
+    let {exerciseName, calories } = requestBody;
+    stringChecks([exerciseName])
+    checkCalories(calories)
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -271,5 +312,9 @@ module.exports = {
     checkUsername,
     dateValidation,
     progressRouteValidation,
-    checkId
+    checkId,
+    checkCalories,
+    exerciseFoodLogDateValidation,
+    exercisePostRouteValidation,
+    deleteFoodExerciseRouteValidation
 }

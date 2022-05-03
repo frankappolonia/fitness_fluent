@@ -21,6 +21,7 @@ router.route('/')
         let authObj = {}
         try {
             authObj['script'] = "/public/js/login.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/signup.css"
             response.status(200).render('pages/login', authObj)
             
@@ -29,9 +30,14 @@ router.route('/')
         }
     })
     .post(async(request, response)=>{
+        let authObj = {}
+        authObj['script'] = "/public/js/login.js"
+        authObj['script2'] = "/public/js/filler.js"
+        authObj['css'] = "/public/css/signup.css"
+
         //check if username and password are supplied in request body
         if(validations.checkRequestBody(request) === false){
-            response.status(400).render('pages/login', )
+            response.status(400).render('pages/login', authObj)
             return
         }
 
@@ -48,11 +54,14 @@ router.route('/')
                     response.status(200).redirect('/')
                     return
             }
-
-            
         } catch (e) {
-            let error = "Login failed! Reason: " + e
-            response.status(400).render('pages/login', {error})
+            let authObj = {}
+            authObj['script'] = "/public/js/login.js"
+            authObj['script2'] = "/public/js/filler.js"
+
+            authObj['css'] = "/public/css/signup.css"
+            authObj['error2'] = "Login failed! Reason: " + e
+            response.status(400).render('pages/login', authObj)
             return
             
         }

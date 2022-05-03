@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../data");
-const foodFunctions = data.foodFuncs;
+const foodFunctions = data.exerciseFoodFuncs;
 const moment = require("moment");
 
 //if the user is NOT authenticated, redirect to home
@@ -57,7 +57,7 @@ router.route("/:date").post(async (request, response) => {
     let id = request.session.user;
     // error checking
 
-    await foodFunctions.addFoodEntry(id, date, food, calories);
+    await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
     response.status(200).redirect("/food-log");
   } catch (e) {
     console.error(e);

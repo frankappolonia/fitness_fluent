@@ -1,4 +1,3 @@
-const { builtinModules } = require('module')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 
@@ -72,9 +71,11 @@ function calculateAge(dob){
     return age
 }
 
+
+
 module.exports = {
     calculateBMR, 
     calculateTDE, 
     calculateCalsNeeded,
-    calculateAge
+    calculateAge,
 }

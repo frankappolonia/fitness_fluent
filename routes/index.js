@@ -4,7 +4,7 @@ const logout = require('./logout')
 const signup = require('./signup')
 const foodLog = require('./foodLog')
 const progress = require('./progress')
-const exercises = require('./exercises')
+const exerciseLog = require('./exerciseLog')
 const forum = require('./forum')
 
 const constructorMethod = (app) => {
@@ -15,7 +15,7 @@ const constructorMethod = (app) => {
     app.use('/signup', signup)
     app.use('/food-log', foodLog)
     app.use('/progress', progress);
-    app.use('/exercises', exercises);
+    app.use('/exercise-log', exerciseLog);
     app.use('/forum', forum);
     app.use('*', (req, res) => {
       res.status(404).render('errors/404');

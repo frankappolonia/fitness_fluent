@@ -17,6 +17,9 @@ const handlebarsInstance = exphbs.create({
     },
     eq: (exp1, exp2) =>{
       return exp1 === exp2
+    },
+    getLastPoster: (comments) =>{
+      return comments[comments.length-1].poster.name
     }
   },
   partialsDir: ['views/partials/']

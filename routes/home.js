@@ -14,13 +14,18 @@ router.route('/')
                 //stuff for daily goals widget
                 authObj.authenticated = true        
                 let cals = await userFuncs.getRemainingCalories(id)
-                authObj['calories'] = cals
-                //---------------------------------------
+                authObj['calories'] = cals.cals
+                authObj['name'] = cals.name
+                //---------------------------------------"
                 }
+            authObj['css'] = "/public/css/main_styles.css"
+            authObj['script'] = "/public/js/filler.js"
+            authObj['script2'] = "/public/js/filler.js"
+            
             console.log(request.session)
             response.status(200).render('pages/homepage', authObj)
         } catch (e) {
-            response.status(404).render('pages/404')
+            response.status(404).render('errors/404')
         }
     });
 module.exports = router;
