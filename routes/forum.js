@@ -35,7 +35,7 @@ router.route('/') //route for all posts/forum home
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
-            response.status(200).render('pages/testForum', authObj)
+            response.status(200).render('pages/forum', authObj)
 
         } catch (e) {
             response.status(404).render("errors/404")
@@ -52,10 +52,13 @@ router.route('/new') //route for a new post
             //stuff for daily goals widget
             authObj.authenticated = true        
             let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals
+            authObj['calories'] = cals.cals
+            authObj['name'] = cals.name
+
             //---------------------------------------
 
             authObj['script'] = "/public/js/newPost.js"
+            authObj['css'] = "/public/css/forum_styles.css"
 
             response.status(200).render('pages/newPost', authObj)
 
@@ -100,12 +103,14 @@ router.route('/:id')
             //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"
+            authObj['css'] = "/public/css/forumComments.css"
+
             let post = await postsFuncs.getPostById(xss(postId))
 
             response.cookie("idCookie", JSON.stringify({userId: id, ogPoster: post.poster.id}))
             response.cookie('adminCookie', JSON.stringify(request.session.admin))
 
-            response.status(200).render("pages/forumPost", {...authObj, ...post})
+            response.status(200).render("pages/comments", {...authObj, ...post})
 
         }catch(e){
             response.status(404).render("errors/404")
