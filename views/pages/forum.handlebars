@@ -1,4 +1,6 @@
 <div class="container-fluid mt-100">
+     {{#> caloriesRemainingWidget}}
+    {{/caloriesRemainingWidget}}
     <div class="d-flex flex-wrap justify-content-between">
         <div><a class="btn btn-primary btn-large" href="/forum/new" role="button">New Post</a></div>
         <div class="col-12 col-md-3 p-0 mb-3"> <input type="text" class="form-control" placeholder="Search..."> </div>
@@ -27,7 +29,7 @@
                         <div class="col-4">{{this.comments.length}}</div>
                         <div class="media col-8 align-items-center"> <img src="" id="forum-profile" alt="stock profile picture" class="d-block ui-w-30 rounded-circle">
                             <div class="media-body flex-truncate ml-2">
-                                <div class="line-height-1 text-truncate">1 day ago</div> <a href="javascript:void(0)" class="text-muted small text-truncate" data-abc="true">by {{getLastPoster this.comments}}</a>
+                                <div class="line-height-1 text-truncate">1 day ago</div> <p class="text-muted small text-truncate" data-abc="true">{{getLastPoster this.comments}}</p>
                             </div>
                         </div>
                     </div>

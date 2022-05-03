@@ -19,7 +19,8 @@ const handlebarsInstance = exphbs.create({
       return exp1 === exp2
     },
     getLastPoster: (comments) =>{
-      return comments[comments.length-1].poster.name
+      if(comments.length === 0){return "No comments yet"}
+      return "by " + comments[comments.length-1].poster.name
     }
   },
   partialsDir: ['views/partials/']
