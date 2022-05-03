@@ -73,22 +73,31 @@ async function removeFoodEntry(id, date, foodEntry) {
   }
 }
 
-async function calculateDailyFoodCalories(id, dateString) {
-  // remove dailyCaloriesRemaining field in document
-  id = ObjectId(id);
-  const usersCollection = await users();
-  let user = await usersCollection.findOne({ _id: id });
-  if (!user) throw "User not found!";
-  let totalCalories = 0;
-  for (foodLog of user.allFoods) {
-    if (foodLog.date === dateString) {
-      for (food of foodLog.foods) {
-        totalCalories += food.calories;
-      }
-    }
+async function calculateDailyFoodCalories(id, currentDate) {
+    //1. validations
+    if(arguments.length !== 2) throw "Invalid number of argumets"
+    validations.stringChecks([id, currentDate])
+    validations.stringtrim(arguments)
+    id = validations.checkId(id)
+    validations.exerciseFoodLogDateValidation(currentDate)
+  
+    //2. check if the user exists
+    const usersCollection = await users();
+    let user = await usersCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw "User not found!";
+  
+    //3. get the food
+    let foods = await getFoodsByDate(id, currentDate)
+    if(foods.length === 0) return 0 //if there are no foods, then 0 calories were burned
+  
+    //4. calculate the total calories burned
+    let caloriesEaten = 0
+    foods.forEach(foodObj => {
+      caloriesEaten += foodObj.calories
+      })
+  
+    return caloriesEaten;
   }
-  return totalCalories;
-}
 
 module.exports = {
   addFoodEntry,
