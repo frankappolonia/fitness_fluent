@@ -34,7 +34,7 @@ router.route('/') //route for all posts/forum home
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
-            response.status(200).render('pages/testForum', authObj)
+            response.status(200).render('pages/forum', authObj)
 
         } catch (e) {
             response.status(404).render("errors/404")
