@@ -318,5 +318,5 @@ module.exports = {
     getWeights,
     getAllWeights,
     getOverallWeightProgress,
-    calculateDailyCaloriesRemaining,
+    calculateDailyCaloriesRemaining
 }
