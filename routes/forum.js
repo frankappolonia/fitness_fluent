@@ -7,8 +7,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const forumValidations = errorHandling.forumValidations
 const xss = require('xss');
-const { response } = require('express');
-const res = require('express/lib/response');
+
 
 //if the user is NOT authenticated, redirect to home
 router.get('/', (request, response, next)=>{

@@ -15,8 +15,12 @@ router.route('/')
                 authObj.authenticated = true        
                 let cals = await userFuncs.getRemainingCalories(id)
                 authObj['calories'] = cals
-                //---------------------------------------
+                //---------------------------------------"
                 }
+            authObj['css'] = "/public/css/main_styles.css"
+            authObj['script'] = "/public/js/filler.js"
+            authObj['script2'] = "/public/js/filler.js"
+            
             console.log(request.session)
             response.status(200).render('pages/homepage', authObj)
         } catch (e) {

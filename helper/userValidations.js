@@ -104,6 +104,13 @@ function dateValidation(date){
    
 }
 
+function exerciseFoodLogDateValidation(date){
+    //first checks if its a valid date
+    dateValidation(date)
+    date = new Date(date)
+    if(date.getTime() > new Date().getTime()) throw "Cannot add entry later than the current date!"
+}
+
 function heightWeightValidation(height, weight){
     if(arguments.length !== 2) throw "invalid number of arguments for heightweight validation"
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
@@ -254,6 +261,40 @@ function progressRouteValidation(requestBody){
     if (startDate > endDate) throw "Start date can't be before end date!"
 }
 
+
+function checkCalories(calories){
+    if(arguments.length !== 1) throw "Invalid number of arguments!"
+    if(calories !== calories) throw "Calories is not a number!"
+    if(isNaN(parseInt(calories))) throw "Calories is not a number!"
+    if(calories%1 !== 0) throw "Calories must be a whole number!"
+    calories = parseInt(calories)
+    if(typeof(calories) !== 'number') throw "Calories must be a number!"
+    if(calories < 1) throw "Calories must be a number greater than 1!"
+    if(calories > 2000) throw "Maximum calorie value is 2000!"
+}
+
+function exercisePostRouteValidation(requestBody){
+    if(! requestBody.date) throw "No date given!"
+    if(! requestBody.exercise) throw "No exercise given!"
+    if(! requestBody.calories) throw "No calories given!"
+
+    let { date, exercise, calories } = requestBody;
+
+    stringChecks([date, exercise])
+    stringtrim(arguments)
+    checkCalories(calories)
+    exerciseFoodLogDateValidation(date)
+
+}
+
+function deleteFoodExerciseRouteValidation(requestBody){
+    if(! requestBody.exerciseName) throw "No exercise given!"
+    if(! requestBody.calories) throw "No calories given!"
+    let {exerciseName, calories } = requestBody;
+    stringChecks([exerciseName])
+    checkCalories(calories)
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -271,5 +312,9 @@ module.exports = {
     checkUsername,
     dateValidation,
     progressRouteValidation,
-    checkId
+    checkId,
+    checkCalories,
+    exerciseFoodLogDateValidation,
+    exercisePostRouteValidation,
+    deleteFoodExerciseRouteValidation
 }
