@@ -15,11 +15,12 @@ $.ajax({
     contentType: 'application/json',
     success: (response)=>{
         initialGraphData = response
+        let dates = trimDates(initialGraphData.dates)
         //this creates the initial graph on the page load
         myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: initialGraphData.dates,
+                labels: dates,
                 datasets: [{
                     label: 'Weight (lbs)',
                     data: initialGraphData.weights,
@@ -84,8 +85,13 @@ $('#progress-form').submit((event=>{
 
                 let weightChange = response.weightChange
                 let descriptor = response.descriptor
-                let htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} ${weightChange} pounds!</p>`)
-
+                let htmlDescriptor
+                if(weightChange == 0){
+                    htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} your weight! There was no change!</p>`)
+                }
+                else{
+                    htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} ${weightChange} pounds!</p>`)
+                }
                 $('#results-div').empty()
                 $('#results-div').append(htmlDescriptor)
   
@@ -109,7 +115,7 @@ function drawChart(data){
     entered by the user, rather than showing overall progress like on the initial page load
     */
     let weights = data.weights
-    let dates = data.dates
+    let dates = trimDates(data.dates)
     if (weights.length === 0){
         $('#progress-graph-error').empty()
         $('#progress-graph-error').append("No weights found within the specified range!")
@@ -165,6 +171,7 @@ function progressValidation(start, end){
     stringChecks([start, end])
     dateValidation(start)
     dateValidation(end)
+    endDateValidation(end)
 
     let startDate = new Date(start).getTime()
     let endDate = new Date(end).getTime()
@@ -217,4 +224,17 @@ function dateValidation(date){
 }
 
 
+function trimDates(datesArray){
+    let newDates = []
 
+    datesArray.forEach(date =>{
+        newDates.push(date.slice(0,10))
+    })
+    return newDates
+}
+
+function endDateValidation(date){
+      date = new Date(date)
+      if(date.getTime() > new Date().getTime()) throw "Cannot use a date later than the current date!"
+    }
+    

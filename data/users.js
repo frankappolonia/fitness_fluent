@@ -134,7 +134,7 @@ async function getRemainingCalories(id){
     if (user === null) throw "Error! No user with the specified ID is found!"
 
     //4. Extract the daily remaining calories
-    let remainingCals = user['dailyCaloriesRemaining']
+    let remainingCals = {cals: user['dailyCaloriesRemaining'], name: user['firstName'] + " "+ user['lastName']}
     return remainingCals;
 }
 

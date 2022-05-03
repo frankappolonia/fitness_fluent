@@ -46,7 +46,8 @@ router.route("/:date?").get(async (request, response) => {
     let authObj = {}
     authObj.authenticated = true        
     let cals = await userFuncs.getRemainingCalories(id)
-    authObj['calories'] = cals
+    authObj['calories'] = cals.cals
+    authObj['name'] = cals.name
     authObj['css'] = "/public/css/forum_styles.css"
     //---------------------------------------
 
