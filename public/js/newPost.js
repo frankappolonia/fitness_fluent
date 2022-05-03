@@ -13,8 +13,8 @@ postForm.submit((event=>{
         
     } catch (e) {
         event.preventDefault()
-        $('#newPost-error').empty()
-        $('#newPost-error').append(e)
+        $('#new-post-error').empty()
+        $('#new-post-error').append(e)
         
     }
 
