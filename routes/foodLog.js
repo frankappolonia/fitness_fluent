@@ -94,4 +94,20 @@ router.route("/calories/:date").get(async (request, response) => {
   }
 });
 
+router.route("/database").post(async (request, response) => {
+  try {
+    console.log('here')
+    console.log(request.body)
+    //let { date, food, calories } = request.body;
+    //let id = request.session.user;
+    // error checking
+
+    //await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
+    response.status(200).redirect("/food-log");
+  } catch (e) {
+    console.error(e);
+    response.status(400).send();
+  }
+});
+
 module.exports = router;

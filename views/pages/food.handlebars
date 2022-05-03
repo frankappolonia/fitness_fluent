@@ -1,10 +1,17 @@
-<div id="food-log-container">
-    {{#> caloriesRemainingWidget}}
-    {{/caloriesRemainingWidget}}
+<div class="container" id="food-log-container">
+    
+    <div class="row">
+        <div class="col col-6">
+            <input class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
     <form method="post" id="food-log-form" action="/food-log/{{date}}">
         <div>
             <label for="date">Date</label>
-            <input class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}" />
+        <!--    <input class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}" /> -->
+            
             <label for="food">Food</label>
             <input class="form-control form-control-sm" type="text" id="food" name="food" />
             <label for="calories">Calories</label>
@@ -12,28 +19,44 @@
             
         </div>
 
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit">Enter Food</button>
     </form>
+    </div>
 
-    {{#if food.[0]}}
-    <table class="food-log">
-        <tr>
-            <th>Food</th>
-            <th>Calories</th>
-            <th>Delete</th>
-        </tr>
+    <div class="col">
+    <form method="post" id="food-journal">
+        <div>
+            <label for="foodItem">Food Database Search</label>
+            <input class="form-control form-control-sm" type="text" id="foodItem" name="foodItem"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Search Edamam Database</button>
+    </form>
+    <div id="food-journal-error"></div>
+    <div id="results-div"></div>
+    </div>
+    </div>
 
-        {{#each food}}
-        <tr id="row{{@index}}">
-            <td>{{this.foodName}}</td>
-            <td>{{this.calories}}</td>
-            <td><button id="{{@index}}">Delete</button></td>
-        </tr>
-        {{/each}}
-    </table>
-    {{/if}}
+    <div class="row">
+        <div class="col-6">
+        {{#if food.[0]}}
+            <table class="food-log">
+                <tr>
+                    <th>Food</th>
+                    <th>Calories</th>
+                    <th>Delete</th>
+                </tr>
 
+            {{#each food}}
+                <tr id="row{{@index}}">
+                    <td>{{this.foodName}}</td>
+                    <td>{{this.calories}}</td>
+                    <td><button id="{{@index}}">Delete</button></td>
+                </tr>
+            {{/each}}
+            </table>
+        {{/if}}
+        </div>
+    </div>
 </div>
-<div id="error">
-    <p>{{{error}}}</p>
-</div>
+<div id="error"> <p>{{{error}}}</p></div>
+
