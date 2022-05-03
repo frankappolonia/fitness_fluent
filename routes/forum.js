@@ -110,7 +110,7 @@ router.route('/:id')
             response.cookie("idCookie", JSON.stringify({userId: id, ogPoster: post.poster.id}))
             response.cookie('adminCookie', JSON.stringify(request.session.admin))
 
-            response.status(200).render("pages/testComments", {...authObj, ...post})
+            response.status(200).render("pages/comments", {...authObj, ...post})
 
         }catch(e){
             response.status(404).render("errors/404")
