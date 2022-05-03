@@ -1,6 +1,6 @@
-const { builtinModules } = require('module')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
+
 
 /**Functions for calculating nutrition information for the user (BMR, BMI, TDEE, Calories Needed for
  * goals, and Macronutrient info if we ge to that) */
@@ -72,9 +72,11 @@ function calculateAge(dob){
     return age
 }
 
+
+
 module.exports = {
     calculateBMR, 
     calculateTDE, 
     calculateCalsNeeded,
-    calculateAge
+    calculateAge,
 }

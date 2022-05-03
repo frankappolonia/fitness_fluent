@@ -5,6 +5,8 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
 const { ObjectId } = require('mongodb');
+const food = require('./foodFunctions')
+const exercise = require('./exerciseFunctions')
 
 //test comment
 /**Database functions for the Users Collection */
@@ -285,7 +287,27 @@ async function getOverallWeightProgress(id){
     return result
 }
 
+async function calculateDailyCaloriesRemaining(id, currentDate, foodCals, exerciseCals){
+    //1. validations 
+    if(arguments.length !== 2 ) throw "invalid number of arguments"
+    id = validations.checkId(id)
+    validations.exerciseFoodLogDateValidation(currentDate)
+    
+    //2. get cals
+    let netCals = foodCals - exerciseCals
 
+    //3. calculate remaining
+    let user = await getUserById(id)
+    if(! user) throw "User cannot be found!"
+    let remainingCals = user['totalDailyCalories'] - netCals
+
+    //4. update user
+    let usersCollection = await users()
+    await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyCaloriesRemaining: remainingCals}})
+    
+    return remainingCals
+
+}
 
 
 module.exports = {
@@ -296,5 +318,6 @@ module.exports = {
     logCurrentWeight,
     getWeights,
     getAllWeights,
-    getOverallWeightProgress
+    getOverallWeightProgress,
+    calculateDailyCaloriesRemaining,
 }

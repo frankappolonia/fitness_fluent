@@ -1,4 +1,3 @@
-const users = require('./users')
 const moment = require("moment");
 
 //local space to test db functions

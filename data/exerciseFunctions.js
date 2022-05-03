@@ -2,7 +2,11 @@ const db = require("../config");
 const users = db.usersCollection;
 const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
+const userFuncs = require('./users')
 const { ObjectId } = require("mongodb");
+const moment = require("moment");
+const food = require('./foodFunctions')
+
 
 async function addExercise(id, date, exerciseName, calories) {
 
@@ -14,11 +18,10 @@ async function addExercise(id, date, exerciseName, calories) {
   id = validations.checkId(id)
   validations.exerciseFoodLogDateValidation(date)
 
-  id = ObjectId(id);
   const newEntry = { exerciseName: exerciseName, calories: parseInt(calories) };
   const usersCollection = await users();
 
-  let user = await usersCollection.findOne({ _id: id });
+  let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
 
   let foundEntry = false;
@@ -29,7 +32,7 @@ async function addExercise(id, date, exerciseName, calories) {
       exerciseLog.exercises.push(newEntry);
       foundEntry = true;
       await usersCollection.updateOne(
-        { _id: id, "allExercises.date": date },
+        { _id: ObjectId(id), "allExercises.date": date },
         { $set: { "allExercises.$.exercises": exerciseLog.exercises } }
       );
     }
@@ -43,10 +46,22 @@ async function addExercise(id, date, exerciseName, calories) {
       exercises: [newEntry],
     };
     await usersCollection.updateOne(
-      { _id: id },
+      { _id: ObjectId(id) },
       { $push: { allExercises: exerciseEntry } }
     );
   }
+
+  //check if date is current date, and if so, update daily calories remaining
+  let currentDate = new Date().toString()
+  /** 
+  if (moment(date).format('YYYY-MM-DD') == moment(currentDate).format('YYYY-MM-DD')){
+    let foodCals = await food.calculateDailyFoodCalories(id, date)
+    let exerciseCals = await calculateDailyExerciseCalories(id, date)
+    await userFuncs.calculateDailyCaloriesRemaining(id, date, foodCals, exerciseCals)
+    return newEntry
+  }
+  */
+  
   return newEntry;
 }
 
