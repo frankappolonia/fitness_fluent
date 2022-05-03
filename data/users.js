@@ -5,8 +5,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
 const { ObjectId } = require('mongodb');
-const food = require('./foodFunctions')
-const exercise = require('./exerciseFunctions')
+
 
 //test comment
 /**Database functions for the Users Collection */
@@ -289,7 +288,7 @@ async function getOverallWeightProgress(id){
 
 async function calculateDailyCaloriesRemaining(id, currentDate, foodCals, exerciseCals){
     //1. validations 
-    if(arguments.length !== 2 ) throw "invalid number of arguments"
+    if(arguments.length !== 4 ) throw "invalid number of arguments"
     id = validations.checkId(id)
     validations.exerciseFoodLogDateValidation(currentDate)
     
