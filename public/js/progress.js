@@ -1,4 +1,6 @@
 
+
+
 /**Graph Stuff */
 let initialGraphData;
 const ctx = $('#myChart') 
@@ -213,5 +215,6 @@ function dateValidation(date){
     return
 
 }
+
 
 
