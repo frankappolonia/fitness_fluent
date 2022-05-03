@@ -1,9 +1,9 @@
 const db = require("../config");
 const users = db.usersCollection;
+const { ObjectId } = require('mongodb');
 const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
 const userFuncs = require('./users')
-const { ObjectId } = require("mongodb");
 const moment = require("moment");
 const food = require('./foodFunctions')
 
@@ -20,7 +20,7 @@ async function addExercise(id, date, exerciseName, calories) {
 
   const newEntry = { exerciseName: exerciseName, calories: parseInt(calories) };
   const usersCollection = await users();
-
+  
   let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
 
@@ -52,15 +52,14 @@ async function addExercise(id, date, exerciseName, calories) {
   }
 
   //check if date is current date, and if so, update daily calories remaining
-  let currentDate = new Date().toString()
-  /** 
+  let currentDate = new Date()
+   
   if (moment(date).format('YYYY-MM-DD') == moment(currentDate).format('YYYY-MM-DD')){
     let foodCals = await food.calculateDailyFoodCalories(id, date)
     let exerciseCals = await calculateDailyExerciseCalories(id, date)
     await userFuncs.calculateDailyCaloriesRemaining(id, date, foodCals, exerciseCals)
     return newEntry
   }
-  */
   
   return newEntry;
 }
@@ -98,10 +97,8 @@ async function removeExercise(id, date, exerciseEntry) {
   validations.exerciseFoodLogDateValidation(date)
   validations.checkCalories(exerciseEntry.calories)
 
-  id = ObjectId(id);
-
   const usersCollection = await users();
-  let user = await usersCollection.findOne({ _id: id });
+  let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
 
 
@@ -117,15 +114,25 @@ async function removeExercise(id, date, exerciseEntry) {
         }
       }
       await usersCollection.updateOne(
-        { _id: id, "allExercises.date": date },
+        { _id: ObjectId(id), "allExercises.date": date },
         { $set: { "allExercises.$.exercises": exerciseLog.exercises } }
       );
     
     }
   }
+  
   if (!foundEntry) {
     throw "Exercise entry not found!";
   }
+  
+
+   //check if date is current date, and if so, update daily calories remaining
+   let currentDate = new Date()
+   if (moment(date).format('YYYY-MM-DD') == moment(currentDate).format('YYYY-MM-DD')){
+     let foodCals = await food.calculateDailyFoodCalories(id, date)
+     let exerciseCals = await calculateDailyExerciseCalories(id, date)
+     await userFuncs.calculateDailyCaloriesRemaining(id, date, foodCals, exerciseCals)
+   }
 }
 
 async function calculateDailyExerciseCalories(id, currentDate) {
