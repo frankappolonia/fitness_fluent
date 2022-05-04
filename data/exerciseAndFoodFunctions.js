@@ -217,13 +217,14 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
     );
   }
 
-  //check if date is current date, and if so, update daily calories remaining
+  //check if date is current date, and if so, update daily calories remaining and macros
   let currentDate = new Date();
 
   if (
     moment(date).format("YYYY-MM-DD") ==
     moment(currentDate).format("YYYY-MM-DD")
   ) {
+    //updating calories
     let foodCals = await calculateDailyFoodCalories(id, date);
     let exerciseCals = await calculateDailyExerciseCalories(id, date);
 
@@ -233,6 +234,10 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
       foodCals,
       exerciseCals
     );
+
+    //updating macros
+    let foodsArray = await getFoodsByDate(id, date)
+    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray)
 
     return newEntry;
   }
@@ -294,6 +299,10 @@ async function removeFoodEntry(id, date, foodEntry) {
       foodCals,
       exerciseCals
     );
+    
+    //updating macros
+    let foodsArray = await getFoodsByDate(id, date)
+    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray)
   }
 }
 

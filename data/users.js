@@ -316,6 +316,51 @@ async function calculateDailyCaloriesRemaining(id, currentDate, foodCals, exerci
 
 }
 
+async function calculateDailyMacrosRemaining(id, currentDate, foodsArray){
+    //1. validations 
+    if(arguments.length !== 3 ) throw "invalid number of arguments"
+    id = validations.checkId(id)
+    validations.exerciseFoodLogDateValidation(currentDate)
+    if(!(Array.isArray(foodsArray))) throw "foods must be an array!"
+
+    //2. get user 
+    let usersCollection = await users()
+
+    let user = await getUserById(id)
+    if(! user) throw "User cannot be found!"
+
+    //3. get the total macro goal values
+    let totalDailyMacroGoal = nutritionFuncs.calculateMacroBreakdown(user.totalDailyCalories, user.dailyMacroBreakdown.carbs, user.dailyMacroBreakdown.fats, user.dailyMacroBreakdown.protein)
+ 
+    //4. check if the foods array for the day is empty
+    if(foodsArray.length === 0){
+        //if its empty, then the users macros will be just their initial breakdown with no food entered
+        await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyMacrosRemaining: totalDailyMacroGoal}})
+        return 
+    }
+
+    //5. otherwise, calculate how many macros are left by adding up whats in the food
+    let eatenCarbs = 0
+    let eatenProtein = 0
+    let eatenFat = 0
+
+    foodsArray.forEach(foodObj =>{
+        eatenCarbs += foodObj.carbs
+        eatenProtein += foodObj.protein
+        eatenFat += foodObj.fat
+    });
+
+    
+    totalDailyMacroGoal['carbs'] = totalDailyMacroGoal['carbs'] - eatenCarbs
+    totalDailyMacroGoal['protein'] =  totalDailyMacroGoal['protein'] - eatenProtein
+    totalDailyMacroGoal['fats'] = totalDailyMacroGoal['fats'] - eatenFat
+
+    //4. update user
+    await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyMacrosRemaining: totalDailyMacroGoal}})
+    return 
+
+}
+
 
 module.exports = {
     createUser,
@@ -326,5 +371,6 @@ module.exports = {
     getWeights,
     getAllWeights,
     getOverallWeightProgress,
-    calculateDailyCaloriesRemaining
+    calculateDailyCaloriesRemaining,
+    calculateDailyMacrosRemaining
 }
