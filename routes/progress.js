@@ -24,9 +24,8 @@ router.route('/')
 
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(id)
+            authObj = {...authObj, ...nutrients}
             //---------------------------------------
 
             //scripts

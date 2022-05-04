@@ -27,9 +27,8 @@ router.route('/') //route for all posts/forum home
             
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(id)
+            authObj = {...authObj, ...nutrients}
             authObj['css'] = "/public/css/forum_styles.css"
             //---------------------------------------
 
@@ -51,8 +50,8 @@ router.route('/new') //route for a new post
            
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
+            let nutrients = await userFuncs.getRemainingCalories(id)
+            authObj = {...authObj, ...nutrients}
             authObj['name'] = cals.name
 
             //---------------------------------------
@@ -97,9 +96,8 @@ router.route('/:id')
 
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(id)
+            authObj = {...authObj, ...nutrients}
             //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"
