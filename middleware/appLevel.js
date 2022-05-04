@@ -1,7 +1,9 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const static = express.static(__dirname + '/public');
+let path = require('path')
+
+const static = express.static(path.join(__dirname, '../', '/public'));
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
@@ -12,6 +14,13 @@ const handlebarsInstance = exphbs.create({
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
       return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+    eq: (exp1, exp2) =>{
+      return exp1 === exp2
+    },
+    getLastPoster: (comments) =>{
+      if(comments.length === 0){return "No comments yet"}
+      return "by " + comments[comments.length-1].poster.name
     }
   },
   partialsDir: ['views/partials/']
@@ -34,7 +43,7 @@ function expressSessionMiddleware(app){
           secret: "the most secret string ",
           resave: false,
           saveUninitialized: true,
-          cookie: { maxAge: 60000 }
+          cookie: { maxAge: 7200000 }
         })
       );
 

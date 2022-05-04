@@ -1,5 +1,9 @@
-const userFuncs = require('./users')
+const userFuncs = require("./users");
+const postFuncs = require("./posts");
+const exerciseFuncs = require("./exerciseAndFoodFunctions");
 
 module.exports = {
-    userFuncs: userFuncs
-}
+  userFuncs: userFuncs,
+  postFuncs: postFuncs,
+  exerciseFoodFuncs: exerciseFuncs,
+};

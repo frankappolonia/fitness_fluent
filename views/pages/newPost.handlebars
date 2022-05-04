@@ -1,0 +1,17 @@
+<div>
+    {{#if authenticated}}
+    {{#> caloriesRemainingWidget}}
+    {{/caloriesRemainingWidget}}
+    {{/if}} 
+    <h2>Create new post</h2>
+    <form method="post" id="new-post-form">
+            <div class="form-group">
+                <label for="title">Enter post title</label>
+                <input type="text" class="form-control" id="title" name="title" >
+                <label for="postBody">Post</label>
+                <input type="text" class="form-control" id="postBody" name="postBody">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+    </form>
+    <div id="new-post-error"></div>
+</div> 

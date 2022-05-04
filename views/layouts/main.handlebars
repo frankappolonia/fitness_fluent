@@ -1,24 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Nutrition App</title>
-    <link rel="stylesheet" href="/public/css/main_styles.css">
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>FitnessFluent</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/public/css/teststyles.css" rel="stylesheet" />
+        <link href="{{{css}}}" rel="stylesheet">
   </head>
   <body>
-    <div id="appContainer">
-      <header>
-          <h1>Nutrition App</h1>
-      </header>
+      <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+              <img id="home-logo" alt="fitness fluent company logo" src="/public/images/fitnessfluent.png">
+            </a>
+              <a class="navbar-brand" href="/">Home</a>
+                  {{#if authenticated}}
+                    <a class="navbar-brand" href="/profile">Profile</a>
+                    <a class="navbar-brand" href="/food-log">Food Journal</a>
+                    <a class="navbar-brand" href="/exercise-log">Exercise Journal</a>
+                    <a class="navbar-brand" href="/progress">Fitness Progress</a>
+                    <a class="navbar-brand" href="/forum">Forum</a>
+                    <a class="btn btn-primary" href="/logout">Logout</a>
+                    {{else}}
+                    <a class="btn btn-primary" href="/login">Login/Signup</a>
+                    {{/if}}
+          </div><!-- /.container-fluid -->
+        </nav>
+
+    <div id="body-container">
     {{{body}}}
-    <footer>
-        <p>Final Proj CS 546</p>
-    </footer>
     </div>
+
+    <footer>
+           <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; FitnessFluent 2022. CS546 Reserved.</p>
+                    </div>
+                    <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-facebook fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-twitter fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </footer>
      <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
       <script src={{{script}}}></script>
+      <script src={{{script2}}}></script>
+
+
+       <!-- Latest compiled and minified JavaScript -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
   </body>
 </html>

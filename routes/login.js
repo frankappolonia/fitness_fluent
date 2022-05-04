@@ -4,6 +4,7 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const userFuncs = require('../data')
 const db = userFuncs.userFuncs
+const xss = require('xss')
 
 //if the user is authenticated, redirect to home
 router.get('/', (request, response, next)=>{
@@ -17,38 +18,50 @@ router.get('/', (request, response, next)=>{
 //otherwise, do login route as normal
 router.route('/')
     .get(async(request, response) =>{
+        let authObj = {}
         try {
-            response.status(200).render('pages/login', {})
+            authObj['script'] = "/public/js/login.js"
+            authObj['script2'] = "/public/js/filler.js"
+            authObj['css'] = "/public/css/signup.css"
+            response.status(200).render('pages/login', authObj)
             
         } catch (e) {
-            response.status(404).json('404: ' + e)
-            
+            response.status(404).render('errors/404')
         }
     })
     .post(async(request, response)=>{
+        let authObj = {}
+        authObj['script'] = "/public/js/login.js"
+        authObj['script2'] = "/public/js/filler.js"
+        authObj['css'] = "/public/css/signup.css"
+
         //check if username and password are supplied in request body
         if(validations.checkRequestBody(request) === false){
-            let error = 'Error: Username or password left blank'
-            response.status(400).render('pages/login', {error})
+            response.status(400).render('pages/login', authObj)
             return
         }
 
         try {
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
-            let validateUser = await db.checkUser(username, password)
-            if (typeof(validateUser) === 'object'){
-                if('authenticated' in validateUser && validateUser['authenticated'] === true)
+            let validateUser = await db.checkUser(xss(username), xss(password))
+            if (validateUser.authenticated === true){
                     request.session.name = 'AuthCookie'
-                    request.session.user = username
+                    request.session.user = validateUser.userId
+                    request.session.admin = validateUser.admin
+                    response.clearCookie('adminCookie')
+                    response.cookie('adminCookie', request.session.admin)
                     response.status(200).redirect('/')
                     return
             }
-
-            
         } catch (e) {
-            let error = "Login failed! Reason: " + e
-            response.status(400).render('pages/login', {error})
+            let authObj = {}
+            authObj['script'] = "/public/js/login.js"
+            authObj['script2'] = "/public/js/filler.js"
+
+            authObj['css'] = "/public/css/signup.css"
+            authObj['error2'] = "Login failed! Reason: " + e
+            response.status(400).render('pages/login', authObj)
             return
             
         }
