@@ -1,29 +1,31 @@
 <!-- theme credit: https://startbootstrap.com/theme/landing-page-->
-{{#> caloriesRemainingWidget}}
-            {{/caloriesRemainingWidget}}
+{{#if authenticated}}
+    {{#> caloriesRemainingWidget}}
+    {{/caloriesRemainingWidget}}
+{{/if}}
 <!-- Masthead-->
 <div class="p-5 text-center bg-image"
-    style=" background-image: url('/public/images/headerStock.jpg'); background-size: 100%; background-repeat: no-repeat">
-<header class="masthead">
-    
-    <div class="container position-relative">
-        <div class="row justify-content-center">
-            <div class="col-xl-6">
-                <div class="text-center text-white">
-                    <!-- Page heading-->
-                    <h1 class="mb-5">Get started on your fitness journey today!</h1>
-                    {{#if authenticated}}
-                    <a class="btn btn-primary" href="/profile" role="button">Go to your nutrition profile!</a>
-                     {{else}}
-                    <a class="btn btn-primary" href="/login" role="button">Click here to signup or login!</a>
-                    {{/if}}
+    style="background-image: url('/public/images/headerStock.jpg'); background-size: 100%; background-repeat: no-repeat">
+    <header class="masthead">
+
+        <div class="container position-relative">
+            <div class="row justify-content-center">
+                <div class="col-xl-6">
+                    <div class="text-center text-white">
+                        <!-- Page heading-->
+                        <h1 class="mb-5">Get started on your fitness journey today!</h1>
+                        {{#if authenticated}}
+                        <a class="btn btn-primary" href="/profile" role="button">Go to your nutrition profile!</a>
+                        {{else}}
+                        <a class="btn btn-primary" href="/login" role="button">Click here to signup or login!</a>
+                        {{/if}}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 </div>
-            
+
 <!-- Icons Grid-->
 <section class="features-icons bg-light text-center">
     <div class="container">
@@ -32,14 +34,16 @@
                 <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                     <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
                     <h3>Easy to Use</h3>
-                    <p class="lead mb-0">Our simple food and exercise log interface makes tracking your goals painless!</p>
+                    <p class="lead mb-0">Our simple food and exercise log interface makes tracking your goals painless!
+                    </p>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                     <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
                     <h3>Smart Nutriton</h3>
-                    <p class="lead mb-0">Your nutrtion profile will be custom tailored specifially to suit your needs! </p>
+                    <p class="lead mb-0">Your nutrtion profile will be custom tailored specifially to suit your needs!
+                    </p>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -56,33 +60,43 @@
 <section class="showcase">
     <div class="container-fluid p-0">
         <div class="row g-0">
-            <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('/public/images/stockFood.jpg')"></div>
+            <div class="col-lg-6 order-lg-2 text-white showcase-img"
+                style="background-image: url('/public/images/stockFood.jpg')"></div>
             <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                 <h2>Food Log</h2>
-                <p class="lead mb-0">Every user has their own unique digital food journal. Here, you can enter the foods you ate on a particular
-        day, along with the number of calories they contained. This will provide you with an easy way to keep
-        track of your daily caloric requirements for your weight gain or weight loss goals. In addition, our 
-        FoodSmart reccomendation system will reccomend foods to you based upon the number of calories you 
-        have remaining on a particular day! </p>
+                <p class="lead mb-0">Every user has their own unique digital food journal. Here, you can enter the foods
+                    you ate on a particular
+                    day, along with the number of calories they contained. This will provide you with an easy way to
+                    keep
+                    track of your daily caloric requirements for your weight gain or weight loss goals. In addition, our
+                    FoodSmart reccomendation system will reccomend foods to you based upon the number of calories you
+                    have remaining on a particular day! </p>
             </div>
         </div>
         <div class="row g-0">
-            <div class="col-lg-6 text-white showcase-img" style="background-image: url('/public/images/fitnessStock.jpg')"></div>
+            <div class="col-lg-6 text-white showcase-img"
+                style="background-image: url('/public/images/fitnessStock.jpg')"></div>
             <div class="col-lg-6 my-auto showcase-text">
                 <h2>Exercise Log</h2>
-                <p class="lead mb-0">In addition to the capbility to log your daily food consumption, you will also have your own personal
-        exercise log. Here, you can enter all of the different exercises you completed in a particular day, and 
-        the number of calories you burned. When you enter exercise calories, it adjusts your daily caloric intake,
-        allowing you to eat more food and still meet your goals!</p>
+                <p class="lead mb-0">In addition to the capbility to log your daily food consumption, you will also have
+                    your own personal
+                    exercise log. Here, you can enter all of the different exercises you completed in a particular day,
+                    and
+                    the number of calories you burned. When you enter exercise calories, it adjusts your daily caloric
+                    intake,
+                    allowing you to eat more food and still meet your goals!</p>
             </div>
         </div>
         <div class="row g-0">
-            <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('/public/images/stockStats.jpg')"></div>
+            <div class="col-lg-6 order-lg-2 text-white showcase-img"
+                style="background-image: url('/public/images/stockStats.jpg')"></div>
             <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                 <h2>Visualize Progress Statistics</h2>
-                <p class="lead mb-0">Sometimes, its' hard to appreciate how far you've come when working towards a long term goal. That's why
-        FitnessFluent offers a progress page, where you can see a long term statistical display of your weight gain
-        or weight loss journey. </p>
+                <p class="lead mb-0">Sometimes, its' hard to appreciate how far you've come when working towards a long
+                    term goal. That's why
+                    FitnessFluent offers a progress page, where you can see a long term statistical display of your
+                    weight gain
+                    or weight loss journey. </p>
             </div>
         </div>
     </div>
@@ -103,7 +117,8 @@
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                     <img class="img-fluid rounded-circle mb-3" src="assets/img/testimonials-2.jpg" alt="..." />
                     <h5>Erica L.</h5>
-                    <p class="font-weight-light mb-0">"FitnessFluent is amazing. I've been using it to track my food while I prepare for a cheer competition."</p>
+                    <p class="font-weight-light mb-0">"FitnessFluent is amazing. I've been using it to track my food
+                        while I prepare for a cheer competition."</p>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -134,11 +149,15 @@
                     <!-- Email address input-->
                     <div class="row">
                         <div class="col">
-                            <input class="form-control form-control-lg" id="emailAddressBelow" type="email" placeholder="Email Address" data-sb-validations="required,email" />
-                            <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:required">Email Address is required.</div>
-                            <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:email">Email Address Email is not valid.</div>
+                            <input class="form-control form-control-lg" id="emailAddressBelow" type="email"
+                                placeholder="Email Address" data-sb-validations="required,email" />
+                            <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:required">Email
+                                Address is required.</div>
+                            <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:email">Email
+                                Address Email is not valid.</div>
                         </div>
-                        <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton2" type="submit">Submit</button></div>
+                        <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton2"
+                                type="submit">Submit</button></div>
                     </div>
                     <!-- Submit success message-->
                     <!---->
@@ -148,19 +167,19 @@
                         <div class="text-center mb-3">
                             <div class="fw-bolder">Form submission successful!</div>
                             <p>To activate this form, sign up at</p>
-                            <a class="text-white" href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                            <a class="text-white"
+                                href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                         </div>
                     </div>
                     <!-- Submit error message-->
                     <!---->
                     <!-- This is what your users will see when there is-->
                     <!-- an error submitting the form-->
-                    <div class="d-none" id="submitErrorMessage2"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                    <div class="d-none" id="submitErrorMessage2">
+                        <div class="text-center text-danger mb-3">Error sending message!</div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </section>
-
-
-    
