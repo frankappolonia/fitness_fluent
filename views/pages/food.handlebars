@@ -1,6 +1,6 @@
 <div class="container" id="food-log-container">
 
-    <div class="row justify-content-center">
+    <div class="food-log-intro row justify-content-center">
         <div class="col-md-6">
             <h2>Food Log</h2>
             <p>Welcome to your personal food log! Here, you can keep track of your daily caloric
@@ -10,68 +10,96 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="date-selector row justify-content-center">
         <div class="col-md-6">
             <h2>Select a Journal Date:</h2>
-            <input class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}"/>
+            <input form="food-log-form" class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}" />
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <h3>Custom Food</h3>
+            <h3>Enter Food</h3>
             <form method="post" id="food-log-form" action="/food-log/{{date}}">
-                <div>            
-                    <label for="food">Food</label>
-                    <input class="form-control form-control-sm" type="text" id="food" name="food" />
-                    <label for="calories">Calories</label>
-                    <input class="form-control form-control-sm" type="number" id="calories" name="calories" />      
+                <label for="food">Food</label>
+                <div class="input-group form-control-sm">
+                    <input type="text" id="food" name="food" class="form-control" />
+                    <button type="button" id="search" class="btn btn-primary">Search</button>
                 </div>
+
+                <label for="calories">Calories</label>
+                <input class="form-control" type="number" id="calories" name="calories" />
+                <label for="protein">Protein</label>
+                <input class="form-control" type="number" id="protein" name="protein" />
+                <label for="carbs">Carbs</label>
+                <input class="form-control" type="number" id="carbs" name="carbs" />
+                <label for="carbs">Fat</label>
+                <input class="form-control" type="number" id="fat" name="fat" />
+
                 <button class="btn btn-primary" type="submit">Enter Food</button>
             </form>
         </div>
-
         <div class="col">
-            <h3>Database Search</h3>
-            <form method="post" id="food-journal">
-                <div>
-                    <label for="foodItem">Food Database Search</label>
-                    <input class="form-control form-control-sm" type="text" id="foodItem" name="foodItem"/>
-                </div>
-                <button class="btn btn-primary" type="submit">Search Edamam Database</button>
-            </form>
+            <h3>Suggested Foods</h3>
+            <p class="search-help">Click search to get suggestions</p>
+
+            {{!-- <div id="suggestions" class="list-group"></div> --}}
+            <table class="table table-hover suggestion-table">
+                <caption>List of food results</caption>
+                <thead>
+                    <tr class="row-select">
+                        <th scope="col">Food</th>
+                        <th scope="col">Calories</th>
+                        <th scope="col">Protein</th>
+                        <th scope="col">Carbs</th>
+                        <th scope="col">Fat</th>
+                    </tr>
+                </thead>
+                <tbody id="suggestions">
+
+                </tbody>
+            </table>
             <div id="food-journal-error"></div>
             <div id="results-div"></div>
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-        <h3>Food Journal</h3>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
         {{#if food.[0]}}
-            <table class="table food-log table-striped table-bordered table-hover">
-                <thead class="thead-primary">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Food</th>
-                        <th scope="col">Calories</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <h3>Food Journal</h3>
+        <table class="table food-log table-striped table-bordered table-hover">
+            <thead class="thead-primary">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Food</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Protein</th>
+                    <th scope="col">Carbs</th>
+                    <th scope="col">Fat</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
                 {{#each food}}
                 <tr scope="row" id="row{{@index}}">
-                        <td>{{@index}}</td>
-                        <td>{{this.foodName}}</td>
-                        <td>{{this.calories}}</td>
-                        <td><button id="{{@index}}">Delete</button></td>
+                    <td>{{@index}}</td>
+                    <td>{{this.foodName}}</td>
+                    <td>{{this.calories}}</td>
+                    <td>{{this.protein}}</td>
+                    <td>{{this.carbs}}</td>
+                    <td>{{this.fat}}</td>
+                    <td><button class="delete" id="{{@index}}">Delete</button></td>
                 </tr>
-            {{/each}}
+                {{/each}}
             </tbody>
-            </table>
+        </table>
         {{/if}}
-        </div>
     </div>
 </div>
-<div id="error"> <p>{{{error}}}</p></div>
-
+</div>
+<div id="error">
+    <p>{{{error}}}</p>
+</div>
