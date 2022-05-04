@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const foodFunctions = data.exerciseFoodFuncs;
+const userFuncs = data.userFuncs
 const axios = require("axios");
 const moment = require("moment");
 
@@ -35,13 +36,21 @@ router.route("/:date?").get(async (request, response) => {
     if (!id) {
       throw "User not found!";
     }
+
+     //stuff for daily goals widget
+     let authObj = {}
+     authObj.authenticated = true        
+     let nutrients = await userFuncs.getRemainingCalories(id)
+     authObj = {...authObj, ...nutrients}
+     authObj['css'] = "/public/css/forum_styles.css"
+     //---------------------------------------
+
     let food = await foodFunctions.getFoodsByDate(id, dateString);
     response.status(200).render("pages/food", {
       food: food,
       date: dateString,
-      authenticated: true,
       script: "/public/js/foodLog.js",
-      css: "/public/css/foodlog.css",
+      ...authObj
     });
   } catch (e) {
     console.error(e);
@@ -86,22 +95,6 @@ router.route("/calories/:date").get(async (request, response) => {
     }
     let cals = await foodFunctions.calculateDailyFoodCalories(id, date);
     response.status(200).json(cals);
-  } catch (e) {
-    console.error(e);
-    response.status(400).send();
-  }
-});
-
-router.route("/database").post(async (request, response) => {
-  try {
-    console.log("here");
-    console.log(request.body);
-    //let { date, food, calories } = request.body;
-    //let id = request.session.user;
-    // error checking
-
-    //await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
-    response.status(200).redirect("/food-log");
   } catch (e) {
     console.error(e);
     response.status(400).send();
