@@ -45,9 +45,8 @@ router.route("/:date?").get(async (request, response) => {
     //stuff for daily goals widget
     let authObj = {}
     authObj.authenticated = true        
-    let cals = await userFuncs.getRemainingCalories(id)
-    authObj['calories'] = cals.cals
-    authObj['name'] = cals.name
+    let nutrients = await userFuncs.getRemainingCalories(id)
+    authObj = {...authObj, ...nutrients}
     authObj['css'] = "/public/css/forum_styles.css"
     //---------------------------------------
 

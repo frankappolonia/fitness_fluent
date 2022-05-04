@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/frankappolonia/nutritionApp_CS546#readme",
   "dependencies": {
+    "@khanacademy/tota11y": "^0.2.0",
     "axios": "^0.27.1",
     "babel-jest": "^27.5.1",
     "bcrypt": "^5.0.1",
@@ -28,6 +29,7 @@
     "moment": "^2.29.3",
     "mongodb": "^4.5.0",
     "nodemon": "^2.0.15",
+    "tota11y": "^0.1.6",
     "xss": "^1.0.11"
   },
   "devDependencies": {

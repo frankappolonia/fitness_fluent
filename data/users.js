@@ -37,6 +37,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let BMR = nutritionFuncs.calculateBMR(gender, height, initialWeight, age)
     let TDEE = nutritionFuncs.calculateTDE(activityLevel, gender, height, initialWeight, age)
     let calsNeeded = nutritionFuncs.calculateCalsNeeded(weeklyWeightGoal, TDEE)
+    let defaultDailyMacros = nutritionFuncs.calculateMacroBreakdown(calsNeeded, 0.4, 0.3, 0.3)
 
     //6. check if admin
     let adminBoolean = false
@@ -59,6 +60,8 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
         TDEE: TDEE,
         totalDailyCalories: calsNeeded,
         dailyCaloriesRemaining: calsNeeded,
+        dailyMacroBreakdown: {'carbs': 0.40, "fats": 0.30, 'protein': 0.30},
+        dailyMacrosRemaining: defaultDailyMacros,
         weightEntries: [{'date': new Date(), 'weight': initialWeight}],
         allFoods: [],
         allExercises: [],
@@ -133,8 +136,13 @@ async function getRemainingCalories(id){
     const user = await usersCollection.findOne({ _id: ObjectId(id) })
     if (user === null) throw "Error! No user with the specified ID is found!"
 
-    //4. Extract the daily remaining calories
-    let remainingCals = {cals: user['dailyCaloriesRemaining'], name: user['firstName'] + " "+ user['lastName']}
+    //4. Extract the daily remaining calories and macro info
+    let remainingCals = {calories: user['dailyCaloriesRemaining'], 
+                        name: user['firstName'] + " "+ user['lastName'],
+                        protein: user.dailyMacrosRemaining.protein,
+                        carbs: user.dailyMacrosRemaining.carbs,
+                        fats: user.dailyMacrosRemaining.fats
+                        }
     return remainingCals;
 }
 
