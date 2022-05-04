@@ -5,13 +5,17 @@ $(document).ready(function () {
     let children = $("#row" + id).children();
     if (children.length > 1) {
       let foodData = {
-        foodName: children[0].innerText,
-        calories: children[1].innerText,
+        foodName: children[1].innerText,
+        calories: children[2].innerText,
+        protein: children[3].innerText,
+        carbs: children[4].innerText,
+        fat: children[5].innerText,
       };
       let date = $("#date").val();
 
       $.ajax({ type: "DELETE", url: `/food-log/${date}`, data: foodData }).done(
         function (data, status) {
+          console.log(data)
           if (status !== "success") {
             alert("Error: " + status);
           } else {
@@ -23,16 +27,17 @@ $(document).ready(function () {
   });
 
   $("#date").change(function (e) {
-    console.log(e.target.value);
     location.replace(`/food-log/${e.target.value}`);
   });
 
   //food journal search functionality
   $("#search").click((event) => {
     event.preventDefault();
-    console.log("button clicked");
     let searchTerm = $("#food").val();
-
+    if (!searchTerm) {
+      alert("Please enter a valid food name");
+      return;
+    }
     $.ajax({
       type: "GET",
       url: `/food-log/search/${searchTerm}`,
@@ -71,7 +76,6 @@ function wow(event) {
   $("#calories").val(calories);
   $("#protein").val(protein);
   $("#carbs").val(carbs);
-  $('#fat').val(fat)
+  $("#fat").val(fat);
   $("#suggestions").children("tr").remove();
-  
 }
