@@ -52,7 +52,7 @@ router.route('/new') //route for a new post
             authObj.authenticated = true        
             let nutrients = await userFuncs.getRemainingCalories(id)
             authObj = {...authObj, ...nutrients}
-            authObj['name'] = cals.name
+            // authObj['name'] = nutrients.name
 
             //---------------------------------------
 

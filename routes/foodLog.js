@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const foodFunctions = data.exerciseFoodFuncs;
-const userFuncs = data.userFuncs
+const userFuncs = data.userFuncs;
 const axios = require("axios");
 const moment = require("moment");
 
@@ -37,20 +37,26 @@ router.route("/:date?").get(async (request, response) => {
       throw "User not found!";
     }
 
-     //stuff for daily goals widget
-     let authObj = {}
-     authObj.authenticated = true        
-     let nutrients = await userFuncs.getRemainingCalories(id)
-     authObj = {...authObj, ...nutrients}
-     authObj['css'] = "/public/css/forum_styles.css"
-     //---------------------------------------
+    //stuff for daily goals widget
+    let authObj = {};
+    authObj.authenticated = true;
+    let nutrients = await userFuncs.getRemainingCalories(id);
+    authObj = { ...authObj, ...nutrients };
+    authObj["css"] = "/public/css/forum_styles.css";
+    //---------------------------------------
 
     let food = await foodFunctions.getFoodsByDate(id, dateString);
+    console.log({
+      food: food,
+      date: dateString,
+      script: "/public/js/foodLog.js",
+      ...authObj,
+    });
     response.status(200).render("pages/food", {
       food: food,
       date: dateString,
       script: "/public/js/foodLog.js",
-      ...authObj
+      ...authObj,
     });
   } catch (e) {
     console.error(e);
@@ -64,7 +70,15 @@ router.route("/:date").post(async (request, response) => {
     let id = request.session.user;
     // error checking
 
-    await foodFunctions.addFoodEntry(id, date, food, parseInt(calories), parseInt(protein), parseInt(carbs), parseInt(fat));
+    await foodFunctions.addFoodEntry(
+      id,
+      date,
+      food,
+      parseInt(calories),
+      parseInt(protein),
+      parseInt(carbs),
+      parseInt(fat)
+    );
     response.status(200).redirect("/food-log");
   } catch (e) {
     console.error(e);
@@ -105,17 +119,17 @@ router.route("/search/:term").get(async (request, response) => {
   try {
     let food = request.params.term;
     const options = {
-      method: 'GET',
-      url: 'https://edamam-food-and-grocery-database.p.rapidapi.com/parser',
-      params: {ingr: food},
+      method: "GET",
+      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+      params: { ingr: food },
       headers: {
-        'X-RapidAPI-Host': 'edamam-food-and-grocery-database.p.rapidapi.com',
-        'X-RapidAPI-Key': 'e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6'
-      }
+        "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "X-RapidAPI-Key": "e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6",
+      },
     };
-    
-    let {data} = await axios.request(options)
-    let results = data.hints
+
+    let { data } = await axios.request(options);
+    let results = data.hints;
     response.status(200).json(results);
   } catch (e) {
     console.error(e);
