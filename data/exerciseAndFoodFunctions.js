@@ -174,10 +174,10 @@ async function calculateDailyExerciseCalories(id, currentDate) {
  ======================================================
     */
 
-async function addFoodEntry(id, date, foodName, calories) {
+async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
   // error checking
 
-  const newEntry = { foodName: foodName, calories: parseInt(calories) };
+  const newEntry = { foodName: foodName, calories: parseInt(calories), protein: parseInt(protein), carbs: parseInt(carbs), fat: parseInt(fat) };
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
@@ -270,7 +270,7 @@ async function removeFoodEntry(id, date, foodEntry) {
 
 async function calculateDailyFoodCalories(id, currentDate) {
     //1. validations
-    if(arguments.length !== 2) throw "Invalid number of argumets"
+    if(arguments.length !== 2) throw "Invalid number of arguments"
     validations.stringChecks([id, currentDate])
     validations.stringtrim(arguments)
     id = validations.checkId(id)
