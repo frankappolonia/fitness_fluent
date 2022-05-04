@@ -22,7 +22,6 @@
 
 .widget-user-image{
     padding-top: 1%;
-    width: 15%;
     margin: auto;
     display: block;
 }
@@ -47,4 +46,8 @@
 
 #forum-container{
     padding-top: 10%;
+}
+
+.nutrition-widget {
+    margin: auto;
 }
