@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const foodFunctions = data.exerciseFoodFuncs;
+const axios = require("axios");
 const moment = require("moment");
 
 //if the user is NOT authenticated, redirect to home
@@ -22,10 +23,7 @@ router.get("/:date?", (request, response, next) => {
 //---------------------------------------------------------------------
 
 router.route("/:date?").get(async (request, response) => {
- 
-
   try {
-
     let date = moment(request.params.date);
     let dateString = "";
     if (!date) {
@@ -53,11 +51,11 @@ router.route("/:date?").get(async (request, response) => {
 
 router.route("/:date").post(async (request, response) => {
   try {
-    let { date, food, calories } = request.body;
+    let { date, food, calories, protein, carbs, fat } = request.body;
     let id = request.session.user;
     // error checking
 
-    await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
+    await foodFunctions.addFoodEntry(id, date, food, parseInt(calories), parseInt(protein), parseInt(carbs), parseInt(fat));
     response.status(200).redirect("/food-log");
   } catch (e) {
     console.error(e);
@@ -96,14 +94,36 @@ router.route("/calories/:date").get(async (request, response) => {
 
 router.route("/database").post(async (request, response) => {
   try {
-    console.log('here')
-    console.log(request.body)
+    console.log("here");
+    console.log(request.body);
     //let { date, food, calories } = request.body;
     //let id = request.session.user;
     // error checking
 
     //await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
     response.status(200).redirect("/food-log");
+  } catch (e) {
+    console.error(e);
+    response.status(400).send();
+  }
+});
+
+router.route("/search/:term").get(async (request, response) => {
+  try {
+    let food = request.params.term;
+    const options = {
+      method: 'GET',
+      url: 'https://edamam-food-and-grocery-database.p.rapidapi.com/parser',
+      params: {ingr: food},
+      headers: {
+        'X-RapidAPI-Host': 'edamam-food-and-grocery-database.p.rapidapi.com',
+        'X-RapidAPI-Key': 'e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6'
+      }
+    };
+    
+    let {data} = await axios.request(options)
+    let results = data.hints
+    response.status(200).json(results);
   } catch (e) {
     console.error(e);
     response.status(400).send();
