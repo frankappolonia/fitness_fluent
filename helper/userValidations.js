@@ -296,15 +296,15 @@ function deleteFoodExerciseRouteValidation(requestBody){
 }
 
 function checkMacros(cals, carbs, fat, protein){
-    if(cals !== cals) throw "Admin code must be a number"
-    if(carbs !== carbs) throw "Admin code must be a number"
-    if(carbs !== carbs) throw "Admin code must be a number"
-    if(carbs !== carbs) throw "Admin code must be a number"
+    if(cals !== cals) throw "cals must be a number"
+    if(carbs !== carbs) throw "carbs must be a number"
+    if(fat !== fat) throw "fat must be a number"
+    if(protein !== protein) throw "protein must be a number"
 
     if (isNaN(parseFloat(cals))) throw "calories must be a number!"
-    if (isNaN(parseFloat(carbs))) throw "calories must be a number!"
-    if (isNaN(parseFloat(fat))) throw "calories must be a number!"
-    if (isNaN(parseFloat(protein))) throw "calories must be a number!"
+    if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
+    if (isNaN(parseFloat(fat))) throw "fat must be a number!"
+    if (isNaN(parseFloat(protein))) throw "protein must be a number!"
     if(cals%1 !== 0) throw "Calories must be a whole number!"
 
     if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0%! "

@@ -81,8 +81,7 @@ router.route("/:date").post(async (request, response) => {
     );
     response.status(200).redirect("/food-log");
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render('errors/400', {error: e});
   }
 });
 
