@@ -111,5 +111,10 @@ input::datetime-edit {
     color: transparent;
 }
 
-input[type=date]{ color: transparent; }
-input[type=date]:focus{ color: #000; }
+input[type=date]:invalid {
+    color: transparent;
+}
+
+input[type=date]:focus {
+    color: #000;
+}
