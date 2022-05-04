@@ -1,0 +1,43 @@
+
+#food-widget-header{
+    justify-content: center;
+    text-align: center;
+    background-color: #337ab7;
+}
+
+#widget-username{
+    font-size: x-large;
+    color: aliceblue;
+}
+
+.description-header{
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+.description-text{
+    font-size: large;
+    font-weight: lighter;
+}
+
+.widget-user-image{
+    padding-top: 1%;
+    width: 15%;
+    margin: auto;
+    display: block;
+}
+
+#widget-profile{
+    height: 60px;
+}
+
+.box-footer .description-block{
+    justify-content: center;
+    text-align: center;
+}
+
+.food-widget{
+    float: center;
+    clear: left;
+
+}
