@@ -71,6 +71,22 @@ function calculateAge(dob){
     return age
 }
 
+function calculateMacroBreakdown(dailyCals, carbs, fat, protein){
+    if (arguments.length !== 4) throw "Invalid number of arguments"
+    validations.checkMacros(dailyCals, carbs, fat, protein)
+
+    let carbCals = parseFloat(dailyCals) * parseFloat(carbs)
+    let fatCals = parseFloat(dailyCals) * parseFloat(fat)
+    let proteinCals = parseFloat(dailyCals) * parseFloat(protein)
+
+    let totalCarbs = Math.round(carbCals/4)
+    let totalFat = Math.round(fatCals/9)
+    let totalProtein = Math.round(proteinCals/4)
+
+    let macroBreakdown = {"carbs": totalCarbs, "fats": totalFat, "protein": totalProtein}
+    return macroBreakdown
+
+}
 
 
 module.exports = {
@@ -78,4 +94,5 @@ module.exports = {
     calculateTDE, 
     calculateCalsNeeded,
     calculateAge,
+    calculateMacroBreakdown
 }

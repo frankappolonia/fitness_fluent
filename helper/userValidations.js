@@ -295,6 +295,23 @@ function deleteFoodExerciseRouteValidation(requestBody){
     checkCalories(calories)
 }
 
+function checkMacros(cals, carbs, fat, protein){
+    if(cals !== cals) throw "Admin code must be a number"
+    if(carbs !== carbs) throw "Admin code must be a number"
+    if(carbs !== carbs) throw "Admin code must be a number"
+    if(carbs !== carbs) throw "Admin code must be a number"
+
+    if (isNaN(parseFloat(cals))) throw "calories must be a number!"
+    if (isNaN(parseFloat(carbs))) throw "calories must be a number!"
+    if (isNaN(parseFloat(fat))) throw "calories must be a number!"
+    if (isNaN(parseFloat(protein))) throw "calories must be a number!"
+    if(cals%1 !== 0) throw "Calories must be a whole number!"
+
+    if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0%! "
+    if (carbs > 1 || fat > 1 || protein > 1) throw "Cannot set a macro value above 100%"
+
+}
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -316,5 +333,6 @@ module.exports = {
     checkCalories,
     exerciseFoodLogDateValidation,
     exercisePostRouteValidation,
-    deleteFoodExerciseRouteValidation
+    deleteFoodExerciseRouteValidation,
+    checkMacros
 }
