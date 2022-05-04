@@ -2,3 +2,37 @@
     width: 90%;
     margin: auto
 }
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    padding: 0;
+}
+
+.input-group input {
+    flex: 1;
+}
+
+.input-group button {
+    flex: 0;
+}
+
+.food-log-intro {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.date-selector {
+    margin-bottom: 20px;
+}
+
+.suggestion-table {
+    max-height: 500px;
+}
+
+.row-select {
+    cursor: pointer;
+}
