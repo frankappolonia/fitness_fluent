@@ -3,8 +3,8 @@ $("button").click(function () {
     let children = $("#row" + id).children();
     if (children.length > 1) {
       let exerciseData = {
-        exerciseName: children[0].innerText,
-        calories: children[1].innerText,
+        exerciseName: children[1].innerText,
+        calories: children[2].innerText,
       };
       let date = $("#date").val();
   
