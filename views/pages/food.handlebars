@@ -25,26 +25,26 @@
             <form method="post" id="food-log-form" action="/food-log/{{date}}">
                 <label for="food">Food</label>
                 <div class="input-group">
-                    <input type="text" id="food" name="food" class="form-control" />
+                    <input type="text" id="food" name="food" class="form-control" minlength="1"/>
                     <button type="button" id="search" class="btn btn-primary">Search</button>
                 </div>
 
                 <label for="calories">Calories</label>
-                <input class="form-control" type="number" id="calories" name="calories" />
+                <input class="form-control" type="number" id="calories" name="calories" min="0" max="4000"/>
                 <label for="protein">Protein</label>
-                <input class="form-control" type="number" id="protein" name="protein" />
+                <input class="form-control" type="number" id="protein" name="protein" min="0" max="4000"/>
                 <label for="carbs">Carbs</label>
-                <input class="form-control" type="number" id="carbs" name="carbs" />
+                <input class="form-control" type="number" id="carbs" name="carbs" min="0" max="4000"/>
                 <label for="carbs">Fat</label>
-                <input class="form-control" type="number" id="fat" name="fat" />
+                <input class="form-control" type="number" id="fat" name="fat" min="0" max="4000"/>
 
                 <button class="btn btn-primary" type="submit">Enter Food</button>
                 <div id="food-entry-error"></div>
             </form>
         </div>
         <div class="col">
-            <h3>Suggested Foods</h3>
-            <p class="search-help">Click search to get suggestions</p>
+            <h3>Search Foods</h3>
+            <p class="search-help">Click the search button to get search results</p>
 
             {{!-- <div id="suggestions" class="list-group"></div> --}}
             <table class="table table-hover suggestion-table">
