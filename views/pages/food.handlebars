@@ -21,7 +21,7 @@
     </div>
 
     <div class="row">
-        <div class="col">
+        <div class="col col col-12 col-md-6">
             <h3>Enter Food</h3>
             <form method="post" id="food-log-form" action="/food-log/{{date}}">
                 <label for="food">Food</label>
@@ -43,7 +43,7 @@
                 <div id="food-entry-error"></div>
             </form>
         </div>
-        <div class="col">
+        <div class="col col col-12 col-md-6 scrollable">
             <h3>Search Foods</h3>
             <p class="search-help">Click the search button to get search results</p>
 
@@ -71,7 +71,7 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col sm-12 col-md-6">
         {{#if food.[0]}}
         <h3>Food Journal</h3>
         <table class="table food-log table-striped table-bordered table-hover">

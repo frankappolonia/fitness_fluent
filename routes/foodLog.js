@@ -46,7 +46,6 @@ router.route("/:date?").get(async (request, response) => {
     authObj.authenticated = true;
     let nutrients = await userFuncs.getRemainingCalories(id);
     authObj = { ...authObj, ...nutrients };
-    authObj["css"] = "/public/css/main_styles.css";
     let recommendations = await foodFunctions.getRecommendations(
       nutrients.calories
     );
@@ -58,6 +57,7 @@ router.route("/:date?").get(async (request, response) => {
       food: food,
       date: dateString,
       script: "/public/js/foodLog.js",
+      css: "/public/css/foodlog.css",
       ...authObj,
       recommendations: recommendations,
     });
