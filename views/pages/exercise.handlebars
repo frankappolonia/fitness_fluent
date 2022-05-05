@@ -37,6 +37,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Exercise</th>
                     <th scope="col">Calories</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody id="exercises">
@@ -44,8 +45,8 @@
                 <tr scope="row" id="row{{@index}}">
                     <td>{{@index}}</td>
                     <td>{{this.exerciseName}}</td>
-                      <td>{{this.calories}}</td>
-                      <td><button class "delete" id="{{@index}}">Delete</button></td>
+                    <td>{{this.calories}}</td>
+                    <td><button id="{{@index}}">Delete</button></td>
                 </tr>
                 {{/each}}
             </tbody>
