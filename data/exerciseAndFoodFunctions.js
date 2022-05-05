@@ -351,7 +351,7 @@ async function calculateDailyFoodCalories(id, currentDate) {
 function getRecommendations(calories) {
   //1. validations
   if (arguments.length !== 1) throw "Invalid number of arguments";
-  validations.checkCalories(calories);
+  validations.checkCalories2(calories);
   
   //2. get the recommendations
   let foods = [

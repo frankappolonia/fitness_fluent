@@ -135,7 +135,7 @@ function checkMacros(carbs, fat, protein){
   if(fat%1 !== 0) throw "Fat must be a whole number!"
 
   if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0! "
-  if(carbs >  300 || fat > 300 || protein > 300) throw "Max macro value is 300! "
+  if(carbs >  1000 || fat > 1000 || protein > 1000) throw "Max macro value is 1000! "
 
 
 }
@@ -146,7 +146,7 @@ function checkCalories(calories){
   if(calories % 1 !== 0) throw "Calories must be a whole number!"
   calories = parseInt(calories)
   if(typeof(calories) !== 'number') throw "Calories must be a number!"
-  if(calories > 2000) throw "Maximum calorie value is 2000!"
+  if(calories > 4000) throw "Maximum calorie value is 4000!"
 }
 
 function stringChecks(strings){

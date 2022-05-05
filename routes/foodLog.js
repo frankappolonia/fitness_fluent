@@ -78,10 +78,10 @@ router.route("/:date").post(async (request, response) => {
       id,
       date,
       food,
-      parseInt(calories),
-      parseInt(protein),
-      parseInt(carbs),
-      parseInt(fat)
+      parseInt(xss(calories)),
+      parseInt(xss(protein)),
+      parseInt(xss(carbs)),
+      parseInt(xss(fat))
     );
     response.status(200).redirect("/food-log");
   } catch (e) {
