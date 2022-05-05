@@ -285,7 +285,10 @@ async function removeFoodEntry(id, date, foodEntry) {
       for (food of foodLog.foods) {
         if (
           food.foodName == foodEntry.foodName &&
-          food.calories == foodEntry.calories
+          food.calories == foodEntry.calories &&
+          food.protein == foodEntry.protein &&
+          food.carbs == foodEntry.carbs &&
+          food.fat == foodEntry.fat
         ) {
           foodLog.foods.splice(foodLog.foods.indexOf(food), 1);
         }
@@ -366,8 +369,6 @@ function getRecommendations(calories) {
     {foodName: "Lentils", calories: 352, protein: 25, carbs: 64, fat: 1},
     {foodName: "Chicken Breast", calories: 172, protein: 21, carbs: 0, fat: 9},
   ];
-  console.log(calories, foods[0].calories <= calories )
-  
   let results = foods.filter(food => (food.calories <= calories));
 
   return results;
