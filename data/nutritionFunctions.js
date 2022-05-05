@@ -73,7 +73,7 @@ function calculateAge(dob){
 
 function calculateMacroBreakdown(dailyCals, carbs, fat, protein){
     if (arguments.length !== 4) throw "Invalid number of arguments"
-    validations.checkMacros(dailyCals, carbs, fat, protein)
+    validations.checkMacroGoal(dailyCals, carbs, fat, protein)
 
     let carbCals = parseFloat(dailyCals) * parseFloat(carbs)
     let fatCals = parseFloat(dailyCals) * parseFloat(fat)
