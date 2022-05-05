@@ -118,3 +118,10 @@ input[type=date]:invalid {
 input[type=date]:focus {
     color: #000;
 }
+
+#signup-error2{
+    padding-top: 5%;
+    padding-bottom: 5%;
+    color: rgb(186, 0, 0);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
