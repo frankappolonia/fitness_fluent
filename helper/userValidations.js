@@ -107,8 +107,9 @@ function dateValidation(date){
 function exerciseFoodLogDateValidation(date){
     //first checks if its a valid date
     dateValidation(date)
-    date = new Date(date)
-    if(date.getTime() > new Date().getTime()) throw "Cannot add entry later than the current date!"
+    date = moment(date).format("YYYY-MM-DD")
+    let currentDate = moment().format("YYYY-MM-DD");
+    if(date > currentDate) throw "Cannot access journal entry later than the current date!"
 }
 
 function heightWeightValidation(height, weight){
