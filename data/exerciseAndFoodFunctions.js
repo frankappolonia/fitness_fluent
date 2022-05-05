@@ -366,8 +366,6 @@ function getRecommendations(calories) {
     {foodName: "Lentils", calories: 352, protein: 25, carbs: 64, fat: 1},
     {foodName: "Chicken Breast", calories: 172, protein: 21, carbs: 0, fat: 9},
   ];
-  console.log(calories, foods[0].calories <= calories )
-  
   let results = foods.filter(food => (food.calories <= calories));
 
   return results;
