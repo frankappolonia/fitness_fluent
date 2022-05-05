@@ -47,7 +47,7 @@ router.route("/:date?").get(async (request, response) => {
     authObj.authenticated = true        
     let nutrients = await userFuncs.getRemainingCalories(id)
     authObj = {...authObj, ...nutrients}
-    authObj['css'] = "/public/css/forum_styles.css"
+    authObj['css'] = "/public/css/main_styles.css"
     //---------------------------------------
 
     //db call
@@ -72,7 +72,7 @@ router.route("/:date").post(async (request, response) => {
     let { date, exercise, calories } = request.body;
 
     //db call
-    await exerciseFunctions.addExercise(xss(id), xss(date), xss(exercise), xss(calories));
+    await exerciseFunctions.addExercise(xss(id), xss(date), xss(exercise), xss(parseInt(calories)));
     response.status(200).redirect("/exercise-log");
   } catch (e) {
     console.error(e);

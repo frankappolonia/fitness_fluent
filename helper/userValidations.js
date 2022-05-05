@@ -295,7 +295,7 @@ function deleteFoodExerciseRouteValidation(requestBody){
     checkCalories(calories)
 }
 
-function checkMacros(cals, carbs, fat, protein){
+function checkMacroGoal(cals, carbs, fat, protein){
     if(cals !== cals) throw "cals must be a number"
     if(carbs !== carbs) throw "carbs must be a number"
     if(fat !== fat) throw "fat must be a number"
@@ -310,6 +310,50 @@ function checkMacros(cals, carbs, fat, protein){
     if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0%! "
     if (carbs > 1 || fat > 1 || protein > 1) throw "Cannot set a macro value above 100%"
 
+}
+
+function checkMacros(carbs, fat, protein){
+    if(carbs !== carbs) throw "carbs must be a number"
+    if(fat !== fat) throw "fat must be a number"
+    if(protein !== protein) throw "protein must be a number"
+
+    if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
+    if (isNaN(parseFloat(fat))) throw "fat must be a number!"
+    if (isNaN(parseFloat(protein))) throw "protein must be a number!"
+    if(carbs%1 !== 0) throw "Carbs must be a whole number!"
+    if(protein%1 !== 0) throw "Protein must be a whole number!"
+    if(fat%1 !== 0) throw "Fat must be a whole number!"
+
+    if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0! "
+    if(carbs >  300 || fat > 300 || protein > 300) throw "Max macro value is 300! "
+
+
+}
+
+function checkNewFood(date, foodName, calories, protein, carbs, fat){
+    if(! date) throw "no date given"
+    if(! foodName) throw "no food given"
+    if(! calories) throw "no calories given"
+    if(! carbs) throw "no carbs given"
+    if(! fat) throw "no fat given"
+    if(! protein) throw "no protein given"
+
+    exerciseFoodLogDateValidation(date)
+    stringChecks([foodName])
+    checkCalories(calories)
+    checkMacros(carbs, protein, fat)
+
+}
+
+function postRouteCheckFood(requestBody){
+    if(! requestBody.date) throw "no date given"
+    if(! requestBody.food) throw "no food name given"
+    if(! requestBody.calories) throw "no calories given"
+    if(! requestBody.carbs) throw "no carbs given"
+    if(! requestBody.fat) throw "no fat given"
+    if(! requestBody.protein) throw "no protein given"
+
+    checkNewFood(requestBody.date, requestBody.food, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
 }
 
 module.exports = {
@@ -334,5 +378,7 @@ module.exports = {
     exerciseFoodLogDateValidation,
     exercisePostRouteValidation,
     deleteFoodExerciseRouteValidation,
-    checkMacros
+    checkMacroGoal,
+    checkNewFood,
+    postRouteCheckFood
 }
