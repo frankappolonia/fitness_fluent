@@ -9,6 +9,7 @@
         </div>
         <form id="signup-form" method="post">
         <div class="card two bg-white px-5 py-4 mb-3">
+            <div id="signup-error2" role="alert">{{{error}}}</div>
             <div class="form-group">
                 <input type="text" class="form-control" id="firstName" name="firstName" required>
                 <label class="form-control-placeholder" for="firstName">First Name</label>
@@ -34,7 +35,7 @@
                 <label class="form-control-placeholder" for="passwordCheck">Re-enter password</label>
             </div> 
             <div class="form-group">
-                <input type="number" class="form-control" id="adminCode"  name="adminCode" value="0" required>
+                <input type="text" class="form-control" id="adminCode"  name="adminCode" value="0" required>
                 <label class="form-control-placeholder" for="adminCode">Admin Code</label>
                 <p>Note: leave the default value as 0 if you are not an admin</p>
             </div>

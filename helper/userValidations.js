@@ -162,6 +162,7 @@ function adminCodeValidation(code){
     if(arguments.length !== 1) throw "Invalid number of arguments"
     if(code !== code) throw "Admin code must be a number"
     if(isNaN(parseInt(code))) throw "Admin code must be a number"
+
     if(code % 1 !== 0) throw "Admin code must be a whole number!"
     code = parseInt(code)
     if(typeof(code) !== 'number') throw "Admin code must be a number!"
@@ -212,9 +213,9 @@ function signUpRouteValidation(requestBody){
     if(! requestBody.weight) throw "No weight given!"
     if(! requestBody.gender) throw "No gender specified!"
     if(! requestBody.activityLevel) throw "No activty level given!"
-    if(! requestBody.goal) throw "No goal specified!"
+    if(! requestBody.goal === null || requestBody.goal === undefined) throw "No goal specified!"
     if (requestBody.password !== requestBody.passwordCheck) throw "Passwords do not match!"
-    if(! requestBody.adminCode) throw "Must either enter the admin code, or a 0 for regular users!"
+    if(requestBody.adminCode === null || requestBody.adminCode === undefined) throw "Must either enter the admin code, or a 0 for regular users!"
 
     createUserValidation(requestBody.firstName, requestBody.lastName, requestBody.email, requestBody.password,
         requestBody.dob,requestBody.height,requestBody.weight,requestBody.gender,requestBody.activityLevel, requestBody.goal, requestBody.adminCode )
