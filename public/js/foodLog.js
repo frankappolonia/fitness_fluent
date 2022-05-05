@@ -4,6 +4,8 @@ $(document).ready(function () {
     var id = $(this).attr("id");
     let children = $("#row" + id).children();
     if (children.length > 1) {
+    try{
+      $('#food-log-error').hide()
       let foodData = {
         foodName: children[1].innerText,
         calories: children[2].innerText,
@@ -11,7 +13,10 @@ $(document).ready(function () {
         carbs: children[4].innerText,
         fat: children[5].innerText,
       };
+
       let date = $("#date").val();
+      //validations
+      deleteRouteCheckFood(foodData, date)
 
       $.ajax({ type: "DELETE", url: `/food-log/${date}`, data: foodData }).done(
         function (data, status) {
@@ -23,7 +28,16 @@ $(document).ready(function () {
           }
         }
       );
+
+    }catch(e){
+      $('#food-log-error').show()
+      $('#food-log-error').empty()
+      $('#food-log-error').append("Error: " + e)
+
     }
+
+    }
+
   });
 
   $("#date").change(function (e) {
@@ -187,4 +201,15 @@ function exerciseFoodLogDateValidation(date){
   dateValidation(date)
   date = new Date(date)
   if(date.getTime() > new Date().getTime()) throw "Cannot use a date later than the current date!"
+}
+
+function deleteRouteCheckFood(requestBody, date){
+  if(! date) throw "No date given!"
+  if(! requestBody.foodName) throw "no food name given"
+  if(! requestBody.calories) throw "no calories given"
+  if(! requestBody.carbs) throw "no carbs given"
+  if(! requestBody.fat) throw "no fat given"
+  if(! requestBody.protein) throw "no protein given"
+
+  checkNewFood(date, requestBody.foodName, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
 }
