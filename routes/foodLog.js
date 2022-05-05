@@ -75,9 +75,9 @@ router.route("/:date").post(async (request, response) => {
     let { date, food, calories, protein, carbs, fat } = request.body;
 
     await foodFunctions.addFoodEntry(
-      id,
-      date,
-      food,
+      xss(id),
+      xss(date),
+      xss(food),
       parseInt(xss(calories)),
       parseInt(xss(protein)),
       parseInt(xss(carbs)),
@@ -92,16 +92,20 @@ router.route("/:date").post(async (request, response) => {
 router.route("/:date").delete(async (request, response) => {
   try {
     //validations
-
+    let id = validations.checkId(request.session.user)
+    validations.exerciseFoodLogDateValidation(request.params.date)
     let date = request.params.date;
+
     let food = request.body;
-    let id = request.session.user;
-    // error checking
-    await foodFunctions.removeFoodEntry(id, date, food);
+    validations.deleteRouteCheckFood(food, date)
+    
+    // sanataize contents of object
+    let sanataizedFood = {foodName: xss(food.foodName), calories: xss(food.calories), protein: xss(food.protein), carbs: xss(food.carbs), fat: xss(food.fat) }
+
+    await foodFunctions.removeFoodEntry(xss(id), xss(date), sanataizedFood);
     response.sendStatus(200);
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render('errors/400', {error: e});
   }
 });
 
@@ -109,7 +113,7 @@ router.route("/calories/:date").get(async (request, response) => {
   try {
     //validations
     let id = validations.checkId(request.session.user);
-    valdidations.exerciseFoodLogDateValidation(request.params.date);
+    validations.exerciseFoodLogDateValidation(request.params.date);
 
     let date = moment(request.params.date).format("YYYY-MM-DD");
 
@@ -144,8 +148,7 @@ router.route("/search/:term").get(async (request, response) => {
     let results = data.hints;
     response.status(200).json(results);
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render('errors/404');
   }
 });
 
