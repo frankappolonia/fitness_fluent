@@ -42,7 +42,7 @@ $('#exercise-log-form').submit((event =>{
   let calories = $('#calories').val()
 
   try {
-    $('#food-log-error').empty()
+    $('#exercise-log-error').empty()
     validateNewExercise(date, exercise, calories)
 
   } catch (error) {
