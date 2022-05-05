@@ -285,7 +285,10 @@ async function removeFoodEntry(id, date, foodEntry) {
       for (food of foodLog.foods) {
         if (
           food.foodName == foodEntry.foodName &&
-          food.calories == foodEntry.calories
+          food.calories == foodEntry.calories &&
+          food.protein == foodEntry.protein &&
+          food.carbs == foodEntry.carbs &&
+          food.fat == foodEntry.fat
         ) {
           foodLog.foods.splice(foodLog.foods.indexOf(food), 1);
         }
