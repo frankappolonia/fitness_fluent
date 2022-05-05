@@ -274,6 +274,7 @@ async function removeFoodEntry(id, date, foodEntry) {
   //1. validations
   if (arguments.length !== 3) throw "invalid number of arguments!";
   id = validations.checkId(id);
+  validations.checkNewFood(date, foodEntry.foodName, foodEntry.foodCals, foodEntry.protein, foodEntry.carbs, foodEntry.fat)
 
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: ObjectId(id) });
