@@ -374,7 +374,6 @@ function deleteRouteCheckFood(requestBody, date){
     if(! requestBody.fat) throw "no fat given"
     if(! requestBody.protein) throw "no protein given"
 
-    console.log("here3")
     checkNewFood(date, requestBody.foodName, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
 }
 
