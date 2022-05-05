@@ -348,6 +348,31 @@ async function calculateDailyFoodCalories(id, currentDate) {
   return caloriesEaten;
 }
 
+function getRecommendations(calories) {
+  //1. validations
+  if (arguments.length !== 1) throw "Invalid number of arguments";
+  validations.checkCalories(calories);
+  
+  //2. get the recommendations
+  let foods = [
+    {foodName: "Salmon", calories: 208, protein: 20, carbs: 4, fat: 13},
+    {foodName: "White Kidney Beans", calories: 77, protein: 5, carbs: 15, fat: 1},
+    {foodName: "Lettuce", calories: 26, protein: 2, carbs: 5, fat: 1},
+    {foodName: "Lean Beef", calories: 356, protein: 42, carbs: 1, fat: 9},
+    {foodName: "Tomato", calories: 36, protein: 2, carbs: 4, fat: 0},
+    {foodName: "Kelp", calories: 43, protein: 2, carbs: 10, fat: 1},
+    {foodName: "Grapefruit", calories: 33, protein: 1, carbs: 8, fat: 0},
+    {foodName: "Cottage Cheese", calories: 98, protein: 11, carbs: 3, fat: 4},
+    {foodName: "Lentils", calories: 352, protein: 25, carbs: 64, fat: 1},
+    {foodName: "Chicken Breast", calories: 172, protein: 21, carbs: 0, fat: 9},
+  ];
+  console.log(calories, foods[0].calories <= calories )
+  
+  let results = foods.filter(food => (food.calories <= calories));
+
+  return results;
+}
+
 module.exports = {
   addExercise,
   getExercisesByDate,
@@ -357,4 +382,5 @@ module.exports = {
   getFoodsByDate,
   removeFoodEntry,
   calculateDailyFoodCalories,
+  getRecommendations,
 };

@@ -1,4 +1,4 @@
- {{#> caloriesRemainingWidget}}
+{{#> caloriesRemainingWidget}}
 {{/caloriesRemainingWidget}}
 <div class="container" id="food-log-container">
 
@@ -15,7 +15,8 @@
     <div class="date-selector row justify-content-center">
         <div class="col-md-6">
             <h2>Select a Journal Date:</h2>
-            <input form="food-log-form" class="form-control form-control-sm" type="date" id="date" name="date" value="{{date}}" />
+            <input form="food-log-form" class="form-control form-control-sm" type="date" id="date" name="date"
+                value="{{date}}" />
         </div>
     </div>
 
@@ -25,18 +26,18 @@
             <form method="post" id="food-log-form" action="/food-log/{{date}}">
                 <label for="food">Food</label>
                 <div class="input-group">
-                    <input type="text" id="food" name="food" class="form-control" minlength="1"/>
+                    <input type="text" id="food" name="food" class="form-control" minlength="1" />
                     <button type="button" id="search" class="btn btn-primary">Search</button>
                 </div>
 
                 <label for="calories">Calories</label>
-                <input class="form-control" type="number" id="calories" name="calories" min="0" max="4000"/>
+                <input class="form-control" type="number" id="calories" name="calories" min="0" max="4000" />
                 <label for="protein">Protein</label>
-                <input class="form-control" type="number" id="protein" name="protein" min="0" max="4000"/>
+                <input class="form-control" type="number" id="protein" name="protein" min="0" max="4000" />
                 <label for="carbs">Carbs</label>
-                <input class="form-control" type="number" id="carbs" name="carbs" min="0" max="4000"/>
+                <input class="form-control" type="number" id="carbs" name="carbs" min="0" max="4000" />
                 <label for="carbs">Fat</label>
-                <input class="form-control" type="number" id="fat" name="fat" min="0" max="4000"/>
+                <input class="form-control" type="number" id="fat" name="fat" min="0" max="4000" />
 
                 <button class="btn btn-primary" type="submit">Enter Food</button>
                 <div id="food-entry-error"></div>
@@ -103,6 +104,39 @@
     </div>
 </div>
 </div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h3>Recommendations</h3>
+        {{#if recommendations.[0]}}
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-primary">
+                <tr>
+                    <th scope="col">Food</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Protein</th>
+                    <th scope="col">Carbs</th>
+                    <th scope="col">Fat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each recommendations}}
+                <tr scope="row">
+                    <td>{{this.foodName}}</td>
+                    <td>{{this.calories}}</td>
+                    <td>{{this.protein}}</td>
+                    <td>{{this.carbs}}</td>
+                    <td>{{this.fat}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p>No foods were found below your daily caloric limit.</p>
+        {{/if}}
+    </div>
+</div>
+
 <div id="error">
     <p>{{{error}}}</p>
 </div>
