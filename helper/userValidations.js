@@ -269,7 +269,6 @@ function checkCalories(calories){
     if(calories%1 !== 0) throw "Calories must be a whole number!"
     calories = parseInt(calories)
     if(typeof(calories) !== 'number') throw "Calories must be a number!"
-    if(calories < 1) throw "Calories must be a number greater than 1!"
     if(calories > 2000) throw "Maximum calorie value is 2000!"
 }
 
@@ -331,17 +330,17 @@ function checkMacros(carbs, fat, protein){
 }
 
 function checkNewFood(date, foodName, calories, protein, carbs, fat){
-    if(! date) throw "no date given"
-    if(! foodName) throw "no food given"
-    if(! calories) throw "no calories given"
-    if(! carbs) throw "no carbs given"
-    if(! fat) throw "no fat given"
-    if(! protein) throw "no protein given"
+    if(date === null || date === undefined) throw "no date given"
+    if(foodName === null || foodName === undefined) throw "no food given"
+    if(calories === null || calories === undefined) throw "no calories given"
+    if(carbs === null || carbs === undefined) throw "no carbs given"
+    if(fat === null || fat === undefined) throw "no fat given"
+    if(protein === null || protein === undefined) throw "no protein given"
 
     exerciseFoodLogDateValidation(date)
     stringChecks([foodName])
     checkCalories(calories)
-    checkMacros(carbs, protein, fat)
+    checkMacros(carbs, fat, protein)
 
 }
 

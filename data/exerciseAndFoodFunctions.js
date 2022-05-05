@@ -186,11 +186,10 @@ async function calculateDailyExerciseCalories(id, currentDate) {
     */
 
 async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
-
   //1. validations
-  if(arguments.length !== 7) throw "Invalid number of arguments!"
-  id = validations.checkId(id)
-  validations.checkNewFood(date, foodName, calories, protein, carbs, fat)
+  if (arguments.length !== 7) throw "Invalid number of arguments!";
+  id = validations.checkId(id);
+  validations.checkNewFood(date, foodName, calories, protein, carbs, fat);
 
   const newEntry = {
     foodName: foodName.trim(),
@@ -242,8 +241,8 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
     );
 
     //updating macros
-    let foodsArray = await getFoodsByDate(id, date)
-    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray)
+    let foodsArray = await getFoodsByDate(id, date);
+    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray);
 
     return newEntry;
   }
@@ -252,11 +251,10 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
 }
 
 async function getFoodsByDate(id, dateString) {
-
   //1. validations
-  if(arguments.length !== 2) throw "Invalid number of arguments"
-  id = validations.checkId(id)
-  validations.exerciseFoodLogDateValidation(dateString)
+  if (arguments.length !== 2) throw "Invalid number of arguments";
+  id = validations.checkId(id);
+  validations.exerciseFoodLogDateValidation(dateString);
 
   id = ObjectId(id);
 
@@ -273,12 +271,9 @@ async function getFoodsByDate(id, dateString) {
 }
 
 async function removeFoodEntry(id, date, foodEntry) {
-
   //1. validations
-  if (arguments.length !==3 ) throw "invalid number of arguments!"
-  id = validations.checkId(id)
-
-
+  if (arguments.length !== 3) throw "invalid number of arguments!";
+  id = validations.checkId(id);
 
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: ObjectId(id) });
@@ -320,10 +315,10 @@ async function removeFoodEntry(id, date, foodEntry) {
       foodCals,
       exerciseCals
     );
-    
+
     //updating macros
-    let foodsArray = await getFoodsByDate(id, date)
-    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray)
+    let foodsArray = await getFoodsByDate(id, date);
+    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray);
   }
 }
 
