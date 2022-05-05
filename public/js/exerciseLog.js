@@ -103,8 +103,8 @@ function dateValidation(date){
 function exerciseFoodLogDateValidation(date){
 //first checks if its a valid date
   dateValidation(date)
-  date = new Date(date)
-  if(date.getTime() > new Date().getTime()) throw "Cannot use a date later than the current date!"
+  //date = new Date(date)
+  if(compareDates(date) === false) throw "Cannot use a date later than the current date!"
 }
 
 function stringtrim(argsObj){
@@ -124,4 +124,25 @@ function stringChecks(strings){
       if(e.length < 1) throw "All strings must be at least 1 character!"
       
   });
+}
+
+function compareDates(date){
+  let currentDate = new Date(new Date().toLocaleDateString())
+  let enteredDate = new Date(new Date(date).toLocaleDateString())
+
+  console.log(currentDate)
+  console.log(enteredDate)
+
+  if (currentDate.getFullYear() < enteredDate.getFullYear()) return false
+
+  if (currentDate.getFullYear() === enteredDate.getFullYear()){
+
+      if(currentDate.getMonth() < enteredDate.getMonth()) return false
+      if(currentDate.getMonth() === enteredDate.getMonth()){
+          if(currentDate.getDate() < enteredDate.getDate()) return false
+      }
+    }
+
+  return true
+
 }
