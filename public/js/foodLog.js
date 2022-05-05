@@ -33,6 +33,7 @@ $(document).ready(function () {
   //food journal search functionality
   $("#search").click((event) => {
     event.preventDefault();
+    $("#suggestions").children("tr").remove();
     let searchTerm = $("#food").val();
     if (!searchTerm) {
       alert("Please enter a valid food name");
@@ -145,7 +146,6 @@ function checkCalories(calories){
   if(calories % 1 !== 0) throw "Calories must be a whole number!"
   calories = parseInt(calories)
   if(typeof(calories) !== 'number') throw "Calories must be a number!"
-  if(calories < 1) throw "Calories must be a number greater than 1!"
   if(calories > 2000) throw "Maximum calorie value is 2000!"
 }
 
