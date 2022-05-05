@@ -368,13 +368,14 @@ function postRouteCheckFood(requestBody){
 }
 
 function deleteRouteCheckFood(requestBody, date){
-    if(! requestBody.food) throw "no food name given"
+    if(! requestBody.foodName) throw "no food name given"
     if(! requestBody.calories) throw "no calories given"
     if(! requestBody.carbs) throw "no carbs given"
     if(! requestBody.fat) throw "no fat given"
     if(! requestBody.protein) throw "no protein given"
 
-    checkNewFood(date, requestBody.food, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
+    console.log("here3")
+    checkNewFood(date, requestBody.foodName, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
 }
 
 

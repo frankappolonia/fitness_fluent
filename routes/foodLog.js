@@ -101,11 +101,11 @@ router.route("/:date").delete(async (request, response) => {
     
     // sanataize contents of object
     let sanataizedFood = {foodName: xss(food.foodName), calories: xss(food.calories), protein: xss(food.protein), carbs: xss(food.carbs), fat: xss(food.fat) }
-    
+
     await foodFunctions.removeFoodEntry(xss(id), xss(date), sanataizedFood);
     response.sendStatus(200);
   } catch (e) {
-    response.status(400).render('pages/400', {error: e});
+    response.status(400).render('errors/400', {error: e});
   }
 });
 
