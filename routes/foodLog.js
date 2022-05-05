@@ -5,6 +5,10 @@ const foodFunctions = data.exerciseFoodFuncs;
 const userFuncs = data.userFuncs;
 const axios = require("axios");
 const moment = require("moment");
+const errorHandling = require('../helper')
+const validations = errorHandling.userValidations
+const xss = require('xss');
+
 
 //if the user is NOT authenticated, redirect to home
 router.get("/", (request, response, next) => {
@@ -21,37 +25,37 @@ router.get("/:date?", (request, response, next) => {
     next();
   }
 });
+
+
 //---------------------------------------------------------------------
+
 
 router.route("/:date?").get(async (request, response) => {
   try {
-    let date = moment(request.params.date);
+    //validations
+    let id = validations.checkId(request.session.user);
+    let date = request.params.date;
     let dateString = "";
+
     if (!date) {
       dateString = moment().format("YYYY-MM-DD");
+
     } else {
+      validations.exerciseFoodLogDateValidation(request.params.date)
       dateString = moment(date).format("YYYY-MM-DD");
     }
-    let id = request.session.user;
-    if (!id) {
-      throw "User not found!";
-    }
+
 
     //stuff for daily goals widget
     let authObj = {};
     authObj.authenticated = true;
     let nutrients = await userFuncs.getRemainingCalories(id);
     authObj = { ...authObj, ...nutrients };
-    authObj["css"] = "/public/css/forum_styles.css";
+    authObj["css"] = "/public/css/main_styles.css";
     //---------------------------------------
 
-    let food = await foodFunctions.getFoodsByDate(id, dateString);
-    console.log({
-      food: food,
-      date: dateString,
-      script: "/public/js/foodLog.js",
-      ...authObj,
-    });
+    let food = await foodFunctions.getFoodsByDate(xss(id), xss(dateString));
+  
     response.status(200).render("pages/food", {
       food: food,
       date: dateString,
@@ -59,35 +63,38 @@ router.route("/:date?").get(async (request, response) => {
       ...authObj,
     });
   } catch (e) {
-    console.error(e);
-    response.status(404).render("errors/404");
+    response.status(400).render("errors/400", {error: e});
   }
 });
 
 router.route("/:date").post(async (request, response) => {
   try {
+    //validations
+    let id = validations.checkId(request.session.user);
+    validations.postRouteCheckFood(request.body)
+
     let { date, food, calories, protein, carbs, fat } = request.body;
-    let id = request.session.user;
-    // error checking
 
     await foodFunctions.addFoodEntry(
-      id,
-      date,
-      food,
-      parseInt(calories),
-      parseInt(protein),
-      parseInt(carbs),
-      parseInt(fat)
+      xss(id),
+      xss(date),
+      xss(food),
+      xss(parseInt(calories)),
+      xss(parseInt(protein)),
+      xss(parseInt(carbs)),
+      xss(parseInt(fat))
     );
     response.status(200).redirect("/food-log");
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render('errors/400', {error: e});
   }
 });
 
 router.route("/:date").delete(async (request, response) => {
   try {
+
+    //valiadtions
+
     let date = request.params.date;
     let food = request.body;
     let id = request.session.user;
@@ -102,22 +109,28 @@ router.route("/:date").delete(async (request, response) => {
 
 router.route("/calories/:date").get(async (request, response) => {
   try {
-    let date = request.params.date;
-    let id = request.session.user;
-    if (!id) {
-      throw "User not found!";
-    }
-    let cals = await foodFunctions.calculateDailyFoodCalories(id, date);
+
+    //validations
+    let id = validations.checkId(request.session.user)
+    valdidations.exerciseFoodLogDateValidation(request.params.date);
+
+    let date = moment(request.params.date).format("YYYY-MM-DD");
+   
+    let cals = await foodFunctions.calculateDailyFoodCalories(xss(id), xss(date));
+
     response.status(200).json(cals);
+
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render('errors/400', {error: e});
   }
 });
 
 router.route("/search/:term").get(async (request, response) => {
   try {
-    let food = request.params.term;
+    //validations
+    validations.stringChecks([request.params.term])
+
+    let food = xss(request.params.term);
     const options = {
       method: "GET",
       url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",

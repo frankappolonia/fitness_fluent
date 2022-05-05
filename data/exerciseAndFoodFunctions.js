@@ -186,18 +186,24 @@ async function calculateDailyExerciseCalories(id, currentDate) {
     */
 
 async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
-  // error checking
+
+  //1. validations
+  if(arguments.length !== 7) throw "Invalid number of arguments!"
+  id = validations.checkId(id)
+  validations.checkNewFood(date, foodName, calories, protein, carbs, fat)
 
   const newEntry = {
-    foodName: foodName,
+    foodName: foodName.trim(),
     calories: parseInt(calories),
     protein: parseInt(protein),
     carbs: parseInt(carbs),
     fat: parseInt(fat),
   };
+
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
+
   let foundEntry = false;
   for (foodLog of user.allFoods) {
     if (foodLog.date === date) {
@@ -217,13 +223,14 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
     );
   }
 
-  //check if date is current date, and if so, update daily calories remaining
+  //check if date is current date, and if so, update daily calories remaining and macros
   let currentDate = new Date();
 
   if (
     moment(date).format("YYYY-MM-DD") ==
     moment(currentDate).format("YYYY-MM-DD")
   ) {
+    //updating calories
     let foodCals = await calculateDailyFoodCalories(id, date);
     let exerciseCals = await calculateDailyExerciseCalories(id, date);
 
@@ -234,6 +241,10 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
       exerciseCals
     );
 
+    //updating macros
+    let foodsArray = await getFoodsByDate(id, date)
+    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray)
+
     return newEntry;
   }
 
@@ -241,10 +252,18 @@ async function addFoodEntry(id, date, foodName, calories, protein, carbs, fat) {
 }
 
 async function getFoodsByDate(id, dateString) {
+
+  //1. validations
+  if(arguments.length !== 2) throw "Invalid number of arguments"
+  id = validations.checkId(id)
+  validations.exerciseFoodLogDateValidation(dateString)
+
   id = ObjectId(id);
+
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: id });
   if (!user) throw `User not found! ${id}`;
+
   for (foodLog of user.allFoods) {
     if (foodLog.date == dateString) {
       return foodLog.foods;
@@ -254,6 +273,13 @@ async function getFoodsByDate(id, dateString) {
 }
 
 async function removeFoodEntry(id, date, foodEntry) {
+
+  //1. validations
+  if (arguments.length !==3 ) throw "invalid number of arguments!"
+  id = validations.checkId(id)
+
+
+
   const usersCollection = await users();
   let user = await usersCollection.findOne({ _id: ObjectId(id) });
   if (!user) throw "User not found!";
@@ -294,6 +320,10 @@ async function removeFoodEntry(id, date, foodEntry) {
       foodCals,
       exerciseCals
     );
+    
+    //updating macros
+    let foodsArray = await getFoodsByDate(id, date)
+    await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray)
   }
 }
 
