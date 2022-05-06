@@ -5,6 +5,8 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
 const { ObjectId } = require('mongodb');
+const moment = require("moment");
+
 
 
 //test comment
@@ -192,6 +194,7 @@ async function getWeights(id, startDate, endDate){
     validations.dateValidation(endDate)
     startDate = new Date(startDate)
     endDate = new Date(endDate)
+
     if (startDate.getTime() > endDate.getTime()) throw "Start date can't be before end date!"
 
 
@@ -201,6 +204,8 @@ async function getWeights(id, startDate, endDate){
     //3. Query the collection for a user with the specified ID
     const user = await usersCollection.findOne({ _id: ObjectId(id) })
     if (user === null) throw "Error! No user with the specified ID is found!"
+    if (user['weightEntries'].length === 0 ) throw "no weights found on record!"
+
 
     //4. Get weight info
     let data = {
@@ -255,6 +260,8 @@ async function getAllWeights(id){
         weights: [], 
         dates: []
     }
+
+    if (user['weightEntries'].length === 0 ) throw "no weights found on record!"
 
     user['weightEntries'].forEach(entry => {
         data.dates.push(entry.date)
