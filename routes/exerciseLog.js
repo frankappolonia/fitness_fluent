@@ -49,12 +49,13 @@ router.route("/:date?").get(async (request, response) => {
     authObj = {...authObj, ...nutrients}
     authObj['css'] = "/public/css/main_styles.css"
     //---------------------------------------
-
     //db call
     let exercise = await exerciseFunctions.getExercisesByDate(xss(id), xss(dateString));
+    let totalCalories = await exerciseFunctions.calculateDailyExerciseCalories(xss(id), xss(dateString));
     response.status(200).render("pages/exercise", {
       exercise: exercise,
       date: dateString,
+      exerciseCals: totalCalories,
       script: "/public/js/exerciseLog.js",
       ...authObj
     });
