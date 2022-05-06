@@ -47,7 +47,7 @@ router.route("/:date?").get(async (request, response) => {
     authObj.authenticated = true        
     let nutrients = await userFuncs.getRemainingCalories(id)
     authObj = {...authObj, ...nutrients}
-    authObj['css'] = "/public/css/main_styles.css"
+    authObj['css'] = "/public/css/foodlog.css"
     //---------------------------------------
     //db call
     let exercise = await exerciseFunctions.getExercisesByDate(xss(id), xss(dateString));
