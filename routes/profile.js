@@ -29,9 +29,27 @@ router.route("/").get(async (request, response) => {
         //---------------------------------------
 
         let user = await userFuncs.getUserById(xss(id));
+        let firstName = user.firstName;
+        let lastName = user.lastName;
+        let email = user.email;
+        let dob = user.dob;
+        let activityLevel = user.activityLevel;
+        let weeklyWeightGoal = user.weeklyWeightGoal;
+        let height = user.height;
+        let allWeights = await userFuncs.getAllWeights(id);
+        let currentWeight = allWeights.weights[allWeights.weights.length - 1];
 
         response.status(200).render("pages/profile", {
             script: "/public/js/profile.js",
+            css: "/public/css/profile.css",
+            firstName,
+            lastName,
+            email,
+            dob,
+            activityLevel,
+            weeklyWeightGoal,
+            height,
+            currentWeight,
             ...authObj
         })
     } catch (e) {
