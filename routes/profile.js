@@ -30,8 +30,13 @@ router.route("/")
 
             let user = await userFuncs.getUserById(xss(id));
 
-            response.status(200).render("pages/profile", authObj)
+            response.status(200).render("pages/profile", {
+                script: "/public/js/profile.js",
+                ...authObj
+            })
         } catch (e) {
             response.status(400).render("errors/400", {error: e});
         }
     })
+
+module.exports = router;
