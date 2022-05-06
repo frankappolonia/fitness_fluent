@@ -86,15 +86,20 @@ $('#progress-form').submit((event=>{
                 let weightChange = response.weightChange
                 let descriptor = response.descriptor
                 let htmlDescriptor
-                if(weightChange == 0){
+                if(response.weightChange === null || response.weightChange === undefined){
+                    $('#results-div').empty()
+                }
+                else if(weightChange == 0){
                     htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} your weight! There was no change!</p>`)
+                    $('#results-div').empty()
+                    $('#results-div').append(htmlDescriptor)
                 }
-                else{
+                else {
                     htmlDescriptor = $(`<p>Between the dates ${startDate} and ${endDate}, you have ${descriptor} ${weightChange} pounds!</p>`)
+                    $('#results-div').empty()
+                    $('#results-div').append(htmlDescriptor)
                 }
-                $('#results-div').empty()
-                $('#results-div').append(htmlDescriptor)
-  
+             
             },
             error: (response)=>{
               $('#progress-graph-error').append(response)
