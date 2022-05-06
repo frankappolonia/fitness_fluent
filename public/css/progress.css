@@ -1,0 +1,50 @@
+h1, h2, h3, p{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+
+}
+
+
+h1{
+    text-align: center;
+    font-size: xx-large;
+}
+
+h2{
+    text-align: center;
+    font-size: x-large;
+}
+
+h3{
+    text-align: center;
+    font-size: larger;
+}
+
+#progressTitle{
+    padding-top: 10px;
+}
+
+#results-div{
+    color: rgb(36, 104, 241);
+}
+#progress-graph-error{
+    background-color: rgb(245, 155, 155);
+    color: rgb(160, 0, 0);
+    border: rgb(255, 99, 99);
+}
+
+.date-selector {
+    margin-bottom: 20px;
+}
+
+.row-select {
+    cursor: pointer;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    max-height: 500px;
+}
+
+body {
+    overflow-x: clip;
+}
