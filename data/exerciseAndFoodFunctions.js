@@ -325,7 +325,6 @@ async function removeFoodEntry(id, date, foodEntry) {
     await userFuncs.calculateDailyMacrosRemaining(id, date, foodsArray);
   }
 }
-
 async function calculateDailyFoodCalories(id, currentDate) {
   //1. validations
   if (arguments.length !== 2) throw "Invalid number of arguments";
