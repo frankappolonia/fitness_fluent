@@ -99,6 +99,7 @@ async function getExercisesByDate(id, dateString) {
 async function removeExercise(id, date, exerciseEntry) {
   //1. validations
   if (arguments.length !== 3) throw "Invalid number of arguments";
+  if(exerciseEntry.constructor !== Object) throw "exerciseEntry must be an object! "
   validations.stringChecks([id, date, exerciseEntry.exerciseName]);
   validations.stringtrim(arguments);
   id = validations.checkId(id);
@@ -274,6 +275,7 @@ async function removeFoodEntry(id, date, foodEntry) {
   //1. validations
   if (arguments.length !== 3) throw "invalid number of arguments!";
   id = validations.checkId(id);
+  if(foodEntry.constructor !== Object) throw "foodEntry must be an object! "
   validations.checkNewFood(date, foodEntry.foodName, foodEntry.calories, foodEntry.protein, foodEntry.carbs, foodEntry.fat)
 
   const usersCollection = await users();
