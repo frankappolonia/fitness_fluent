@@ -1,57 +1,61 @@
  {{#> caloriesRemainingWidget}}
   {{/caloriesRemainingWidget}}
+
 <div class="container" id="exercise-log-container">
-  <div class="exercise-log-intro row justify-content-center">
+  <div class="food-log-intro row justify-content-center">
         <div class="col-md-6">
-            <h2>Exercise Log</h2>
+            <h1>Exercise Log</h1>
             <p>Welcome to your Exercise Log! In addition to the capbility to log your daily food consumption, you will also have your own personal exercise log. Here, you can enter all of the different exercises you completed in a particular day, and the number of calories you burned. When you enter exercise calories, it adjusts your daily caloric intake, allowing you to eat more food and still meet your goals!
             </p>
         </div>
     </div>
- <div class="row justify-content-center">
-    <div class="col-md-6"> 
-      <h3>Calories burned today:{{exerciseCals}}</h3>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6 card"> 
+      <h2 class="calsBurned">Calories burned today: <di id="calsBurned">{{exerciseCals}}</div></h2>
     </div>
-</div>
+  </div>
+
   <div class="row justify-content-center">
     <div class="col-md-6">
-  <h3>Enter an Exercise</h3>
-  <form method="post" id="exercise-log-form" action="/exercise-log/{{date}}">
-    <label for="date">Date</label>
-    <input type="date" id="date" name="date" value="{{date}}" />
-    <br>
-    <label for="exercise">Exercise</label>
-    <input type="text" id="exercise" name="exercise" />
-    <br>
-    <label for="calories">Calories</label>
-    <input type="number" id="calories" name="calories" />
+      <h3 id="enter-exercise">Enter an Exercise: </h3>
+      <form method="post" id="exercise-log-form" action="/exercise-log/{{date}}">
+        <label for="date">Select a journal date</label>
+        <input class="form-control" type="date" id="date" name="date" value="{{date}}" />
+        <br>
+        <label for="exercise">Exercise</label>
+        <input class="form-control" type="text" id="exercise" name="exercise" />
+        <br>
+        <label for="calories">Calories</label>
+        <input class="form-control" type="number" id="calories" name="calories" />
 
-    <button type="submit">Submit</button>
-  </form>
-  <div id="exercise-log-error">
-    <p>{{{error}}}</p>
-  </div>
-  </div>
+        <button type="submit">Submit</button>
+      </form>
+      <div id="exercise-log-error">
+        <p>{{{error}}}</p>
+      </div>
+    </div>
+
     <div class="row justify-content-center">
-    <div class="col-md-6">
+      <div class="col-md-6">
         {{#if exercise.[0]}}
         <h3>Logged Exercises</h3>
         <table class="table exercise-log table-striped table-bordered table-hover">
             <thead class="thead-primary">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Exercise</th>
-                    <th scope="col">Calories</th>
-                    <th scope="col">Delete</th>
+                  <th scope="col">#</th>
+                  <th scope="col">Exercise</th>
+                  <th scope="col">Calories</th>
+                  <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody id="exercises">
                 {{#each exercise}}
                 <tr scope="row" id="row{{@index}}">
-                    <td>{{@index}}</td>
-                    <td>{{this.exerciseName}}</td>
-                    <td>{{this.calories}}</td>
-                    <td><button id="{{@index}}">Delete</button></td>
+                  <td>{{@index}}</td>
+                  <td>{{this.exerciseName}}</td>
+                  <td>{{this.calories}}</td>
+                  <td><button id="{{@index}}">Delete</button></td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -62,20 +66,3 @@
 </div>
 </div>
 
-<div>
-   <table class="exercise-log">
-    <tr>
-      <th>Exercise </th>
-      <th>Calories </th>
-      <th>Delete </th>
-    </tr>
-
-    {{#each exercise}}
-      <tr id="row{{@index}}">
-        <td>{{this.exerciseName}}</td>
-        <td>{{this.calories}}</td>
-        <td><button id="{{@index}}">Delete</button></td>
-      </tr>
-    {{/each}}
-  </table>
-</div>
