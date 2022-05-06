@@ -1,3 +1,33 @@
+h1, h2, h3, p{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+
+}
+
+#calsBurned{
+    color: red;
+}
+
+#enter-exercise{
+    padding-top: 10%;
+    padding-bottom: 1%;
+    color: rgb(36, 104, 241);
+    font-size: x-large;
+}
+h1{
+    text-align: center;
+    font-size: xx-large;
+}
+
+h2{
+    text-align: center;
+    font-size: x-large;
+}
+
+h3{
+    text-align: center;
+    font-size: larger;
+}
+
 .food-log-intro {
     margin-top: 20px;
     margin-bottom: 20px;
