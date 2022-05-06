@@ -31,7 +31,7 @@ router.route('/')
             //scripts
             authObj['script2'] = '/public/js/progress.js'
             authObj['script'] = "https://cdn.jsdelivr.net/npm/chart.js"
-            authObj['css'] = "/public/css/main_styles.css"
+            authObj['css'] = "/public/css/progress.css"
             
             //this gets their overall weight progress when the page is initially loaded
             let weightProgress = await userFuncs.getOverallWeightProgress(id)
