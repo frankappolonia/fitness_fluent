@@ -11,10 +11,10 @@ editProfile.submit((event =>{
     let goal = $('select[name=goal] option').filter(':selected').val()
     
     profileUpdateValidation(firstName, lastName, height, activityLevel, goal)
-
+    
     $.ajax({
-        method: "patch",
-        url: '/editProfile',
+        method: "PATCH",
+        url: '/profile/editProfile',
         contentType: 'application/json',
         data: JSON.stringify({
           firstName: firstName,
@@ -24,9 +24,12 @@ editProfile.submit((event =>{
           goal: goal
         }),
         success: (response)=>{
+            window.location.href='/profile';
+
         },
         error: (response)=>{
             $('edit-profile-error').append(response)
+            console.log('caught in request')
 
         }
     });

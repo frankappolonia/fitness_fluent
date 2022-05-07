@@ -1,20 +1,17 @@
 const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
-const users = require("./users");
 const db = require("../config");
-const usersCollection = db.usersCollection;
+const users = db.usersCollection;
 const { ObjectId } = require("mongodb");
 
-async function getUserData(id) {
-    id = validations.checkId(id);
-    return await users.getUserById(id);
-}
 
 async function updateName(id, firstName, lastName) {
     id = validations.checkId(id);
     validations.stringtrim(arguments);
     validations.stringChecks([firstName, lastName]);
     validations.nameValidation(firstName, lastName);
+
+    const usersCollection = await users()
 
     let firstUpdate = await usersCollection.updateOne(
         {_id: ObjectId(id)},
@@ -35,6 +32,8 @@ async function updateActivityLevel(id, activityLevel) {
     validations.activityLevelValidation(activityLevel);
     activityLevel.toLowerCase();
 
+    const usersCollection = await users()
+
     let result = await usersCollection.updateOne({_id: ObjectId(id)}, {$set: {'activityLevel': activityLevel}});
 
     if (result === null) throw "error updating user's activity level!";
@@ -44,6 +43,8 @@ async function updateActivityLevel(id, activityLevel) {
 async function updateWeeklyWeightGoal(id, goal) {
     id = validations.checkId(id);
     validations.weeklyGoalValidation(goal);
+
+    const usersCollection = await users()
 
     let result = await usersCollection.updateOne(
         {_id: ObjectId(id)},
@@ -56,9 +57,9 @@ async function updateWeeklyWeightGoal(id, goal) {
 
 async function updateHeight(id, height) {
     id = validations.checkId(id);
-    let user = await getUserData(id);
-    let weight = user.weight;
-    validations.heightWeightValidation(height, weight);
+    validations.heightWeightValidation(height, 80);
+
+    const usersCollection = await users()
 
     let result = await usersCollection.updateOne({_id: ObjectId(id)},{$set: {'height': height}});
 
@@ -66,23 +67,10 @@ async function updateHeight(id, height) {
     return true;
 }
 
-async function updateWeight(id, weight) {
-    id = validations.checkId(id);
-    let user = await getUserData(id);
-    let height = user.height;
-    validations.heightWeightValidation(height, weight);
-
-    let result = await users.logCurrentWeight(id, weight, "current");
-
-    if (!result) throw "error updating user's weight!";
-    return true;
-}
 
 module.exports = {
-    getUserData,
     updateName,
     updateActivityLevel,
     updateWeeklyWeightGoal,
     updateHeight,
-    updateWeight
 };
