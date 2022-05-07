@@ -22,10 +22,7 @@ async function updateName(id, firstName, lastName) {
     );
     if (firstUpdate === null) throw "error updating user's first name!";
 
-    let lastUpdate = await usersCollection.updateOne(
-        {_id: ObjectId(id)},
-        {$set: {lastName: lastName}}
-    );
+    let lastUpdate = await usersCollection.updateOne({_id: ObjectId(id)},{$set: {'lastName': lastName}});
 
     if (lastUpdate === null) throw "error updating user's last name!";
     return true;
@@ -38,10 +35,7 @@ async function updateActivityLevel(id, activityLevel) {
     validations.activityLevelValidation(activityLevel);
     activityLevel.toLowerCase();
 
-    let result = await usersCollection.updateOne(
-        {_id: ObjectId(id)},
-        {$set: {activityLevel: activityLevel}}
-    );
+    let result = await usersCollection.updateOne({_id: ObjectId(id)}, {$set: {'activityLevel': activityLevel}});
 
     if (result === null) throw "error updating user's activity level!";
     return true;
@@ -53,7 +47,7 @@ async function updateWeeklyWeightGoal(id, goal) {
 
     let result = await usersCollection.updateOne(
         {_id: ObjectId(id)},
-        {$set: {weeklyWeightGoal: goal}}
+        {$set: {'weeklyWeightGoal': goal}}
     );
 
     if (result === null) throw "error updating user's weekly weight goal!";
@@ -66,10 +60,7 @@ async function updateHeight(id, height) {
     let weight = user.weight;
     validations.heightWeightValidation(height, weight);
 
-    let result = await usersCollection.updateOne(
-        {_id: ObjectId(id)},
-        {$set: {height: height}}
-    );
+    let result = await usersCollection.updateOne({_id: ObjectId(id)},{$set: {'height': height}});
 
     if (result === null) throw "error updating user's height!";
     return true;

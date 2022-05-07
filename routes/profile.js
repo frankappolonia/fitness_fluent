@@ -28,6 +28,7 @@ router.route("/").get(async (request, response) => {
     authObj = { ...authObj, ...nutrients };
     //---------------------------------------
 
+
     let user = await userFuncs.getUserById(xss(id));
     let firstName = user.firstName;
     let lastName = user.lastName;
@@ -108,44 +109,27 @@ router.route("/editProfile").get(async (request, response) => {
   }
 });
 
-router.route("/updateProfile").patch(async (request, response) => {
+router.route("/editProfile").patch(async (request, response) => {
   try {
-    let authObj = {};
     //validations
     let id = validations.checkId(request.session.user);
-
-    let firstName = request.body.newFirstName;
-    let lastName = request.body.newLastName;
-    firstName = firstName.trim();
-    lastName = lastName.trim();
-    validations.stringChecks([firstName, lastName]);
-    validations.nameValidation(firstName, lastName);
-
-    let activityLevel = request.body.newActivityLevel;
-    activityLevel = activityLevel.trim().toLowerCase();
-    validations.stringChecks([activityLevel]);
-    validations.activityLevelValidation(activityLevel);
-
-    let goal = request.body.newGoal;
-    validations.weeklyGoalValidation(goal);
-
-    let height = request.body.newHeight;
-    let weight = request.body.newWeight;
-    validations.heightWeightValidation(height, weight);
+    validations.validateUpdateProfile(request.body)
+    const {firstName, lastName, height, activityLevel, goal} = request.body
+    console.log('here')
 
     await userFuncs.updateUser(
-      id,
-      firstName,
-      lastName,
-      height,
-      weight,
-      activityLevel,
-      goal
+      xss(id),
+      xss(firstName),
+      xss(lastName),
+      xss(height),
+      xss(activityLevel),
+      xss(goal)
     );
+
+    console.log('here2')
     response.status(200).redirect("/");
   } catch (e) {
-    console.log(e);
-    response.status(400).render("errors/400", { error: e });
+    response.status(400).send("error: " + e);
   }
 });
 

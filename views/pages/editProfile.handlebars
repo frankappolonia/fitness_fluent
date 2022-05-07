@@ -1,15 +1,15 @@
 <div class="container d-flex justify-content-center">
   <div class="d-flex flex-column justify-content-between">
     <form id="edit-profile-form" method="post">
-      <div method="POST" class="card two bg-white px-5 py-4 mb-3">
+      <div class="card two bg-white px-5 py-4 mb-3">
         <div id="edit-profile-error2" role="alert">{{{error}}}</div>
         <div class="form-group">
           <label class="form-control-placeholder" for="firstName">First Name</label>
           <input
             type="text"
             class="form-control"
-            id="newFirstName"
-            name="newFirstName"
+            id="firstName"
+            name="firstName"
             value="{{firstName}}"
           />
         </div>
@@ -18,8 +18,8 @@
           <input
             type="text"
             class="form-control"
-            id="newLastName"
-            name="newLastName"
+            id="lastName"
+            name="lastName"
             value="{{lastName}}"
           />
 
@@ -29,24 +29,14 @@
           <input
             type="number"
             class="form-control"
-            id="newHeight"
-            name="newHeight"
+            id="height"
+            name="height"
             value="{{height}}"
           />
         </div>
         <div class="form-group">
-          <label class="form-control-placeholder" for="weight">Weight</label>
-          <input
-            type="number"
-            class="form-control"
-            id="newWeight"
-            name="newWeight"
-            value="{{currentWeight}}"
-          />
-        </div>
-        <div class="form-group">
           <label for="activityLevel">Activity level: </label>
-          <select name="newActivityLevel" id="newActivityLevel">
+          <select name="activityLevel" id="activityLevel">
             <option value="sedentary">Sedentary</option>
             <option value="light">Light</option>
             <option value="moderate">Moderate</option>
@@ -56,7 +46,7 @@
         </div>
         <div class="form-group">
           <label for="goal">Fitness Goal: </label>
-          <select name="newGoal" id="newGoal">
+          <select name="goal" id="goal">
             <option value="-2">Lose 2 pounds per week</option>
             <option value="-1">Lose 1 pound per week</option>
             <option value="0">Maintain weight</option>
@@ -64,15 +54,8 @@
             <option value="2">Gain 2 pounds per week</option>
           </select>
         </div>
-        <div
-          id="edit-profile-error"
-          class="alert alert-danger"
-          role="alert"
-        ></div>
-        <button class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span
-          >Update<i
-              class="fas fa-long-arrow-alt-right ml-2"
-            ></i></span></button>
+        <div id="edit-profile-error"></div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-1 mb-2">Update</button>
       </div>
     </form>
   </div>

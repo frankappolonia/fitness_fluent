@@ -81,18 +81,18 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     return user['_id'].toString()
 }
 
-async function updateUser(id, firstName, lastName, height, weight, activityLevel, weeklyWeightGoal) {
+async function updateUser(id, firstName, lastName, height, activityLevel, weeklyWeightGoal) {
     id = validations.checkId(id);
     validations.stringtrim(arguments);
     validations.nameValidation(firstName, lastName);
-    validations.heightWeightValidation(height, weight);
+    validations.heightWeightValidation(height, 80);
     validations.activityLevelValidation(activityLevel);
     activityLevel = activityLevel.toLowerCase();
     validations.weeklyGoalValidation(weeklyWeightGoal);
 
+    console.log('here3')
     await profileFuncs.updateName(id, firstName, lastName);
     await profileFuncs.updateHeight(id, height);
-    await profileFuncs.updateWeight(id, weight);
     await profileFuncs.updateActivityLevel(id, activityLevel);
     await profileFuncs.updateWeeklyWeightGoal(id, weeklyWeightGoal);
 }
@@ -164,6 +164,7 @@ async function getRemainingCalories(id){
                         }
     return remainingCals;
 }
+
 
 async function logCurrentWeight(id, weight, date){
      /**This function is for a user logging their weight at a specified date
