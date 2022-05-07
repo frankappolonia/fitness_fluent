@@ -57,7 +57,7 @@ router.route("/").get(async (request, response) => {
     }
 })
 
-router.route("/updateName").patch(async (request, response) => {
+router.route("/updateProfile").patch(async (request, response) => {
     try {
         let authObj = {};
         //validations
@@ -69,86 +69,98 @@ router.route("/updateName").patch(async (request, response) => {
         lastName = lastName.trim();
         validations.stringChecks([firstName, lastName]);
         validations.nameValidation(firstName, lastName);
-
-        profileFuncs.updateName(id, firstName, lastName);
-
-        response.status(200).redirect("/");
-    } catch (e) {
-        response.status(400).render("errors/400", { error: e });
-    }
-})
-
-router.route("/updateActivityLevel").patch(async (request, response) => {
-    try {
-        let authObj = {};
-        //validations
-        let id = validations.checkId(request.session.user);
-
+        
         let activityLevel = request.body.newActivityLevel;
-        activityLevel = activityLevel.trim();
+        activityLevel = activityLevel.trim().toLowerCase();
         validations.stringChecks([activityLevel]);
         validations.activityLevelValidation(activityLevel);
-
-        profileFuncs.updateActivityLevel(id, activityLevel);
-
-        response.status(200).redirect("/");
-    } catch (e) {
-        response.status(400).render("errors/400", { error: e });
-    }
-})
-
-router.route("/updateWeeklyWeightGoal").patch(async (request, response) => {
-    try {
-        let authObj = {};
-        //validations
-        let id = validations.checkId(request.session.user);
 
         let goal = request.body.newGoal;
         validations.weeklyGoalValidation(goal);
 
-        profileFuncs.updateWeeklyWeightGoal(id, goal);
-
-        response.status(200).redirect("/");
-    } catch (e) {
-        response.status(400).render("errors/400", { error: e });
-    }
-})
-
-router.route("/updateHeight").patch(async (request, response) => {
-    try {
-        let authObj = {};
-        //validations
-        let id = validations.checkId(request.session.user);
-
         let height = request.body.newHeight;
-        let placeholderWeight = 100;
-        validations.heightWeightValidation(height, placeholderWeight);
-
-        profileFuncs.updateHeight(id, height);
-
-        response.status(200).redirect("/");
-    } catch (e) {
-        response.status(400).render("errors/400", { error: e });
-    }
-})
-
-router.route("/updateWeight").patch(async (request, response) => {
-    try {
-        let authObj = {};
-        //validations
-        let id = validations.checkId(request.session.user);
-
         let weight = request.body.newWeight;
-        let placeholderHeight = 60;
-        validations.heightWeightValidation(placeholderHeight, weight);
+        validations.heightWeightValidation(height, weight);
 
-        profileFuncs.updateWeight(id, weight);
+        await userFuncs.updateUser(id, firstName, lastName, height, weight, activityLevel, goal);
 
         response.status(200).redirect("/");
     } catch (e) {
         response.status(400).render("errors/400", { error: e });
     }
 })
+
+// router.route("/updateActivityLevel").patch(async (request, response) => {
+//     try {
+//         let authObj = {};
+//         //validations
+//         let id = validations.checkId(request.session.user);
+
+//         let activityLevel = request.body.newActivityLevel;
+//         activityLevel = activityLevel.trim();
+//         validations.stringChecks([activityLevel]);
+//         validations.activityLevelValidation(activityLevel);
+
+//         profileFuncs.updateActivityLevel(id, activityLevel);
+
+//         response.status(200).redirect("/");
+//     } catch (e) {
+//         response.status(400).render("errors/400", { error: e });
+//     }
+// })
+
+// router.route("/updateWeeklyWeightGoal").patch(async (request, response) => {
+//     try {
+//         let authObj = {};
+//         //validations
+//         let id = validations.checkId(request.session.user);
+
+//         let goal = request.body.newGoal;
+//         validations.weeklyGoalValidation(goal);
+
+//         profileFuncs.updateWeeklyWeightGoal(id, goal);
+
+//         response.status(200).redirect("/");
+//     } catch (e) {
+//         response.status(400).render("errors/400", { error: e });
+//     }
+// })
+
+// router.route("/updateHeight").patch(async (request, response) => {
+//     try {
+//         let authObj = {};
+//         //validations
+//         let id = validations.checkId(request.session.user);
+
+//         let height = request.body.newHeight;
+//         let placeholderWeight = 100;
+//         validations.heightWeightValidation(height, placeholderWeight);
+
+//         profileFuncs.updateHeight(id, height);
+
+//         response.status(200).redirect("/");
+//     } catch (e) {
+//         response.status(400).render("errors/400", { error: e });
+//     }
+// })
+
+// router.route("/updateWeight").patch(async (request, response) => {
+//     try {
+//         let authObj = {};
+//         //validations
+//         let id = validations.checkId(request.session.user);
+
+//         let weight = request.body.newWeight;
+//         let placeholderHeight = 60;
+//         validations.heightWeightValidation(placeholderHeight, weight);
+
+//         profileFuncs.updateWeight(id, weight);
+
+//         response.status(200).redirect("/");
+//     } catch (e) {
+//         response.status(400).render("errors/400", { error: e });
+//     }
+// })
 
 
 module.exports = router;
