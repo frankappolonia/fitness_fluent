@@ -377,6 +377,20 @@ function deleteRouteCheckFood(requestBody, date){
     checkNewFood(date, requestBody.foodName, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
 }
 
+function validateUpdateProfile(requestBody){
+    if(! requestBody.firstName) throw "no first name given"
+    if(! requestBody.lastName) throw "no last name given"
+    if(! requestBody.height) throw "no height given"
+    if(! requestBody.activityLevel) throw "no activity level given"
+    if(! requestBody.goal) throw "no goal given"
+
+    nameValidation(requestBody.firstName, requestBody.lastName)
+    heightWeightValidation(requestBody.height, 80)
+    activityLevelValidation(requestBody.activityLevel)
+    weeklyGoalValidation(requestBody.goal)
+
+}
+
 
 module.exports = {
     stringtrim,
@@ -404,5 +418,5 @@ module.exports = {
     checkNewFood,
     postRouteCheckFood,
     checkCalories2,
-    deleteRouteCheckFood
+    validateUpdateProfile,
 }

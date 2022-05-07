@@ -14,6 +14,14 @@ router.get("/", (request, response, next) => {
   } else {
     next();
   }
+})
+
+router.get("/editProfile", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
 });
 
 router.route("/").get(async (request, response) => {
@@ -27,6 +35,7 @@ router.route("/").get(async (request, response) => {
     let nutrients = await userFuncs.getRemainingCalories(id);
     authObj = { ...authObj, ...nutrients };
     //---------------------------------------
+
 
     let user = await userFuncs.getUserById(xss(id));
     let firstName = user.firstName;
@@ -63,90 +72,73 @@ router.route("/").get(async (request, response) => {
   }
 });
 
-router.route("/editProfile").get(async (request, response) => {
-  try {
-    if (!request.session.user) {
-      response.redirect("/");
-      return;
+router.route("/editProfile")
+  .get(async (request, response) => {
+    try {
+      if (!request.session.user) {
+        response.redirect("/");
+        return;
+      }
+      let authObj = {};
+      //validations
+      let id = validations.checkId(request.session.user);
+
+      //stuff for daily goals widget
+      authObj.authenticated = true;
+      let nutrients = await userFuncs.getRemainingCalories(id);
+      authObj = { ...authObj, ...nutrients };
+      //---------------------------------------
+
+      let user = await userFuncs.getUserById(xss(id));
+      let firstName = user.firstName;
+      let lastName = user.lastName;
+      validations.nameValidation(firstName, lastName);
+      let activityLevel = user.activityLevel.trim().toLowerCase();
+      validations.activityLevelValidation(activityLevel);
+      let weeklyWeightGoal = user.weeklyWeightGoal;
+      validations.weeklyGoalValidation(weeklyWeightGoal);
+      let height = user.height;
+      let allWeights = await userFuncs.getAllWeights(id);
+      let currentWeight = allWeights.weights[allWeights.weights.length - 1];
+      validations.heightWeightValidation(height, currentWeight);
+
+      response.status(200).render("pages/editProfile", {
+        script: "/public/js/profile.js",
+        css: "/public/css/editProfile.css",
+        firstName,
+        lastName,
+        activityLevel,
+        weeklyWeightGoal,
+        height,
+        currentWeight,
+        ...authObj,
+      });
+      } catch (e) {
+        response.status(400).render("errors/400", { error: e });
+      }
+    })
+    .patch(async (request, response) => {
+    try {
+      //validations
+      let id = validations.checkId(request.session.user);
+      validations.validateUpdateProfile(request.body)
+      const {firstName, lastName, height, activityLevel, goal} = request.body
+      console.log('here')
+
+      await userFuncs.updateUser(
+        xss(id),
+        xss(firstName),
+        xss(lastName),
+        xss(height),
+        xss(activityLevel),
+        xss(goal)
+      );
+
+      console.log('here2')
+      response.status(200).send('Success');
+    } catch (e) {
+      response.status(400).send("error: " + e);
     }
-    let authObj = {};
-    //validations
-    let id = validations.checkId(request.session.user);
-
-    //stuff for daily goals widget
-    authObj.authenticated = true;
-    let nutrients = await userFuncs.getRemainingCalories(id);
-    authObj = { ...authObj, ...nutrients };
-    //---------------------------------------
-
-    let user = await userFuncs.getUserById(xss(id));
-    let firstName = user.firstName;
-    let lastName = user.lastName;
-    validations.nameValidation(firstName, lastName);
-    let activityLevel = user.activityLevel.trim().toLowerCase();
-    validations.activityLevelValidation(activityLevel);
-    let weeklyWeightGoal = user.weeklyWeightGoal;
-    validations.weeklyGoalValidation(weeklyWeightGoal);
-    let height = user.height;
-    let allWeights = await userFuncs.getAllWeights(id);
-    let currentWeight = allWeights.weights[allWeights.weights.length - 1];
-    validations.heightWeightValidation(height, currentWeight);
-
-    response.status(200).render("pages/editProfile", {
-      script: "/public/js/profile.js",
-      css: "/public/css/editProfile.css",
-      firstName,
-      lastName,
-      activityLevel,
-      weeklyWeightGoal,
-      height,
-      currentWeight,
-      ...authObj,
-    });
-  } catch (e) {
-    response.status(400).render("errors/400", { error: e });
-  }
-});
-
-router.route("/updateProfile").patch(async (request, response) => {
-  try {
-    let authObj = {};
-    //validations
-    let id = validations.checkId(request.session.user);
-
-    let firstName = request.body.newFirstName;
-    let lastName = request.body.newLastName;
-    firstName = firstName.trim();
-    lastName = lastName.trim();
-    validations.stringChecks([firstName, lastName]);
-    validations.nameValidation(firstName, lastName);
-
-    let activityLevel = request.body.newActivityLevel;
-    activityLevel = activityLevel.trim().toLowerCase();
-    validations.stringChecks([activityLevel]);
-    validations.activityLevelValidation(activityLevel);
-
-    let goal = request.body.newGoal;
-    validations.weeklyGoalValidation(goal);
-
-    let height = request.body.newHeight;
-    let weight = request.body.newWeight;
-    validations.heightWeightValidation(height, weight);
-
-    await userFuncs.updateUser(
-      id,
-      firstName,
-      lastName,
-      height,
-      weight,
-      activityLevel,
-      goal
-    );
-    response.status(200).redirect("/");
-  } catch (e) {
-    console.log(e);
-    response.status(400).render("errors/400", { error: e });
-  }
 });
 
 // router.route("/updateActivityLevel").patch(async (request, response) => {

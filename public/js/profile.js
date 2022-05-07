@@ -2,15 +2,38 @@ let editProfile = $('#edit-profile-form')
 $('#edit-profile-error').hide()
 
 editProfile.submit((event =>{
-    let firstName = $('#newFirstName').val()
-    let lastName = $('#newLastName').val()
-    let height = $('#newHeight').val()
-    let weight = $('#newWeight').val()
-    let activityLevel = $('select[name=newActivityLevel] option').filter(':selected').val()
-    let goal = $('select[name=newGoal] option').filter(':selected').val()
-
+    event.preventDefault()
     try{
-        profileUpdateValidation(firstName, lastName, height, weight, activityLevel, goal)
+    let firstName = $('#firstName').val()
+    let lastName = $('#lastName').val()
+    let height = $('#height').val()
+    let activityLevel = $('select[name=activityLevel] option').filter(':selected').val()
+    let goal = $('select[name=goal] option').filter(':selected').val()
+    
+    profileUpdateValidation(firstName, lastName, height, activityLevel, goal)
+    
+    $.ajax({
+        method: "PATCH",
+        url: '/profile/editProfile',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          height: height,
+          activityLevel: activityLevel,
+          goal: goal
+        }),
+        success: (response)=>{
+            window.location.href='/profile';
+
+        },
+        error: (response)=>{
+            $('edit-profile-error').append(response)
+            console.log('caught in request')
+
+        }
+    });
+
     }catch(e){
         event.preventDefault()
         //console.log('im here')
@@ -21,15 +44,14 @@ editProfile.submit((event =>{
 }));
 
 
-function profileUpdateValidation(firstName, lastName, height, weight, activityLevel, goal){
+function profileUpdateValidation(firstName, lastName, height, activityLevel, goal){
     /**Validates the request body data of the /signup post route */
     if(! firstName) throw "No first name given!"
     if(! lastName) throw "No last name given!"
     if(! height) throw "No height given!"
-    if(! weight) throw "No weight given!"
     if(! activityLevel) throw "No activty level given!"
     if(! goal) throw "No goal specified!"
-    updateUserValidation(firstName, lastName, height, weight, activityLevel, goal)
+    updateUserValidation(firstName, lastName, height, activityLevel, goal)
 
     return true
 }
@@ -103,17 +125,17 @@ function weeklyGoalValidation(goal){
 
 }
 
-function updateUserValidation(firstName, lastName, height, initialWeight, activityLevel, weeklyWeightGoal){
+function updateUserValidation(firstName, lastName, height, activityLevel, weeklyWeightGoal){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
     
-    if(arguments.length !== 6) throw "Incorrect number of arguments!"
+    if(arguments.length !== 5) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, activityLevel])
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
     //height and weight check
-    heightWeightValidation(height, initialWeight)
+    heightWeightValidation(height, 80)
     //activity level check
     activityLevelValidation(activityLevel)
     //weekly weight goal check
