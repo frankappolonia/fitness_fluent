@@ -82,19 +82,19 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
 }
 
 async function updateUser(id, firstName, lastName, height, activityLevel, weeklyWeightGoal) {
+    if (arguments.length !== 6) throw "Invalid number of arguments"
     id = validations.checkId(id);
-    validations.stringtrim(arguments);
-    validations.nameValidation(firstName, lastName);
-    validations.heightWeightValidation(height, 80);
-    validations.activityLevelValidation(activityLevel);
-    activityLevel = activityLevel.toLowerCase();
-    validations.weeklyGoalValidation(weeklyWeightGoal);
+    validations.validateUpdateProfile(firstName, lastName, height, activityLevel, weeklyWeightGoal)
 
-    console.log('here3')
-    await profileFuncs.updateName(id, firstName, lastName);
-    await profileFuncs.updateHeight(id, height);
-    await profileFuncs.updateActivityLevel(id, activityLevel);
-    await profileFuncs.updateWeeklyWeightGoal(id, weeklyWeightGoal);
+    const usersCollection = await users()
+
+    let firstUpdate = await usersCollection.updateOne(
+        {_id: ObjectId(id)},
+        {$set: {firstName: firstName, lastName: lastName, height: height, activityLevel: activityLevel, weeklyWeightGoal:weeklyWeightGoal}}
+    );
+    if (firstUpdate === null) throw "error updating user'!";
+
+    return true;
 }
 
 async function checkUser(username, password){

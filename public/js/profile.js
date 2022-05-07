@@ -24,7 +24,7 @@ editProfile.submit((event =>{
           goal: goal
         }),
         success: (response)=>{
-            window.location.href='/profile';
+            location.replace('/profile')
 
         },
         error: (response)=>{

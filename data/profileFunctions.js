@@ -5,6 +5,11 @@ const users = db.usersCollection;
 const { ObjectId } = require("mongodb");
 
 
+
+
+
+
+/** 
 async function updateName(id, firstName, lastName) {
     id = validations.checkId(id);
     validations.stringtrim(arguments);
@@ -24,6 +29,8 @@ async function updateName(id, firstName, lastName) {
     if (lastUpdate === null) throw "error updating user's last name!";
     return true;
 }
+*/
+/** 
 
 async function updateActivityLevel(id, activityLevel) {
     id = validations.checkId(id);
@@ -66,11 +73,5 @@ async function updateHeight(id, height) {
     if (result === null) throw "error updating user's height!";
     return true;
 }
+*/
 
-
-module.exports = {
-    updateName,
-    updateActivityLevel,
-    updateWeeklyWeightGoal,
-    updateHeight,
-};

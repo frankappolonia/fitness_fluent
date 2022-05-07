@@ -121,9 +121,8 @@ router.route("/editProfile")
     try {
       //validations
       let id = validations.checkId(request.session.user);
-      validations.validateUpdateProfile(request.body)
+      validations.validateProfilePatch(request.body)
       const {firstName, lastName, height, activityLevel, goal} = request.body
-      console.log('here')
 
       await userFuncs.updateUser(
         xss(id),
