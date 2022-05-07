@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
+const profileFuncs = require("./profileFunctions");
 const { ObjectId } = require('mongodb');
 const moment = require("moment");
 
@@ -78,6 +79,22 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     //9. get user id
     let user = await usersCollection.findOne({email: email.toLowerCase()})
     return user['_id'].toString()
+}
+
+async function updateUser(id, firstName, lastName, height, weight, activityLevel, weeklyWeightGoal) {
+    id = validations.checkId(id);
+    validations.stringtrim(arguments);
+    validations.nameValidation(firstName, lastName);
+    validations.heightWeightValidation(height, weight);
+    validations.activityLevelValidation(activityLevel);
+    activityLevel = activityLevel.toLowerCase();
+    validations.weeklyGoalValidation(weeklyWeightGoal);
+
+    await profileFuncs.updateName(id, firstName, lastName);
+    await profileFuncs.updateHeight(id, height);
+    await profileFuncs.updateWeight(id, weight);
+    await profileFuncs.updateActivityLevel(id, activityLevel);
+    await profileFuncs.updateWeeklyWeightGoal(id, weeklyWeightGoal);
 }
 
 async function checkUser(username, password){
@@ -379,5 +396,6 @@ module.exports = {
     getAllWeights,
     getOverallWeightProgress,
     calculateDailyCaloriesRemaining,
-    calculateDailyMacrosRemaining
+    calculateDailyMacrosRemaining,
+    updateUser
 }

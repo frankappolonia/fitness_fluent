@@ -36,6 +36,7 @@ async function updateActivityLevel(id, activityLevel) {
     validations.stringtrim(arguments);
     validations.stringChecks([activityLevel]);
     validations.activityLevelValidation(activityLevel);
+    activityLevel.toLowerCase();
 
     let result = await usersCollection.updateOne(
         {_id: ObjectId(id)},
