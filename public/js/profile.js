@@ -1,6 +1,8 @@
+
 let editProfile = $('#edit-profile-form')
 $('#edit-profile-error').hide()
 
+//validate edit profile
 editProfile.submit((event =>{
     event.preventDefault()
     try{
@@ -43,6 +45,37 @@ editProfile.submit((event =>{
     }
 }));
 
+//validate log weight
+let logWeight = $('#log-weight-form')
+logWeight.submit((event =>{
+    let weight = $('#weight').val()
+    try {
+        $("#log-weight-error").empty()
+        heightWeightValidation(60, weight)
+        
+    } catch (error) {
+        event.preventDefault()
+        $("#log-weight-error").empty()
+        $("#log-weight-error").append(error)
+    }
+}));
+
+//validate update macros
+let macroForm = $('#update-macros-form')
+macroForm.submit((event =>{
+    let carbs = $('#carbs').val()
+    let fat = $('#fat').val()
+    let protein = $('#protein').val()
+    try{
+        $("#update-macro-error").empty()
+        checkMacroGoal(carbs, fat, protein)
+        
+    }catch(e){
+        event.preventDefault()
+        $("#update-macro-error").empty()
+        $("#update-macro-error").append(e)
+    }
+}));
 
 function profileUpdateValidation(firstName, lastName, height, activityLevel, goal){
     /**Validates the request body data of the /signup post route */
@@ -90,6 +123,8 @@ function nameValidation(first, last){
 
 function heightWeightValidation(height, weight){
     if(arguments.length !== 2) throw "invalid number of arguments for heightweight validation"
+
+    if(! weight) throw "no weight provided!"
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
@@ -141,4 +176,30 @@ function updateUserValidation(firstName, lastName, height, activityLevel, weekly
     //weekly weight goal check
     weeklyGoalValidation(weeklyWeightGoal)
     return
+}
+
+function checkMacroGoal(carbs, fat, protein){
+    if(arguments.length !== 3) throw "invalid number of arguments"
+
+    if(! carbs) throw "No carbs goal given!"
+    if(! fat) throw "No fat goal given"
+    if (! protein) throw "No protein goal given!"
+
+    if(carbs !== carbs) throw "carbs must be a number"
+    if(fat !== fat) throw "fat must be a number"
+    if(protein !== protein) throw "protein must be a number"
+
+    if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
+    if (isNaN(parseFloat(fat))) throw "fat must be a number!"
+    if (isNaN(parseFloat(protein))) throw "protein must be a number!"
+
+    carbs = parseFloat(carbs)
+    fat = parseFloat(fat)
+    protein = parseFloat(protein)
+
+    if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0%! "
+    if (carbs > 1 || fat > 1 || protein > 1) throw "Cannot set a macro value above 100%"
+
+    if((carbs + fat + protein) !== 1) throw "Macro values must add up to 100%!"
+
 }

@@ -85,7 +85,8 @@ router.route("/")
       await foodExFuncs.logCurrentWeight(xss(id), xss(weight), xss("current"))
       response.status(200).redirect("/profile")
       
-    } catch (error) {
+    } catch (e) {
+      response.status(400).render("errors/400", {error: e});
       
     }
 
@@ -157,5 +158,26 @@ router.route("/editProfile")
     }
 });
 
+router.route("/updateMacros")
+  .post(async(request, response) =>{
+
+    try {
+      let id = validations.checkId(request.session.user)
+      validations.checkMacroGoalPostRoute(request.body)
+
+      let carbs = request.body.carbs
+      let fat = request.body.fat
+      let protein = request.body.protein
+
+      await userFuncs.updateMacros(id, carbs, protein, fat)
+      response.status(200).redirect('/profile')
+
+        
+    } catch (e) {
+      response.status(400).render('errors/400', {error: e})
+    
+    }
+
+  });
 
 module.exports = router;

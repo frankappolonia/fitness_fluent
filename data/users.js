@@ -342,6 +342,35 @@ async function calculateDailyMacrosRemaining(id, currentDate, foodsArray){
 
 }
 
+async function updateMacros(id, carbs, protein, fat){
+
+    //validations
+    if (arguments.length !== 4) throw "Invalid number of arguments"
+    id = validations.checkId(id)
+    validations.checkMacroGoal(1000, carbs, fat, protein)
+
+    let user = await getUserById(id)
+
+    //set new macro breakdown
+    let usersCollection = await users()
+    let dailyMacroBreakdown = {'carbs': carbs, "fats": fat, 'protein': protein}
+    await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyMacroBreakdown: dailyMacroBreakdown}})
+
+    //recalculate macros remaining
+    let currentDate = moment().format('YYYY-MM-DD')
+
+    let currentFoods = []
+    user = await usersCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw `User not found! ${id}`;
+    for (foodLog of user.allFoods) {
+        if (foodLog.date == currentDate) {
+        currentFoods = foodLog.foods;
+        }
+    }
+    await calculateDailyMacrosRemaining(id, currentDate, currentFoods)
+
+}
+
 
 module.exports = {
     createUser,
@@ -353,4 +382,5 @@ module.exports = {
     getOverallWeightProgress,
     calculateDailyCaloriesRemaining,
     calculateDailyMacrosRemaining,
+    updateMacros
 }

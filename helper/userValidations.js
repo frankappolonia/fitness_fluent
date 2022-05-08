@@ -317,10 +317,26 @@ function checkMacroGoal(cals, carbs, fat, protein){
     if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
     if (isNaN(parseFloat(fat))) throw "fat must be a number!"
     if (isNaN(parseFloat(protein))) throw "protein must be a number!"
+
+    carbs = parseFloat(carbs)
+    fat = parseFloat(fat)
+    protein = parseFloat(protein)
+
     if(cals%1 !== 0) throw "Calories must be a whole number!"
 
     if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0%! "
     if (carbs > 1 || fat > 1 || protein > 1) throw "Cannot set a macro value above 100%"
+
+    if((carbs + fat + protein) !== 1) throw "Macro values must add up to 100%!"
+
+}
+
+function checkMacroGoalPostRoute(requestBody){
+    if(! requestBody.carbs) throw "No carbs goal given!"
+    if(! requestBody.fat) throw "No fat goal given!"
+    if(! requestBody.protein) throw "No protein goal given!"
+
+    checkMacroGoal(1000, requestBody.carbs, requestBody.fat, requestBody.protein)
 
 }
 
@@ -434,5 +450,7 @@ module.exports = {
     postRouteCheckFood,
     checkCalories2,
     validateUpdateProfile,
-    validateProfilePatch
+    validateProfilePatch,
+    checkMacroGoalPostRoute,
+    deleteRouteCheckFood
 }
