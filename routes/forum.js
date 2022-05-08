@@ -17,6 +17,22 @@ router.get('/', (request, response, next)=>{
       next()
     }
 })
+router.get('/new', (request, response, next)=>{
+    if (! request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
+router.get('/:id', (request, response, next)=>{
+    if (! request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
 
 router.route('/') //route for all posts/forum home
     .get(async(request, response)=>{
@@ -27,7 +43,7 @@ router.route('/') //route for all posts/forum home
             
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let nutrients = await userFuncs.getRemainingCalories(id)
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
             authObj = {...authObj, ...nutrients}
             authObj['css'] = "/public/css/forum_styles.css"
             //---------------------------------------
@@ -50,7 +66,7 @@ router.route('/new') //route for a new post
            
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let nutrients = await userFuncs.getRemainingCalories(id)
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
             authObj = {...authObj, ...nutrients}
             // authObj['name'] = nutrients.name
 
@@ -79,8 +95,7 @@ router.route('/new') //route for a new post
 
             
         } catch (e) {
-            let error = {error: e}
-            response.status(404).render("errors/400", e)
+            response.status(400).render("errors/400", {error: e})
             
         }
 
@@ -96,7 +111,7 @@ router.route('/:id')
 
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let nutrients = await userFuncs.getRemainingCalories(id)
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
             authObj = {...authObj, ...nutrients}
             //---------------------------------------
             
@@ -111,7 +126,7 @@ router.route('/:id')
             response.status(200).render("pages/comments", {...authObj, ...post})
 
         }catch(e){
-            response.status(404).render("errors/404")
+            response.status(400).render("errors/400", {error: e})
         }
 
     })
