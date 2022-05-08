@@ -3,7 +3,7 @@
 
 <div class="container" id="exercise-log-container">
   <div class="food-log-intro row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-6" role="complementary">
             <h1>Exercise Log</h1>
             <p>Welcome to your Exercise Log! In addition to the capbility to log your daily food consumption, you will also have your own personal exercise log. Here, you can enter all of the different exercises you completed in a particular day, and the number of calories you burned. When you enter exercise calories, it adjusts your daily caloric intake, allowing you to eat more food and still meet your goals!
             </p>
@@ -20,7 +20,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h3 id="enter-exercise">Enter an Exercise: </h3>
-      <form method="post" id="exercise-log-form" action="/exercise-log/{{date}}">
+      <form method="post" id="exercise-log-form" action="/exercise-log/{{date}}" role="form">
         <label for="date">Select a journal date</label>
         <input class="form-control" type="date" id="date" name="date" value="{{date}}" />
         <br>
@@ -30,7 +30,7 @@
         <label for="calories">Calories</label>
         <input class="form-control" type="number" id="calories" name="calories" />
 
-        <button type="submit">Submit</button>
+        <button type="submit" role="button">Submit</button>
       </form>
       <div id="exercise-log-error">
         <p>{{{error}}}</p>

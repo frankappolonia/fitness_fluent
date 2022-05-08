@@ -3,7 +3,7 @@
 <div class="container" id="food-log-container">
     <div class="food-log-intro row justify-content-center">
         <div class="col-md-6">
-            <h2>Food Log</h2>
+            <h1>Food Log</h1>
             <p>Welcome to your personal food log! Here, you can keep track of your daily caloric
                 intake in order to meet your goals. First, select the date you want to log food on.
                 Then, either enter a custom food, or search our database of thousands of foods!
@@ -15,6 +15,7 @@
     <div class="date-selector row justify-content-center">
         <div class="col-md-6">
             <h2>Select a Journal Date:</h2>
+            <label for="date" hidden></label>
             <input form="food-log-form" class="form-control form-control-sm" type="date" id="date" name="date"
                 value="{{date}}" />
         </div>
@@ -24,7 +25,7 @@
     <div class="row">
         <div class="col col col-12 col-md-6">
             <h3>Enter Food</h3>
-            <form method="post" id="food-log-form" action="/food-log/{{date}}">
+            <form method="post" id="food-log-form" action="/food-log/{{date}}" role="form">
                 <label for="food">Food</label>
                 <div class="input-group">
                     <input type="text" id="food" name="food" class="form-control" minlength="1" />
@@ -37,14 +38,14 @@
                 <input class="form-control" type="number" id="protein" name="protein" min="0" max="1000" />
                 <label for="carbs">Carbs</label>
                 <input class="form-control" type="number" id="carbs" name="carbs" min="0" max="1000" />
-                <label for="carbs">Fat</label>
+                <label for="fat">Fat</label>
                 <input class="form-control" type="number" id="fat" name="fat" min="0" max="1000" />
 
-                <button class="btn btn-primary" type="submit">Enter Food</button>
+                <button class="btn btn-primary" type="submit" role="button">Enter Food</button>
                 <div id="food-entry-error"></div>
             </form>
         </div>
-        <div class="col col col-12 col-md-6 scrollable">
+        <div class="col col col-12 col-md-6 scrollable" role="complementary">
             <h3>Search Foods</h3>
             <p class="search-help">Click the search button to get search results</p>
 
@@ -75,7 +76,7 @@
     <div class="col sm-12 col-md-6">
         {{#if food.[0]}}
         <h3>Food Journal</h3>
-        <table class="table food-log table-striped table-bordered table-hover">
+        <table class="table food-log table-striped table-bordered table-hover" role="complementary">
             <thead class="thead-primary">
                 <tr>
                     <th scope="col">#</th>
