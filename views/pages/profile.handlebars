@@ -50,13 +50,23 @@
     </div>
 
     <div class="card two bg-white px-5 py-4 mb-3">
-        <form method="post" id="update-macros-form">
+        <form method="post" id="update-macros-form" action="/profile/updateMacros">
             <h3>Update your daily macro goals: </h3>
+            <p>Must be in decimal format (0.5 or 0.03) and all 3 values must add up to 1 (100%)!</p>
                 <div class="form-group">
-                    <input type="number" class="form-control" id="carbs" name="weight" required>
-                    <label class="form-control-placeholder" for="weight">Weight</label>
+                    <input type="number" class="form-control" id="carbs" name="carbs" min="0" max="1" step=".01" required>
+                    <label class="form-control-placeholder" for="carbs">Carbs %</label>
+                </div>
+                 <div class="form-group">
+                    <input type="number" class="form-control" id="protein" name="protein" min="0" max="1" step=".01" required>
+                    <label class="form-control-placeholder" for="protein">Protein %</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="fat" name="fat" min="0" max="1" step=".01" required>
+                    <label class="form-control-placeholder" for="fat">Fat %</label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span>Log current weight</span></button>
         </form>
+        <div id="update-macro-error"></div>
     </div>
 </div>
