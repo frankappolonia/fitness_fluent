@@ -119,6 +119,7 @@ router.route('/:id')
             //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/forumComments.css"
 
             let post = await postsFuncs.getPostById(xss(postId))

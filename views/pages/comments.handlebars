@@ -1,7 +1,7 @@
 <div class="container mt-5 mb-5">
 
-  <div class="row height d-flex justify-content-center align-items-center">
-    <article class="card" id="post-thread">
+  <div class="row height d-flex justify-content-center align-items-center card">
+    <article id="post-thread">
       <section id="main-post">
         <h2 id="post-title">{{{title}}}</h2>
         <h3>Author: {{{poster.name}}}</h3>
@@ -23,7 +23,7 @@
 
         <div class="mt-3 d-flex flex-row align-items-center p-3 form-color">
 
-          <img class="profilepic" src="/public/images/stockProfile.png" class="rounded-circle mr-2">
+          <img src="/public/images/stockProfile.png" class="rounded-circle mr-2 profilepic" alt="Stock profile picture">
 
           <div id="comment-form-container">
             <form method="post" id="new-comment-form">
@@ -44,7 +44,7 @@
           {{#each comments}}
           <div class="d-flex flex-row p-3">
 
-            <img class="profilepic" src="/public/images/stockProfile.png" class="rounded-circle mr-3">
+            <img src="/public/images/stockProfile.png" class="rounded-circle mr-3 profilepic" alt="stock profile picture">
 
             <div class="w-100">
 
