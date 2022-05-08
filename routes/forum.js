@@ -50,6 +50,8 @@ router.route('/') //route for all posts/forum home
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
+            authObj['script'] = "/public/js/filler.js"
+            authObj['script2'] = "/public/js/filler.js"
             response.status(200).render('pages/forum', authObj)
 
         } catch (e) {
@@ -73,6 +75,7 @@ router.route('/new') //route for a new post
             //---------------------------------------
 
             authObj['script'] = "/public/js/newPost.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/forum_styles.css"
 
             response.status(200).render('pages/newPost', authObj)
@@ -116,6 +119,7 @@ router.route('/:id')
             //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/forumComments.css"
 
             let post = await postsFuncs.getPostById(xss(postId))
