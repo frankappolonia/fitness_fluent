@@ -422,6 +422,11 @@ function validateUpdateProfile(firstName, lastName, height, activityLevel, weekl
 
 }
 
+function ageValidation(age){
+    if(isNaN(age)) throw "age must be a number!"
+    if(age > 112 || age < 12) throw "Invalid age!"
+}
+
 
 module.exports = {
     stringtrim,
@@ -452,5 +457,6 @@ module.exports = {
     validateUpdateProfile,
     validateProfilePatch,
     checkMacroGoalPostRoute,
-    deleteRouteCheckFood
+    deleteRouteCheckFood,
+    ageValidation
 }

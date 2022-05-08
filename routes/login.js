@@ -43,10 +43,12 @@ router.route('/')
             return
         }
 
+
         try {
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
             let validateUser = await db.checkUser(xss(username), xss(password))
+
             if (validateUser.authenticated === true){
                     request.session.name = 'AuthCookie'
                     request.session.user = validateUser.userId
