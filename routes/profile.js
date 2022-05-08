@@ -123,6 +123,7 @@ router.route("/editProfile")
 
       response.status(200).render("pages/editProfile", {
         script: "/public/js/profile.js",
+        script2: "/public/js/filler.js",
         css: "/public/css/editProfile.css",
         firstName,
         lastName,
