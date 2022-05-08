@@ -4,6 +4,23 @@
     padding-right: 1%;
 }
 
+#post-title{
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#post-author{
+    font-size: larger;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+}
+
+#post-body{
+    font-size: large;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 
 
 body {
