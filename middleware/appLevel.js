@@ -18,6 +18,9 @@ const handlebarsInstance = exphbs.create({
     eq: (exp1, exp2) =>{
       return exp1 === exp2
     },
+    lt: (exp1, exp2) =>{
+      return exp1 < exp2
+    },
     getLastPoster: (comments) =>{
       if(comments.length === 0){return "No comments yet"}
       return "by " + comments[comments.length-1].poster.name

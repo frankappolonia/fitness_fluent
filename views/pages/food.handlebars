@@ -12,35 +12,6 @@
             <div id="food-log-error"></div>
         </div>
     </div>
-    <div class="row justify-content-center progress-container">
-        <div class="col-12 col-sm-6 col-md-3 progressbar">
-            <label for="caloriesProgress">Calories Progress: {{foodStats.calories}}/{{foodStats.goalCalories}}</label>
-            <progress id="caloriesProgress" value="{{foodStats.calories}}" max="{{foodStats.goalCalories}}">
-                {{foodStats.calories}}
-            </progress>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3 progressbar">
-            <label for="carbsProgress">Carbs Progress: {{foodStats.carbs}}/{{foodStats.goalCarbs}}</label>
-            <progress id="carbsProgress" value="{{foodStats.carbs}}" max="{{foodStats.goalCarbs}}">
-                {{foodStats.carbs}}
-            </progress>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3 progressbar">
-            <label for="fatsProgress">Fats Progress: {{foodStats.fat}}/{{foodStats.goalFats}}</label>
-            <progress id="fatsProgress" value="{{foodStats.fat}}" max="{{foodStats.goalFats}}">
-                {{foodStats.fats}}%
-            </progress>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3 progressbar">
-            <label for="proteinProgress">Protein Progress: {{foodStats.protein}}/{{foodStats.goalProtein}}</label>
-            <progress id="proteinProgress" value="{{foodStats.protein}}" max="{{foodStats.goalProtein}}">
-                {{foodStats.protein}}
-            </progress>
-        </div>
-    </div>
 
     <div class="date-selector row justify-content-center">
         <div class="col-md-6">
@@ -50,6 +21,57 @@
                 value="{{date}}" />
         </div>
         <div id="journal-error"></div>
+    </div>
+
+    <div class="row justify-content-center progress-container">
+        <h2>Daily Goals</h2>
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="caloriesProgress">Calories Progress: {{foodStats.calories}}/{{foodStats.goalCalories}}</label>
+            <progress id="caloriesProgress" value="{{foodStats.calories}}" max="
+            {{~#if (lt foodStats.goalCalories foodStats.calories)~}}
+            {{~foodStats.calories~}}
+            {{else}}
+            {{~foodStats.goalCalories~}}
+            {{/if}}">
+                {{foodStats.calories}}
+            </progress>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="carbsProgress">Carbs Progress: {{foodStats.carbs}}/{{foodStats.goalCarbs}}</label>
+            <progress id="carbsProgress" value="{{foodStats.carbs}}" max="
+            {{~#if (lt foodStats.goalCarbs foodStats.carbs)~}}
+            {{~foodStats.carbs~}}
+            {{else}}
+            {{~foodStats.goalCarbs~}}
+            {{/if}}">
+                {{foodStats.carbs}}
+            </progress>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="fatsProgress">Fats Progress: {{foodStats.fat}}/{{foodStats.goalFats}}</label>
+            <progress id="fatsProgress" value="{{foodStats.fat}}" max="
+            {{~#if (lt foodStats.goalFats foodStats.fats)~}}
+            {{~foodStats.fats~}}
+            {{else}}
+            {{~foodStats.goalFats~}}
+            {{/if}}">
+                {{foodStats.fats}}%
+            </progress>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="proteinProgress">Protein Progress: {{foodStats.protein}}/{{foodStats.goalProtein}}</label>
+            <progress id="proteinProgress" value="{{foodStats.protein}}" max="
+            {{~#if (lt foodStats.goalProtein foodStats.protein)~}}
+            {{~foodStats.protein~}}
+            {{else}}
+            {{~foodStats.goalProtein~}}
+            {{/if}}">
+                {{foodStats.protein}}
+            </progress>
+        </div>
     </div>
 
     <div class="row">
@@ -120,7 +142,7 @@
             </thead>
             <tbody>
                 {{#each food}}
-                <tr scope="row" id="row{{@index}}">
+                <tr id="row{{@index}}">
                     <td>{{@index}}</td>
                     <td>{{this.foodName}}</td>
                     <td>{{this.calories}}</td>

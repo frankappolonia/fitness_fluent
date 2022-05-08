@@ -24,7 +24,9 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/public/css/teststyles.css" rel="stylesheet" />
     <link href="/public/css/widget_styles.css" rel="stylesheet" />
+    {{#if css}}
     <link href="{{{css}}}" rel="stylesheet" />
+    {{/if}}
   </head>
   <body>
     <nav class="navbar navbar-light bg-light shadow-sm rounded sticky-top" role="navigation" >
@@ -74,8 +76,12 @@
       integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
       crossorigin="anonymous"
     ></script>
+    {{#if script}}
     <script src={{{script}}}></script>
+    {{/if}}
+    {{#if script2}}
     <script src={{{script2}}}></script>
+    {{/if}}
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
       integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
