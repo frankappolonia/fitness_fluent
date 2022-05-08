@@ -57,6 +57,7 @@ router.route("/:date?").get(async (request, response) => {
       date: dateString,
       exerciseCals: totalCalories,
       script: "/public/js/exerciseLog.js",
+      script2: "/public/js/filler.js",
       ...authObj
     });
 
