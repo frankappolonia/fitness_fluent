@@ -1,6 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const router = express.Router();
+const errorHandling = require('../helper')
+const validations = errorHandling.userValidations
 
 
 router.route('/')
@@ -10,6 +12,7 @@ router.route('/')
             return
         }
         try {
+            validations.checkId(request.session.user)
             //expire authcookie
             response.clearCookie('adminCookie')
             response.clearCookie('idCookie')
