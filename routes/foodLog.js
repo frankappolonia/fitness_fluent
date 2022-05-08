@@ -69,15 +69,18 @@ router.route("/:date?").get(async (request, response) => {
     authObj.authenticated = true;
     let nutrients = await userFuncs.getRemainingCalories(xss(id));
     authObj = { ...authObj, ...nutrients };
-    let recommendations = foodFunctions.getRecommendations(
-      nutrients.calories
-    );
     //---------------------------------------
-
+    let nutrientsNeeded = await userFuncs.getTotalNutrients(xss(id));
+    let recommendations = foodFunctions.getRecommendations(nutrients.calories);
     let food = await foodFunctions.getFoodsByDate(xss(id), xss(dateString));
+    let foodEatenStats = await foodFunctions.calculateDailyFoodStats(
+      xss(id),
+      xss(dateString)
+    );
 
     response.status(200).render("pages/food", {
       food: food,
+      foodStats: { ...nutrientsNeeded, ...foodEatenStats },
       date: dateString,
       script: "/public/js/foodLog.js",
       css: "/public/css/foodlog.css",
@@ -160,6 +163,7 @@ router.route("/calories/:date").get(async (request, response) => {
 router.route("/search/:term").get(async (request, response) => {
   try {
     //validations
+    validations.checkId(request.session.user);
     validations.stringChecks([request.params.term]);
 
     let food = xss(request.params.term);

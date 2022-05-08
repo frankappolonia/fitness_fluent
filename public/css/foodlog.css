@@ -49,3 +49,18 @@ h3{
 body {
     overflow-x: clip;
 }
+
+.progressbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.progressbar label {
+    font-size: .75em;
+}
+
+.progress-container {
+    margin: auto;
+    max-width: 90%;
+}
