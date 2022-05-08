@@ -436,6 +436,56 @@ async function updateUser(id, firstName, lastName, height, activityLevel, weekly
 
 
 
+async function logCurrentWeight(id, weight, date){
+  /**This function is for a user logging their weight at a specified date
+   * date must either be the string "current" or a date in YYYY-MM-DD format
+   */
+
+ //1. Validate inputs
+ if (arguments.length !== 3) throw "Invalid number of arguments"
+ validations.stringChecks([date])
+ id = validations.checkId(id)
+ validations.heightWeightValidation(65, weight)
+ if(date !== "current"){
+     validations.dateValidation(date)
+     date = moment(date).format('YYYY-MM-DD')
+ }
+ else{
+     date = moment().format('YYYY-MM-DD') //if date is "current" then it will be a new date obj at the current time
+ }
+ 
+ //2. Establish a connection to the users collection
+ const usersCollection = await users() 
+
+ //3. create weight obj
+ let currentWeight = {'date': date, 'weight': weight}
+
+ //4. check if weight has been logged for that date
+ let user = await usersCollection.findOne({ _id: ObjectId(id) })
+ if (user === null) throw "Error! No user with the specified ID is found!" 
+ let lastLogged = user.weightEntries[user.weightEntries.length-1]
+
+ if (lastLogged.date === currentWeight.date){ //remove entry for that day
+  const remove = await usersCollection.updateOne({ _id: ObjectId(id) }, {$pull: {weightEntries: {date: lastLogged.date}}})
+
+ }
+
+ //5. Query the collection for a user with the specified ID and log weight
+ const update = await usersCollection.updateOne({ _id: ObjectId(id) }, {$push: {weightEntries: currentWeight}})
+ if (update === null) throw "Error! No user with the specified ID is found!"
+
+ //6. update nutrition info
+user = await usersCollection.findOne({ _id: ObjectId(id) })
+ await updateUser(id, user.firstName, user.lastName, user.height, user.activityLevel, user.weeklyWeightGoal)
+
+ return true
+
+}
+
+
+
+
+
 module.exports = {
   addExercise,
   getExercisesByDate,
@@ -446,7 +496,8 @@ module.exports = {
   removeFoodEntry,
   calculateDailyFoodCalories,
   getRecommendations,
-  updateUser
+  updateUser,
+  logCurrentWeight
 };
 
 
