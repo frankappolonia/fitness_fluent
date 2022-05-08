@@ -59,6 +59,8 @@ function editButtonClick(btn){
         let editHtml = $(
             '<form method="post" id="edit-post-form">'+
                 '<div id=editPostDiv class="form-group">' +
+                '<h1>Post edit</h1>' +
+                '<h2>Type below:</h2>' +
                 '<label for="title">Enter post title</label>' +
                 `<input type="text" value="${ogPostTitle}" class="form-control" id="title" name="title" >`+
                 '<label for="postBody">Post</label>'+

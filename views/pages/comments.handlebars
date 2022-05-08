@@ -3,8 +3,8 @@
   <div class="row height d-flex justify-content-center align-items-center card">
     <article id="post-thread">
       <section id="main-post">
-        <h2 id="post-title">{{{title}}}</h2>
-        <h3>Author: {{{poster.name}}}</h3>
+        <h1 id="post-title">{{{title}}}</h1>
+        <h2>Author: {{{poster.name}}}</h2>
         <hr>
         <p id="post-body">{{{body}}}</p>
       </section>
@@ -17,16 +17,16 @@
 
         <div class="p-3">
 
-          <h4>Comments</h4>
+          <h3>Comments</h3>
 
         </div>
 
-        <div class="mt-3 d-flex flex-row align-items-center p-3 form-color">
+        <div class="mt-3 d-flex flex-row align-items-center p-3 form-color" role="complementary">
 
           <img src="/public/images/stockProfile.png" class="rounded-circle mr-2 profilepic" alt="Stock profile picture">
 
           <div id="comment-form-container">
-            <form method="post" id="new-comment-form">
+            <form method="post" id="new-comment-form" role="form">
               <label for="comment">Post</label>
               <input type="text" class="form-control" id="comment" name="comment" placeholder="Enter your comment...">
               <button type="submit" class="btn btn-primary">Submit</button>
