@@ -7,6 +7,9 @@ $("button").click(function () {
         calories: children[2].innerText,
       };
       let date = $("#date").val();
+
+      //validatons
+      deleteExerciseRouteValidation(exerciseData.exerciseName, exerciseData.calories)
   
       $.ajax({ type: "DELETE", 
                 url: `/exercise-log/${date}`, 
@@ -35,7 +38,7 @@ $("button").click(function () {
       }
     });
 
-//validations
+//validation for form submit
 $('#exercise-log-form').submit((event =>{
   let date = $('#date').val()
   let exercise = $('#exercise').val()
@@ -145,4 +148,11 @@ function compareDates(date){
 
   return true
 
+}
+
+function deleteExerciseRouteValidation(exerciseName, calories){
+  if(! exerciseName) throw "No exercise given!"
+  if(! calories) throw "No calories given!"
+  stringChecks([exerciseName])
+  checkCalories(calories)
 }

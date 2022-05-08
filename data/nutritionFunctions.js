@@ -26,6 +26,10 @@ function calculateTDE(activityLevel, gender, height, weight, age){
     /**Calculation for total daily energy expenditure (total cals spent each day) */
     if(arguments.length !== 5) throw "Invalid number of arguments!"
     validations.activityLevelValidation(activityLevel)
+    validations.genderValidation(gender)
+    validations.heightWeightValidation(height, weight)
+    validations.ageValidation(age)
+    
     let BMR = calculateBMR(gender, height, weight, age)
 
     let activityLevels = {'sedentary':1.2, 'light':1.375, 'moderate':1.55, 'heavy':1.725, 'hardcore':1.9}
@@ -38,6 +42,8 @@ function calculateCalsNeeded(weeklyGoal, TDEE){
     if (arguments.length !== 2) throw "Invaliad number of arguments"
     validations.weeklyGoalValidation(weeklyGoal)
     weeklyGoal = parseInt(weeklyGoal)
+    if(isNaN(TDEE)) throw "TDEE must be a number!"
+    if(TDEE < 0) throw "Calories must be greater than 0!"
 
     switch (weeklyGoal){
         case -2: 

@@ -4,6 +4,7 @@ const db = require("../data");
 const userFuncs = db.userFuncs;
 const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
+const xss = require('xss')
 
 router.route("/").get(async (request, response) => {
   let authObj = {};
@@ -25,6 +26,7 @@ router.route("/").get(async (request, response) => {
 
     response.status(200).render("pages/homepage", authObj);
   } catch (e) {
+    console.log(e)
     response.status(404).render("errors/404");
   }
 });
