@@ -24,7 +24,7 @@ router.route('/')
 
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let nutrients = await userFuncs.getRemainingCalories(id)
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
             authObj = {...authObj, ...nutrients}
             //---------------------------------------
 
@@ -34,7 +34,7 @@ router.route('/')
             authObj['css'] = "/public/css/progress.css"
             
             //this gets their overall weight progress when the page is initially loaded
-            let weightProgress = await userFuncs.getOverallWeightProgress(id)
+            let weightProgress = await userFuncs.getOverallWeightProgress(xss(id))
             authObj['lostOrGain'] = weightProgress.weightChange
             authObj['weight'] = weightProgress.weight
             

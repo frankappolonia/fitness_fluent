@@ -46,35 +46,50 @@ $(document).ready(function () {
     event.preventDefault();
     $("#suggestions").children("tr").remove();
     let searchTerm = $("#food").val();
-    if (!searchTerm) {
-      alert("Please enter a valid food name");
-      return;
-    }
-    $.ajax({
-      type: "GET",
-      url: `/food-log/search/${searchTerm}`,
-    }).done((data, status) => {
-      if (status !== "success") {
-        alert("Error: " + status);
-      } else {
-        console.log("data", data);
-        let row = data
-          .map(
-            (item, index) =>
-              `<tr onclick="wow(event)" class="row-select" id="suggestion-${index}">
-            <td>${item.food.label}</td>
-            <td>${Math.round(item.food.nutrients.ENERC_KCAL)}</td>
-            <td>${Math.round(item.food.nutrients.PROCNT)}</td>
-            <td>${Math.round(item.food.nutrients.CHOCDF)}</td>
-            <td>${Math.round(item.food.nutrients.FAT)}</td>
-          </tr>`
-          )
-          .join("");
-        console.log("row", row);
-        $("#suggestions").append(`${row}`);
+
+    try{
+      //validation for journal search
+      $('#journal-error').empty()
+      stringChecks([searchTerm])
+
+      if (!searchTerm) {
+        alert("Please enter a valid food name");
+        return;
       }
-    });
+      $.ajax({
+        type: "GET",
+        url: `/food-log/search/${searchTerm}`,
+      }).done((data, status) => {
+        if (status !== "success") {
+          alert("Error: " + status);
+        } else {
+          console.log("data", data);
+          let row = data
+            .map(
+              (item, index) =>
+                `<tr onclick="wow(event)" class="row-select" id="suggestion-${index}">
+              <td>${item.food.label}</td>
+              <td>${Math.round(item.food.nutrients.ENERC_KCAL)}</td>
+              <td>${Math.round(item.food.nutrients.PROCNT)}</td>
+              <td>${Math.round(item.food.nutrients.CHOCDF)}</td>
+              <td>${Math.round(item.food.nutrients.FAT)}</td>
+            </tr>`
+            )
+            .join("");
+          console.log("row", row);
+          $("#suggestions").append(`${row}`);
+        }
+      });
+
+    }catch(e){
+      $('#journal-error').empty()
+      $('#journal-error').append(e)
+    }
+
   });
+
+
+
 });
 
 function wow(event) {
@@ -113,7 +128,6 @@ $('#food-log-form').submit((event =>{
         $('#food-entry-error').show()
         $('#food-entry-error').empty()
         $('#food-entry-error').append(error)
-    
   }
 
 }));

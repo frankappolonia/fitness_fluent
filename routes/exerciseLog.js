@@ -45,7 +45,7 @@ router.route("/:date?").get(async (request, response) => {
     //stuff for daily goals widget
     let authObj = {}
     authObj.authenticated = true        
-    let nutrients = await userFuncs.getRemainingCalories(id)
+    let nutrients = await userFuncs.getRemainingCalories(xss(id))
     authObj = {...authObj, ...nutrients}
     authObj['css'] = "/public/css/foodlog.css"
     //---------------------------------------
@@ -57,6 +57,7 @@ router.route("/:date?").get(async (request, response) => {
       date: dateString,
       exerciseCals: totalCalories,
       script: "/public/js/exerciseLog.js",
+      script2: "/public/js/filler.js",
       ...authObj
     });
 
@@ -75,8 +76,8 @@ router.route("/:date").post(async (request, response) => {
     //db call
     await exerciseFunctions.addExercise(xss(id), xss(date), xss(exercise), xss(parseInt(calories)));
     response.status(200).redirect("/exercise-log");
+
   } catch (e) {
-    console.error(e);
     response.status(400).render('partials/badExercise', {error: e});
   }
 });
@@ -95,14 +96,13 @@ router.route("/:date").delete(async (request, response) => {
       validations.exerciseFoodLogDateValidation(request.params.date)
       date = moment(request.params.date).format("YYYY-MM-DD");
     }
-    let exercise = {exerciseName: xss(request.body.exerciseName), calories: parseInt(xss(request.body.calories))}
+    let sanatizedExercise = {exerciseName: xss(request.body.exerciseName), calories: parseInt(xss(request.body.calories))}
     
     //db call
-    await exerciseFunctions.removeExercise(xss(id), xss(date), exercise);
+    await exerciseFunctions.removeExercise(xss(id), xss(date), sanatizedExercise);
     response.sendStatus(200);
   } catch (e) {
-    console.error(e);
-    response.status(400).render('partials/badExercise');
+    response.status(400).render('errros/400', {error: e});
   }
 });
 
@@ -121,7 +121,7 @@ router.route("/calories/:date").get(async (request, response) => {
     response.status(200).json(totalCalories);
     
   } catch (e) {
-    console.error(e);
+ 
     response.status(400).render('partials/badExercise', {error: e});
   }
 })

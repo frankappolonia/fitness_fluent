@@ -20,6 +20,8 @@ router.route('/')
     .get(async(request, response) =>{
         let authObj = {}
         try {
+            //no id to validate bc page is for nonauthenticated users
+            
             authObj['script'] = "/public/js/login.js"
             authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/signup.css"
@@ -41,10 +43,12 @@ router.route('/')
             return
         }
 
+
         try {
             let username = validations.checkUsername(request.body.username)
             let password = validations.checkPassword(request.body.password)
             let validateUser = await db.checkUser(xss(username), xss(password))
+
             if (validateUser.authenticated === true){
                     request.session.name = 'AuthCookie'
                     request.session.user = validateUser.userId

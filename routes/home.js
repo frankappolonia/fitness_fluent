@@ -4,15 +4,18 @@ const db = require("../data");
 const userFuncs = db.userFuncs;
 const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
+const xss = require('xss')
 
 router.route("/").get(async (request, response) => {
   let authObj = {};
   try {
     if (request.session.user) {
+      //validate if logged in
       let id = validations.checkId(request.session.user);
+
       authObj.authenticated = true;
       //stuff for daily goals widget
-      let nutrients = await userFuncs.getRemainingCalories(id);
+      let nutrients = await userFuncs.getRemainingCalories(xss(id));
       authObj = { ...authObj, ...nutrients };
 
       //---------------------------------------"
@@ -21,10 +24,9 @@ router.route("/").get(async (request, response) => {
     authObj["script"] = "/public/js/filler.js";
     authObj["script2"] = "/public/js/filler.js";
 
-    console.log(request.session);
     response.status(200).render("pages/homepage", authObj);
   } catch (e) {
-    console.log(e);
+    console.log(e)
     response.status(404).render("errors/404");
   }
 });

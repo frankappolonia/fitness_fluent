@@ -33,7 +33,7 @@ router.route("/")
 
     //stuff for daily goals widget
     authObj.authenticated = true;
-    let nutrients = await userFuncs.getRemainingCalories(id);
+    let nutrients = await userFuncs.getRemainingCalories(xss(id));
     authObj = { ...authObj, ...nutrients };
     //---------------------------------------
 
@@ -71,7 +71,6 @@ router.route("/")
       ...authObj,
     });
   } catch (e) {
-    console.log(e);
     response.status(400).render("errors/400", { error: e });
   }
   })
@@ -151,7 +150,6 @@ router.route("/editProfile")
         xss(goal)
       );
 
-      console.log('here2')
       response.status(200).send('Success');
     } catch (e) {
       response.status(400).send("error: " + e);
@@ -169,7 +167,7 @@ router.route("/updateMacros")
       let fat = request.body.fat
       let protein = request.body.protein
 
-      await userFuncs.updateMacros(id, carbs, protein, fat)
+      await userFuncs.updateMacros(xss(id), xss(carbs), xss(protein), xss(fat))
       response.status(200).redirect('/profile')
 
         

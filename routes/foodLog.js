@@ -16,14 +16,38 @@ router.get("/", (request, response, next) => {
   } else {
     next();
   }
-});
+})
 router.get("/:date?", (request, response, next) => {
   if (!request.session.user) {
     return response.redirect("/");
   } else {
     next();
   }
+})
+router.get("/:date", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
+})
+
+router.get("/calories/:date", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
+})
+
+router.get("/search/:term", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
 });
+
 
 //---------------------------------------------------------------------
 
@@ -44,9 +68,9 @@ router.route("/:date?").get(async (request, response) => {
     //stuff for daily goals widget
     let authObj = {};
     authObj.authenticated = true;
-    let nutrients = await userFuncs.getRemainingCalories(id);
+    let nutrients = await userFuncs.getRemainingCalories(xss(id));
     authObj = { ...authObj, ...nutrients };
-    let recommendations = await foodFunctions.getRecommendations(
+    let recommendations = foodFunctions.getRecommendations(
       nutrients.calories
     );
     //---------------------------------------
@@ -148,7 +172,7 @@ router.route("/search/:term").get(async (request, response) => {
     let results = data.hints;
     response.status(200).json(results);
   } catch (e) {
-    response.status(400).render('errors/404');
+    response.status(400).render('errors/400', {error: e});
   }
 });
 
