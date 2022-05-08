@@ -152,37 +152,6 @@ async function getRemainingCalories(id){
 }
 
 
-async function logCurrentWeight(id, weight, date){
-     /**This function is for a user logging their weight at a specified date
-      * date must either be the string "current" or a date in YYYY-MM-DD format
-      */
-
-    //1. Validate inputs
-    if (arguments.length !== 3) throw "Invalid number of arguments"
-    validations.stringChecks([date])
-    id = validations.checkId(id)
-    validations.heightWeightValidation(65, weight)
-    if(date !== "current"){
-        validations.dateValidation(date)
-        date = new Date(date)
-    }
-    else{
-        date = Date() //if date is "current" then it will be a new date obj at the current time
-    }
-    
-    //2. Establish a connection to the users collection
-    const usersCollection = await users() 
-
-    //3. create weight obj
-    let currentWeight = {'date': date, 'weight': weight}
-
-    //4. Query the collection for a user with the specified ID
-    const user = await usersCollection.updateOne({ _id: ObjectId(id) }, {$push: {weightEntries: currentWeight}})
-    if (user === null) throw "Error! No user with the specified ID is found!"
-
-    return true
-
-}
 
 async function getWeights(id, startDate, endDate){
     /**This function returns an object all of the weights a user logged within a specified date range 
@@ -379,11 +348,9 @@ module.exports = {
     checkUser,
     getUserById,
     getRemainingCalories,
-    logCurrentWeight,
     getWeights,
     getAllWeights,
     getOverallWeightProgress,
     calculateDailyCaloriesRemaining,
     calculateDailyMacrosRemaining,
-    //updateUser
 }

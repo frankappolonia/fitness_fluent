@@ -24,7 +24,8 @@ router.get("/editProfile", (request, response, next) => {
   }
 });
 
-router.route("/").get(async (request, response) => {
+router.route("/")
+  .get(async (request, response) => {
   try {
     let authObj = {};
     //validations
@@ -73,7 +74,22 @@ router.route("/").get(async (request, response) => {
     console.log(e);
     response.status(400).render("errors/400", { error: e });
   }
-});
+  })
+  .post(async(request, response) =>{
+
+    try {
+      let id = validations.checkId(request.session.user);
+      validations.heightWeightValidation(60, request.body.weight)
+      let weight = request.body.weight
+
+      await foodExFuncs.logCurrentWeight(xss(id), xss(weight), xss("current"))
+      response.status(200).redirect("/profile")
+      
+    } catch (error) {
+      
+    }
+
+  });
 
 router.route("/editProfile")
   .get(async (request, response) => {
@@ -141,76 +157,5 @@ router.route("/editProfile")
     }
 });
 
-// router.route("/updateActivityLevel").patch(async (request, response) => {
-//     try {
-//         let authObj = {};
-//         //validations
-//         let id = validations.checkId(request.session.user);
-
-//         let activityLevel = request.body.newActivityLevel;
-//         activityLevel = activityLevel.trim();
-//         validations.stringChecks([activityLevel]);
-//         validations.activityLevelValidation(activityLevel);
-
-//         profileFuncs.updateActivityLevel(id, activityLevel);
-
-//         response.status(200).redirect("/");
-//     } catch (e) {
-//         response.status(400).render("errors/400", { error: e });
-//     }
-// })
-
-// router.route("/updateWeeklyWeightGoal").patch(async (request, response) => {
-//     try {
-//         let authObj = {};
-//         //validations
-//         let id = validations.checkId(request.session.user);
-
-//         let goal = request.body.newGoal;
-//         validations.weeklyGoalValidation(goal);
-
-//         profileFuncs.updateWeeklyWeightGoal(id, goal);
-
-//         response.status(200).redirect("/");
-//     } catch (e) {
-//         response.status(400).render("errors/400", { error: e });
-//     }
-// })
-
-// router.route("/updateHeight").patch(async (request, response) => {
-//     try {
-//         let authObj = {};
-//         //validations
-//         let id = validations.checkId(request.session.user);
-
-//         let height = request.body.newHeight;
-//         let placeholderWeight = 100;
-//         validations.heightWeightValidation(height, placeholderWeight);
-
-//         profileFuncs.updateHeight(id, height);
-
-//         response.status(200).redirect("/");
-//     } catch (e) {
-//         response.status(400).render("errors/400", { error: e });
-//     }
-// })
-
-// router.route("/updateWeight").patch(async (request, response) => {
-//     try {
-//         let authObj = {};
-//         //validations
-//         let id = validations.checkId(request.session.user);
-
-//         let weight = request.body.newWeight;
-//         let placeholderHeight = 60;
-//         validations.heightWeightValidation(placeholderHeight, weight);
-
-//         profileFuncs.updateWeight(id, weight);
-
-//         response.status(200).redirect("/");
-//     } catch (e) {
-//         response.status(400).render("errors/400", { error: e });
-//     }
-// })
 
 module.exports = router;

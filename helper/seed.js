@@ -1,6 +1,7 @@
 const data = require('../data')
 const db = require('../config')
 const userFuncs = data.userFuncs
+const exFuncs = data.exerciseFoodFuncs
 const postFuncs = data.postFuncs
 const users = db.usersCollection
 const posts = db.postsCollection
@@ -29,23 +30,23 @@ async function seed(){
     try {
         //users
         let joeId = await userFuncs.createUser('joe', 'smith', 'test@gmail.com', 'password', '1994-02-15', 72, 185, 'male', 'sedentary', 1, 0)
-        await userFuncs.logCurrentWeight(joeId, 187, "2022-04-30")
-        await userFuncs.logCurrentWeight(joeId, 188, "2022-05-07")
-        await userFuncs.logCurrentWeight(joeId, 189, "2022-05-11")
-        await userFuncs.logCurrentWeight(joeId, 189, "2022-05-15")
-        await userFuncs.logCurrentWeight(joeId, 186, "2022-05-21")
+        await exFuncs.logCurrentWeight(joeId, 187, "2022-04-30")
+        await exFuncs.logCurrentWeight(joeId, 188, "2022-05-07")
+        await exFuncs.logCurrentWeight(joeId, 189, "2022-05-11")
+        await exFuncs.logCurrentWeight(joeId, 189, "2022-05-15")
+        await exFuncs.logCurrentWeight(joeId, 186, "2022-05-21")
 
         let ericaId = await userFuncs.createUser('Erica', 'smith', 'test2@gmail.com', 'password', '2004-03-15', 60, 115, 'female', 'moderate', 0, 0)
-        await userFuncs.logCurrentWeight(ericaId, 118, "2022-04-30")
-        await userFuncs.logCurrentWeight(ericaId, 115, "2022-05-11")
+        await exFuncs.logCurrentWeight(ericaId, 118, "2022-04-30")
+        await exFuncs.logCurrentWeight(ericaId, 115, "2022-05-11")
 
         let frankId = await userFuncs.createUser('Frank', 'Jones', 'test3@gmail.com', 'password', '1999-02-15', 68, 162, 'male', 'heavy', 0, 0)
-        await userFuncs.logCurrentWeight(frankId, 160, "2021-12-30")
-        await userFuncs.logCurrentWeight(frankId, 161, "2022-01-11")
-        await userFuncs.logCurrentWeight(frankId, 162, "2022-02-11")
-        await userFuncs.logCurrentWeight(frankId, 163, "2022-03-11")
-        await userFuncs.logCurrentWeight(frankId, 163, "2022-04-11")
-        await userFuncs.logCurrentWeight(frankId, 163, "2022-04-26")
+        await exFuncs.logCurrentWeight(frankId, 160, "2021-12-30")
+        await exFuncs.logCurrentWeight(frankId, 161, "2022-01-11")
+        await exFuncs.logCurrentWeight(frankId, 162, "2022-02-11")
+        await exFuncs.logCurrentWeight(frankId, 163, "2022-03-11")
+        await exFuncs.logCurrentWeight(frankId, 163, "2022-04-11")
+        await exFuncs.logCurrentWeight(frankId, 163, "2022-04-26")
 
         let adminId = await userFuncs.createUser('Admin', 'James', 'admin@gmail.com', 'password', '1985-06-17', 74, 198, 'male', 'moderate', 2, 1234)
 
