@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../data");
 const userFuncs = db.userFuncs;
-const profileFuncs = db.profileFuncs;
 const errorHandling = require("../helper");
+const foodExFuncs = db.exerciseFoodFuncs
 const validations = errorHandling.userValidations;
 const xss = require("xss");
 
@@ -43,15 +43,15 @@ router.route("/").get(async (request, response) => {
     validations.nameValidation(firstName, lastName);
     let email = user.email;
     let dob = user.dob;
-    // validations.dobValidation(dob);
+    let bmr = user.BMR
+    let bmi = user.BMI
     let activityLevel = user.activityLevel.trim().toLowerCase();
-    validations.activityLevelValidation(activityLevel);
-    let weeklyWeightGoal = user.weeklyWeightGoal;
-    validations.weeklyGoalValidation(weeklyWeightGoal);
+    let weeklyWeightGoal = user.weeklyWeightGoal
     let height = user.height;
-    let allWeights = await userFuncs.getAllWeights(id);
+    let calorieGoal = user.totalDailyCalories
+
+    let allWeights = await userFuncs.getAllWeights(xss(id));
     let currentWeight = allWeights.weights[allWeights.weights.length - 1];
-    validations.heightWeightValidation(height, currentWeight);
 
     response.status(200).render("pages/profile", {
       script: "/public/js/profile.js",
@@ -64,6 +64,9 @@ router.route("/").get(async (request, response) => {
       weeklyWeightGoal,
       height,
       currentWeight,
+      bmr: bmr,
+      bmi: bmi,
+      calorieGoal: calorieGoal,
       ...authObj,
     });
   } catch (e) {
@@ -85,22 +88,21 @@ router.route("/editProfile")
 
       //stuff for daily goals widget
       authObj.authenticated = true;
-      let nutrients = await userFuncs.getRemainingCalories(id);
+      let nutrients = await userFuncs.getRemainingCalories(xss(id));
       authObj = { ...authObj, ...nutrients };
       //---------------------------------------
 
       let user = await userFuncs.getUserById(xss(id));
       let firstName = user.firstName;
       let lastName = user.lastName;
-      validations.nameValidation(firstName, lastName);
       let activityLevel = user.activityLevel.trim().toLowerCase();
-      validations.activityLevelValidation(activityLevel);
       let weeklyWeightGoal = user.weeklyWeightGoal;
-      validations.weeklyGoalValidation(weeklyWeightGoal);
       let height = user.height;
-      let allWeights = await userFuncs.getAllWeights(id);
-      let currentWeight = allWeights.weights[allWeights.weights.length - 1];
-      validations.heightWeightValidation(height, currentWeight);
+
+      validations.nameValidation(firstName, lastName);
+      validations.activityLevelValidation(activityLevel);
+      validations.weeklyGoalValidation(weeklyWeightGoal);
+      validations.heightWeightValidation(height, 60);
 
       response.status(200).render("pages/editProfile", {
         script: "/public/js/profile.js",
@@ -110,7 +112,6 @@ router.route("/editProfile")
         activityLevel,
         weeklyWeightGoal,
         height,
-        currentWeight,
         ...authObj,
       });
       } catch (e) {
@@ -121,11 +122,10 @@ router.route("/editProfile")
     try {
       //validations
       let id = validations.checkId(request.session.user);
-      validations.validateUpdateProfile(request.body)
+      validations.validateProfilePatch(request.body)
       const {firstName, lastName, height, activityLevel, goal} = request.body
-      console.log('here')
 
-      await userFuncs.updateUser(
+      await foodExFuncs.updateUser(
         xss(id),
         xss(firstName),
         xss(lastName),

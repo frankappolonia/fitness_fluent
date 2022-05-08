@@ -33,11 +33,8 @@ $(document).ready(function () {
       $('#food-log-error').show()
       $('#food-log-error').empty()
       $('#food-log-error').append("Error: " + e)
-
     }
-
     }
-
   });
 
   $("#date").change(function (e) {

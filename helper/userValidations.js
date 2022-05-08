@@ -107,6 +107,7 @@ function dateValidation(date){
 
 function exerciseFoodLogDateValidation(date){
     //first checks if its a valid date
+    console.log('here')
     dateValidation(date)
     date = moment(date).format("YYYY-MM-DD")
     let currentDate = moment().format("YYYY-MM-DD");
@@ -377,7 +378,7 @@ function deleteRouteCheckFood(requestBody, date){
     checkNewFood(date, requestBody.foodName, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
 }
 
-function validateUpdateProfile(requestBody){
+function validateProfilePatch(requestBody){
     if(! requestBody.firstName) throw "no first name given"
     if(! requestBody.lastName) throw "no last name given"
     if(! requestBody.height) throw "no height given"
@@ -388,6 +389,20 @@ function validateUpdateProfile(requestBody){
     heightWeightValidation(requestBody.height, 80)
     activityLevelValidation(requestBody.activityLevel)
     weeklyGoalValidation(requestBody.goal)
+
+}
+
+function validateUpdateProfile(firstName, lastName, height, activityLevel, weeklyWeightGoal){
+    if(firstName === null || firstName === undefined) throw "no first name given"
+    if (lastName === null || lastName === undefined) throw "no last name given"
+    if(height === null || height === undefined) throw "no height given"
+    if(activityLevel === null || activityLevel === undefined) throw "no activity level given"
+    if(weeklyWeightGoal === null || weeklyWeightGoal === undefined) throw "no goal given"
+
+    nameValidation(firstName, lastName)
+    heightWeightValidation(height, 80)
+    activityLevelValidation(activityLevel)
+    weeklyGoalValidation(weeklyWeightGoal)
 
 }
 
@@ -419,4 +434,5 @@ module.exports = {
     postRouteCheckFood,
     checkCalories2,
     validateUpdateProfile,
+    validateProfilePatch
 }

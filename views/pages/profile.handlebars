@@ -1,3 +1,4 @@
+
 {{#> caloriesRemainingWidget}}
 {{/caloriesRemainingWidget}}
 <div id="profile-container" class="container-fluid">
@@ -15,15 +16,24 @@
     <h3>Current Weight:
         <p>{{{currentWeight}}}</p>
     </h3>
+    <h3>Body Mass Index (BMI):
+        <p>{{{bmi}}}</p>
+    </h3>
+    <h3>Base Metabolic Rate (BMR):
+        <p>{{{bmr}}}</p>
+    </h3>
     <h3>Current Activity Level:
         <p>{{{activityLevel}}}</p>
     </h3>
     <h3>Current Weekly Weight Goal:
         <p>{{{weeklyWeightGoal}}}</p>
     </h3>
+    <h3>Current Daily Caloric Goal:
+        <p>{{{calorieGoal}}}</p>
+    </h3>
     </div>
     <div class="col col col-12 col-md-6">
-        <button class="editProfile">Edit Profile</button>
+        <a class="btn btn-primary btn-large" href="/profile/editProfile" role="button">Edit Profile</a>
     </div>
     </div>
 </div>

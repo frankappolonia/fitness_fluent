@@ -88,11 +88,18 @@ function calculateMacroBreakdown(dailyCals, carbs, fat, protein){
 
 }
 
+function calculateBMI(height, weight){
+    validations.heightWeightValidation(height, weight)
+    let bmi = parseFloat(((weight*703)/ Math.pow(height, 2)).toFixed(1))
+    return bmi
+}
+
 
 module.exports = {
     calculateBMR, 
     calculateTDE, 
     calculateCalsNeeded,
     calculateAge,
-    calculateMacroBreakdown
+    calculateMacroBreakdown,
+    calculateBMI
 }

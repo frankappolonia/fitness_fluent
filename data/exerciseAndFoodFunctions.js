@@ -5,6 +5,7 @@ const errorHandling = require("../helper");
 const validations = errorHandling.userValidations;
 const userFuncs = require("./users");
 const moment = require("moment");
+const nutritionFuncs = require('./nutritionFunctions')
 
 /*======================================================
                   EXERCISE FUNCTIONS
@@ -376,6 +377,65 @@ function getRecommendations(calories) {
   return results;
 }
 
+
+
+
+async function updateUser(id, firstName, lastName, height, activityLevel, weeklyWeightGoal) {
+  if (arguments.length !== 6) throw "Invalid number of arguments"
+  id = validations.checkId(id);
+  validations.validateUpdateProfile(firstName, lastName, height, activityLevel, weeklyWeightGoal)
+
+  const usersCollection = await users()
+  const user = await usersCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw 'Error: User not found';
+
+
+  let allWeights = await userFuncs.getAllWeights(id);
+  let currentWeight = allWeights.weights[allWeights.weights.length - 1];
+  
+  //update stats
+  let dob = (user.dob.getFullYear().toString() + "-" + user.dob.getMonth().toString() + "-" + user.dob.getDate().toString())
+  let date = moment(new Date(dob)).format("YYYY-MM-DD")
+
+  let age = nutritionFuncs.calculateAge(date)
+
+  let BMR = nutritionFuncs.calculateBMR(user.gender, height, currentWeight, age)
+  let BMI = nutritionFuncs.calculateBMI(height, currentWeight)
+  let TDEE = nutritionFuncs.calculateTDE(activityLevel, user.gender, height, currentWeight, age)
+  let calsNeeded = nutritionFuncs.calculateCalsNeeded(weeklyWeightGoal, TDEE)
+
+  //update daily cals
+  let currentDate = moment().format('YYYY-MM-DD')
+
+  let foodCals = await calculateDailyFoodCalories(id, currentDate);
+  let exerciseCals = await calculateDailyExerciseCalories(id, currentDate);
+
+  //set rest of update values
+  let firstUpdate = await usersCollection.updateOne(
+      {_id: ObjectId(id)},
+      {$set: {firstName: firstName, 
+          lastName: lastName, 
+          height: height, 
+          activityLevel: activityLevel, 
+          weeklyWeightGoal: weeklyWeightGoal,
+          totalDailyCalories: calsNeeded,
+          BMR: BMR,
+          BMI: BMI}}
+  );
+  if (firstUpdate === null) throw "error updating user'!";
+
+  await userFuncs.calculateDailyCaloriesRemaining(
+    id,
+    date,
+    foodCals,
+    exerciseCals
+  );
+
+  return true;
+}
+
+
+
 module.exports = {
   addExercise,
   getExercisesByDate,
@@ -386,4 +446,10 @@ module.exports = {
   removeFoodEntry,
   calculateDailyFoodCalories,
   getRecommendations,
+  updateUser
 };
+
+
+
+
+

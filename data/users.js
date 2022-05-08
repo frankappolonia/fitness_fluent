@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
-const profileFuncs = require("./profileFunctions");
 const { ObjectId } = require('mongodb');
 const moment = require("moment");
 
@@ -38,6 +37,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     //5. Calculate initial nutrition data
     let age = nutritionFuncs.calculateAge(dob)
     let BMR = nutritionFuncs.calculateBMR(gender, height, initialWeight, age)
+    let BMI = nutritionFuncs.calculateBMI(height, initialWeight)
     let TDEE = nutritionFuncs.calculateTDE(activityLevel, gender, height, initialWeight, age)
     let calsNeeded = nutritionFuncs.calculateCalsNeeded(weeklyWeightGoal, TDEE)
     let defaultDailyMacros = nutritionFuncs.calculateMacroBreakdown(calsNeeded, 0.4, 0.3, 0.3)
@@ -60,6 +60,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
         activityLevel: activityLevel,
         weeklyWeightGoal: weeklyWeightGoal,
         BMR: BMR,
+        BMI: BMI,
         TDEE: TDEE,
         totalDailyCalories: calsNeeded,
         dailyCaloriesRemaining: calsNeeded,
@@ -81,21 +82,6 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     return user['_id'].toString()
 }
 
-async function updateUser(id, firstName, lastName, height, activityLevel, weeklyWeightGoal) {
-    id = validations.checkId(id);
-    validations.stringtrim(arguments);
-    validations.nameValidation(firstName, lastName);
-    validations.heightWeightValidation(height, 80);
-    validations.activityLevelValidation(activityLevel);
-    activityLevel = activityLevel.toLowerCase();
-    validations.weeklyGoalValidation(weeklyWeightGoal);
-
-    console.log('here3')
-    await profileFuncs.updateName(id, firstName, lastName);
-    await profileFuncs.updateHeight(id, height);
-    await profileFuncs.updateActivityLevel(id, activityLevel);
-    await profileFuncs.updateWeeklyWeightGoal(id, weeklyWeightGoal);
-}
 
 async function checkUser(username, password){
     /**This function is for validating login */
@@ -130,10 +116,10 @@ async function getUserById(id) {
     id = validations.checkId(id)
 
     //2. establish connection to db
-    const userCollection = await users();
+    const usersCollection = await users();
 
     //3. query db for user
-    const user = await userCollection.findOne({ _id: ObjectId(id) });
+    const user = await usersCollection.findOne({ _id: ObjectId(id) });
     if (!user) throw 'Error: User not found';
 
     //4. return the user
@@ -329,12 +315,13 @@ async function calculateDailyCaloriesRemaining(id, currentDate, foodCals, exerci
     let netCals = foodCals - exerciseCals
 
     //3. calculate remaining
-    let user = await getUserById(id)
-    if(! user) throw "User cannot be found!"
+    const usersCollection = await users();
+    let user = await usersCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw "User not found!"
+
     let remainingCals = user['totalDailyCalories'] - netCals
 
     //4. update user
-    let usersCollection = await users()
     await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyCaloriesRemaining: remainingCals}})
     
     return remainingCals
@@ -398,5 +385,5 @@ module.exports = {
     getOverallWeightProgress,
     calculateDailyCaloriesRemaining,
     calculateDailyMacrosRemaining,
-    updateUser
+    //updateUser
 }
