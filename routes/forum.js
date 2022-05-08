@@ -50,6 +50,8 @@ router.route('/') //route for all posts/forum home
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
+            authObj['script'] = "/public/js/filler.js"
+            authObj['script2'] = "/public/js/filler.js"
             response.status(200).render('pages/forum', authObj)
 
         } catch (e) {
