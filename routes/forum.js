@@ -75,6 +75,7 @@ router.route('/new') //route for a new post
             //---------------------------------------
 
             authObj['script'] = "/public/js/newPost.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/forum_styles.css"
 
             response.status(200).render('pages/newPost', authObj)
