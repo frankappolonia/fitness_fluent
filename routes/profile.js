@@ -56,6 +56,7 @@ router.route("/")
 
     response.status(200).render("pages/profile", {
       script: "/public/js/profile.js",
+      script2: "/public/js/filler.js",
       css: "/public/css/profile.css",
       firstName,
       lastName,
