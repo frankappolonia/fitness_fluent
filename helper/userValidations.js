@@ -107,6 +107,7 @@ function dateValidation(date){
 
 function exerciseFoodLogDateValidation(date){
     //first checks if its a valid date
+    console.log('here')
     dateValidation(date)
     date = moment(date).format("YYYY-MM-DD")
     let currentDate = moment().format("YYYY-MM-DD");
