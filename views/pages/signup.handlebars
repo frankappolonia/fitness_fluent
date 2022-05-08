@@ -9,9 +9,9 @@
             </div><a class="btn btn-primary btn-large" href="/login" role="button">Already signed up? Login</a>
 
         </div>
-        <form id="signup-form" method="post">
+        <form id="signup-form" method="post" role="form">
         <div class="card two bg-white px-5 py-4 mb-3">
-            <div id="signup-error2" role="alert">{{{error}}}</div>
+            <div id="signup-error2">{{{error}}}</div>
             <div class="form-group">
                 <input type="text" class="form-control" id="firstName" name="firstName" required>
                 <label class="form-control-placeholder" for="firstName">First Name</label>
@@ -77,7 +77,7 @@
                 </select>
             </div> 
             <div id="signup-error" class="alert alert-danger" role="alert"></div>
-            <button class="btn btn-primary btn-block btn-lg mt-1 mb-2"><span>Get started<i class="fas fa-long-arrow-alt-right ml-2"></i></span></button>
+            <button class="btn btn-primary btn-block btn-lg mt-1 mb-2" role="button"><span>Get started<i class="fas fa-long-arrow-alt-right ml-2"></i></span></button>
         </div>
         </form>
         </div>

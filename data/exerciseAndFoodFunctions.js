@@ -430,6 +430,9 @@ async function updateUser(id, firstName, lastName, height, activityLevel, weekly
     foodCals,
     exerciseCals
   );
+  
+  let foodsArray = await getFoodsByDate(id, date);
+  await userFuncs.calculateDailyMacrosRemaining(id, currentDate, foodsArray )
 
   return true;
 }

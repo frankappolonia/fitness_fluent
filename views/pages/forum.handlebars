@@ -6,12 +6,12 @@
     <div class="d-flex flex-wrap justify-content-between">
         <div><a class="btn btn-primary btn-large" href="/forum/new" role="button">New Post</a></div>
     </div>
-    <div class="card mb-3">
+    <div class="card mb-3" role="complementary">
         <div class="card-header pl-0 pr-0">
             <div class="row no-gutters w-100 align-items-center">
                 <div class="col ml-3">Topics</div>
                 <div class="col-4 text-muted">
-                    <div class="row no-gutters align-items-center">
+                    <div class="row no-gutters align-items-center" id="forum-header">
                         <div class="col-4">Replies</div>
                         <div class="col-8">Last update</div>
                     </div>
@@ -22,15 +22,15 @@
         {{#each posts}}
         <div class="card-body py-3">
             <div class="row no-gutters align-items-center">
-                <div class="col"> <a href="/forum/{{this._id}}" class="text-big" data-abc="true">{{this.title}}</a>
+                <div class="col"> <a href="/forum/{{this._id}}" class="text-big">{{this.title}}</a>
                     <div class="text-muted small mt-1">Author: {{this.poster.name}}</div>
                 </div>
                 <div class="d-none d-md-block col-4">
                     <div class="row no-gutters align-items-center">
                         <div class="col-4">{{this.comments.length}}</div>
-                        <div class="media col-8 align-items-center"> <img src="" id="forum-profile" alt="stock profile picture" class="d-block ui-w-30 rounded-circle">
+                        <div class="media col-8 align-items-center"> 
                             <div class="media-body flex-truncate ml-2">
-                                <div class="line-height-1 text-truncate">1 day ago</div> <p class="text-muted small text-truncate" data-abc="true">{{getLastPoster this.comments}}</p>
+                                <p class="text-muted small text-truncate" data-abc="true">{{getLastPoster this.comments}}</p>
                             </div>
                         </div>
                     </div>
@@ -42,16 +42,6 @@
         {{else}}        
             <p class="posts-not-found">We're sorry, but no posts were found!</p>
         {{/if}}
-
-    <nav>
-        <ul class="pagination mb-5">
-            <li class="page-item disabled"><a class="page-link" href="javascript:void(0)" data-abc="true">«</a></li>
-            <li class="page-item active"><a class="page-link" href="javascript:void(0)" data-abc="true">1</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:void(0)" data-abc="true">2</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:void(0)" data-abc="true">3</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:void(0)" data-abc="true">»</a></li>
-        </ul>
-    </nav>
 </div>
 </div>
 

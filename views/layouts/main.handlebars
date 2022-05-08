@@ -27,7 +27,7 @@
     <link href="{{{css}}}" rel="stylesheet" />
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light shadow-sm rounded sticky-top">
+    <nav class="navbar navbar-light bg-light shadow-sm rounded sticky-top" role="navigation" >
       <div class="container">
         <a class="navbar-brand" href="#">
           <img
@@ -50,29 +50,16 @@
       </div><!-- /.container-fluid -->
     </nav>
 
-    <div id="body-container">
+    <div id="body-container" role="main">
       {{{body}}}
     </div>
 
-    <footer>
+    <footer role="contentinfo">
       <div class="container">
         <div class="row">
           <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
             <p id="rights-reserved" class="small mb-4 mb-lg-0">&copy;
               FitnessFluent 2022. CS546 Reserved.</p>
-          </div>
-          <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
-            <ul class="list-inline mb-0">
-              <li class="list-inline-item me-4">
-                <p class="bi-facebook fs-3"></p>
-              </li>
-              <li class="list-inline-item me-4">
-                <p class="bi-twitter fs-3"></p>
-              </li>
-              <li class="list-inline-item">
-                <p class="bi-instagram fs-3"></p>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
