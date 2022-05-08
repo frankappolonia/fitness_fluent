@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "seed" : "node ./helper/seed.js"
   },
   "repository": {
     "type": "git",

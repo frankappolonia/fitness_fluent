@@ -16,21 +16,21 @@ router.get("/", (request, response, next) => {
   } else {
     next();
   }
-})
+});
 router.get("/:date?", (request, response, next) => {
   if (!request.session.user) {
     return response.redirect("/");
   } else {
     next();
   }
-})
+});
 router.get("/:date", (request, response, next) => {
   if (!request.session.user) {
     return response.redirect("/");
   } else {
     next();
   }
-})
+});
 
 router.get("/calories/:date", (request, response, next) => {
   if (!request.session.user) {
@@ -38,7 +38,7 @@ router.get("/calories/:date", (request, response, next) => {
   } else {
     next();
   }
-})
+});
 
 router.get("/search/:term", (request, response, next) => {
   if (!request.session.user) {
@@ -47,7 +47,6 @@ router.get("/search/:term", (request, response, next) => {
     next();
   }
 });
-
 
 //---------------------------------------------------------------------
 
@@ -70,15 +69,18 @@ router.route("/:date?").get(async (request, response) => {
     authObj.authenticated = true;
     let nutrients = await userFuncs.getRemainingCalories(xss(id));
     authObj = { ...authObj, ...nutrients };
-    let recommendations = foodFunctions.getRecommendations(
-      nutrients.calories
-    );
     //---------------------------------------
-
+    let nutrientsNeeded = await userFuncs.getTotalNutrients(xss(id));
+    let recommendations = foodFunctions.getRecommendations(nutrients.calories);
     let food = await foodFunctions.getFoodsByDate(xss(id), xss(dateString));
+    let foodEatenStats = await foodFunctions.calculateDailyFoodStats(
+      xss(id),
+      xss(dateString)
+    );
 
     response.status(200).render("pages/food", {
       food: food,
+      foodStats: { ...nutrientsNeeded, ...foodEatenStats },
       date: dateString,
       script: "/public/js/foodLog.js",
       css: "/public/css/foodlog.css",
@@ -116,20 +118,26 @@ router.route("/:date").post(async (request, response) => {
 router.route("/:date").delete(async (request, response) => {
   try {
     //validations
-    let id = validations.checkId(request.session.user)
-    validations.exerciseFoodLogDateValidation(request.params.date)
+    let id = validations.checkId(request.session.user);
+    validations.exerciseFoodLogDateValidation(request.params.date);
     let date = request.params.date;
 
     let food = request.body;
-    validations.deleteRouteCheckFood(food, date)
-    
-    // sanataize contents of object
-    let sanataizedFood = {foodName: xss(food.foodName), calories: xss(food.calories), protein: xss(food.protein), carbs: xss(food.carbs), fat: xss(food.fat) }
+    validations.deleteRouteCheckFood(food, date);
 
-    await foodFunctions.removeFoodEntry(xss(id), xss(date), sanataizedFood);
+    // sanitize contents of object
+    let sanitizedFood = {
+      foodName: xss(food.foodName),
+      calories: xss(food.calories),
+      protein: xss(food.protein),
+      carbs: xss(food.carbs),
+      fat: xss(food.fat),
+    };
+
+    await foodFunctions.removeFoodEntry(xss(id), xss(date), sanitizedFood);
     response.sendStatus(200);
   } catch (e) {
-    response.status(400).render('errors/400', {error: e});
+    response.status(400).render("errors/400", { error: e });
   }
 });
 
@@ -155,24 +163,14 @@ router.route("/calories/:date").get(async (request, response) => {
 router.route("/search/:term").get(async (request, response) => {
   try {
     //validations
+    validations.checkId(request.session.user);
     validations.stringChecks([request.params.term]);
 
     let food = xss(request.params.term);
-    const options = {
-      method: "GET",
-      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
-      params: { ingr: food },
-      headers: {
-        "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com",
-        "X-RapidAPI-Key": "e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6",
-      },
-    };
-
-    let { data } = await axios.request(options);
-    let results = data.hints;
+    let results = await foodFunctions.searchFoods(food);
     response.status(200).json(results);
   } catch (e) {
-    response.status(400).render('errors/400', {error: e});
+    response.status(400).render("errors/400", { error: e });
   }
 });
 

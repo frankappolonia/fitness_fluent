@@ -30,7 +30,6 @@ signUp.submit((event =>{
         $('#email').val(email.toLowerCase())
     }catch(e){
         event.preventDefault()
-        console.log('im here')
         $('#signup-error').show()
         $('#signup-error').empty()
         $('#signup-error').append(e)

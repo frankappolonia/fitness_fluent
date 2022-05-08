@@ -38,7 +38,6 @@ editProfile.submit((event =>{
 
     }catch(e){
         event.preventDefault()
-        //console.log('im here')
         $('#edit-profile-error').show()
         $('#edit-profile-error').empty()
         $('#edit-profile-error').append(e)

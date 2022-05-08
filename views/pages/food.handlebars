@@ -1,5 +1,6 @@
 {{#> caloriesRemainingWidget}}
 {{/caloriesRemainingWidget}}
+
 <div class="container" id="food-log-container">
     <div class="food-log-intro row justify-content-center">
         <div class="col-md-6">
@@ -9,6 +10,35 @@
                 Then, either enter a custom food, or search our database of thousands of foods!
             </p>
             <div id="food-log-error"></div>
+        </div>
+    </div>
+    <div class="row justify-content-center progress-container">
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="caloriesProgress">Calories Progress: {{foodStats.calories}}/{{foodStats.goalCalories}}</label>
+            <progress id="caloriesProgress" value="{{foodStats.calories}}" max="{{foodStats.goalCalories}}">
+                {{foodStats.calories}}
+            </progress>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="carbsProgress">Carbs Progress: {{foodStats.carbs}}/{{foodStats.goalCarbs}}</label>
+            <progress id="carbsProgress" value="{{foodStats.carbs}}" max="{{foodStats.goalCarbs}}">
+                {{foodStats.carbs}}
+            </progress>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="fatsProgress">Fats Progress: {{foodStats.fat}}/{{foodStats.goalFats}}</label>
+            <progress id="fatsProgress" value="{{foodStats.fat}}" max="{{foodStats.goalFats}}">
+                {{foodStats.fats}}%
+            </progress>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 progressbar">
+            <label for="proteinProgress">Protein Progress: {{foodStats.protein}}/{{foodStats.goalProtein}}</label>
+            <progress id="proteinProgress" value="{{foodStats.protein}}" max="{{foodStats.goalProtein}}">
+                {{foodStats.protein}}
+            </progress>
         </div>
     </div>
 

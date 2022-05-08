@@ -343,15 +343,67 @@ async function calculateDailyFoodCalories(id, currentDate) {
 
   //3. get the food
   let foods = await getFoodsByDate(id, currentDate);
-  if (foods.length === 0) return 0; //if there are no foods, then 0 calories were burned
+  if (foods.length === 0) return 0; //if there are no foods, then 0 calories were recorded
 
-  //4. calculate the total calories burned
+  //4. calculate the total calories
   let caloriesEaten = 0;
   foods.forEach((foodObj) => {
     caloriesEaten += foodObj.calories;
   });
 
   return caloriesEaten;
+}
+
+async function calculateDailyFoodStats(id, currentDate) {
+  //1. validations
+  if (arguments.length !== 2) throw "Invalid number of arguments";
+  validations.stringChecks([id, currentDate]);
+  validations.stringtrim(arguments);
+  id = validations.checkId(id);
+  validations.exerciseFoodLogDateValidation(currentDate);
+
+  //2. check if the user exists
+  const usersCollection = await users();
+  let user = await usersCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw "User not found!";
+
+  //3. get the food
+  let foods = await getFoodsByDate(id, currentDate);
+  if (foods.length === 0) return { calories: 0, protein: 0, carbs: 0, fat: 0 }; // if there are no foods, then nothing has been recorded
+
+  //4. calculate the total calories
+  let caloriesEaten = 0, proteinEaten = 0, carbsEaten = 0, fatEaten = 0;
+  foods.forEach((foodObj) => {
+    caloriesEaten += foodObj.calories;
+    proteinEaten += foodObj.protein;
+    carbsEaten += foodObj.carbs;
+    fatEaten += foodObj.fat;
+  });
+  
+  let exerciseCalories = await calculateDailyExerciseCalories(id, currentDate);
+
+  let stats = { calories: caloriesEaten - exerciseCalories, protein: proteinEaten, carbs: carbsEaten, fat: fatEaten };
+
+  return stats;
+}
+
+async function searchFoods(food) {
+  //1. validations
+  if (arguments.length !== 1) throw "Invalid number of arguments";
+  food = validations.stringChecks([food]);
+
+  const options = {
+    method: "GET",
+    url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+    params: { ingr: food },
+    headers: {
+      "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com",
+      "X-RapidAPI-Key": "e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6",
+    },
+  };
+
+  let { data } = await axios.request(options);
+  return data.hints;
 }
 
 function getRecommendations(calories) {
@@ -498,9 +550,11 @@ module.exports = {
   getFoodsByDate,
   removeFoodEntry,
   calculateDailyFoodCalories,
+  calculateDailyFoodStats,
+  searchFoods,
   getRecommendations,
   updateUser,
-  logCurrentWeight
+  logCurrentWeight,
 };
 
 

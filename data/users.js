@@ -152,6 +152,32 @@ async function getRemainingCalories(id){
 }
 
 
+async function getTotalNutrients(id) {
+    /* This function gets the total daily nutrient info for a user 
+    */
+
+    //1. Validate inputs
+    if (arguments.length !== 1) throw "Invalid number of arguments"
+    id = validations.checkId(id)
+    
+    //2. Establish a connection to the users collection
+    const usersCollection = await users() 
+
+    //3. Query the collection for a user with the specified ID
+    const user = await usersCollection.findOne({ _id: ObjectId(id) })
+    if (user === null) throw "Error! No user with the specified ID is found!"
+    let calsNeeded = user.totalDailyCalories
+    let macroBreakdown = user.dailyMacroBreakdown
+    let defaultDailyMacros = nutritionFuncs.calculateMacroBreakdown(calsNeeded, macroBreakdown.carbs, macroBreakdown.fats, macroBreakdown.protein)
+    //4. Extract the daily remaining calories and macro info
+    let nutrients = { goalCalories: calsNeeded,
+                      goalProtein: defaultDailyMacros.protein,
+                      goalCarbs: defaultDailyMacros.carbs,
+                      goalFats: defaultDailyMacros.fats
+                    }
+    return nutrients;
+}
+
 
 async function getWeights(id, startDate, endDate){
     /**This function returns an object all of the weights a user logged within a specified date range 
@@ -380,6 +406,7 @@ module.exports = {
     getWeights,
     getAllWeights,
     getOverallWeightProgress,
+    getTotalNutrients,
     calculateDailyCaloriesRemaining,
     calculateDailyMacrosRemaining,
     updateMacros
