@@ -65,7 +65,7 @@ $(document).ready(function () {
           let row = data
             .map(
               (item, index) =>
-                `<tr onclick="wow(event)" class="row-select" id="suggestion-${index}">
+                `<tr onclick="updateEntry(event)" class="row-select" id="suggestion-${index}">
               <td>${item.food.label}</td>
               <td>${Math.round(item.food.nutrients.ENERC_KCAL)}</td>
               <td>${Math.round(item.food.nutrients.PROCNT)}</td>
@@ -89,7 +89,7 @@ $(document).ready(function () {
 
 });
 
-function wow(event) {
+function updateEntry(event) {
   let food = event.currentTarget.children[0].innerText;
   let calories = event.currentTarget.children[1].innerText;
   let protein = event.currentTarget.children[2].innerText;
