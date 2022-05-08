@@ -85,7 +85,8 @@ router.route("/")
       await foodExFuncs.logCurrentWeight(xss(id), xss(weight), xss("current"))
       response.status(200).redirect("/profile")
       
-    } catch (error) {
+    } catch (e) {
+      response.status(400).render("errors/400", {error: e});
       
     }
 

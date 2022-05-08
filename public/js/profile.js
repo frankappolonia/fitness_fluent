@@ -1,3 +1,5 @@
+const { eventNames } = require("npm");
+
 let editProfile = $('#edit-profile-form')
 $('#edit-profile-error').hide()
 
@@ -43,6 +45,19 @@ editProfile.submit((event =>{
     }
 }));
 
+let logWeight = $('#log-weight-form')
+logWeight.submit((event =>{
+    let weight = $('#weight').val()
+    try {
+        $("log-weight-error").empty()
+        heightWeightValidation(60, weight)
+        
+    } catch (error) {
+        event.preventDefault()
+        $("log-weight-error").empty()
+        $("log-weight-error").append(error)
+    }
+}))
 
 function profileUpdateValidation(firstName, lastName, height, activityLevel, goal){
     /**Validates the request body data of the /signup post route */
