@@ -354,6 +354,39 @@ async function calculateDailyFoodCalories(id, currentDate) {
   return caloriesEaten;
 }
 
+async function calculateDailyFoodStats(id, currentDate) {
+  //1. validations
+  if (arguments.length !== 2) throw "Invalid number of arguments";
+  validations.stringChecks([id, currentDate]);
+  validations.stringtrim(arguments);
+  id = validations.checkId(id);
+  validations.exerciseFoodLogDateValidation(currentDate);
+
+  //2. check if the user exists
+  const usersCollection = await users();
+  let user = await usersCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw "User not found!";
+
+  //3. get the food
+  let foods = await getFoodsByDate(id, currentDate);
+  if (foods.length === 0) return { calories: 0, protein: 0, carbs: 0, fat: 0 }; // if there are no foods, then nothing has been recorded
+
+  //4. calculate the total calories
+  let caloriesEaten = 0, proteinEaten = 0, carbsEaten = 0, fatEaten = 0;
+  foods.forEach((foodObj) => {
+    caloriesEaten += foodObj.calories;
+    proteinEaten += foodObj.protein;
+    carbsEaten += foodObj.carbs;
+    fatEaten += foodObj.fat;
+  });
+  
+  let exerciseCalories = await calculateDailyExerciseCalories(id, currentDate);
+
+  let stats = { calories: caloriesEaten - exerciseCalories, protein: proteinEaten, carbs: carbsEaten, fat: fatEaten };
+
+  return stats;
+}
+
 function getRecommendations(calories) {
   //1. validations
   if (arguments.length !== 1) throw "Invalid number of arguments";
@@ -498,6 +531,7 @@ module.exports = {
   getFoodsByDate,
   removeFoodEntry,
   calculateDailyFoodCalories,
+  calculateDailyFoodStats,
   getRecommendations,
   updateUser,
   logCurrentWeight
