@@ -109,7 +109,7 @@ router.route("/:date").post(async (request, response) => {
       parseInt(xss(carbs)),
       parseInt(xss(fat))
     );
-    response.status(200).redirect("/food-log");
+    response.status(200).redirect(`/food-log/${date}`);
   } catch (e) {
     response.status(400).render("errors/400", { error: e });
   }
