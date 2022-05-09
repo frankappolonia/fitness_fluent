@@ -30,11 +30,29 @@ async function seed(){
     try {
         //users
         let joeId = await userFuncs.createUser('joe', 'smith', 'test@gmail.com', 'password', '1994-02-15', 72, 185, 'male', 'sedentary', 1, 0)
-        await exFuncs.logCurrentWeight(joeId, 187, "2022-04-30")
+        await exFuncs.logCurrentWeight(joeId, 180, "2022-03-30")
+        await exFuncs.logCurrentWeight(joeId, 182, "2022-04-07")
+        await exFuncs.logCurrentWeight(joeId, 184, "2022-04-20")
+        await exFuncs.logCurrentWeight(joeId, 186, "2022-05-01")
         await exFuncs.logCurrentWeight(joeId, 188, "2022-05-07")
-        await exFuncs.logCurrentWeight(joeId, 189, "2022-05-11")
-        await exFuncs.logCurrentWeight(joeId, 189, "2022-05-15")
-        await exFuncs.logCurrentWeight(joeId, 186, "2022-05-21")
+
+        await exFuncs.addFoodEntry(joeId, "2022-05-08", "Hamburger", 500, 25, 30, 18)
+        await exFuncs.addFoodEntry(joeId, "2022-05-08", "Eggs", 180, 10, 2, 7)
+        await exFuncs.addFoodEntry(joeId, "2022-05-08", "Salad", 340, 2, 12, 20)
+        await exFuncs.addFoodEntry(joeId, "2022-05-08", "blooming onion", 750, 50, 50, 50)
+
+        await exFuncs.addFoodEntry(joeId, "2022-05-07", "Cheesesteak", 650, 34, 18, 29)
+        await exFuncs.addFoodEntry(joeId, "2022-05-07", "Muffin", 180, 10, 2, 7)
+        await exFuncs.addFoodEntry(joeId, "2022-05-07", "Tacos", 480, 20, 12, 20)
+        await exFuncs.addFoodEntry(joeId, "2022-05-07", "Milkshake", 1200, 45, 37, 20)
+
+        await exFuncs.addFoodEntry(joeId, "2022-05-06", "omelete", 650, 80, 80, 80)
+        await exFuncs.addFoodEntry(joeId, "2022-05-06", "MdDonalds", 1200, 50, 50, 50)
+        await exFuncs.addFoodEntry(joeId, "2022-05-06", "Burger King", 1000, 50, 50, 50)
+        await exFuncs.addFoodEntry(joeId, "2022-05-06", "Milkshake", 1200, 120, 80, 70)
+
+
+
 
         let ericaId = await userFuncs.createUser('Erica', 'smith', 'test2@gmail.com', 'password', '2004-03-15', 60, 115, 'female', 'moderate', 0, 0)
         await exFuncs.logCurrentWeight(ericaId, 118, "2022-04-30")
