@@ -167,7 +167,18 @@ router.route("/search/:term").get(async (request, response) => {
     validations.stringChecks([request.params.term]);
 
     let food = xss(request.params.term);
-    let results = await foodFunctions.searchFoods(food);
+    const options = {
+      method: "GET",
+      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+      params: { ingr: food },
+      headers: {
+        "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "X-RapidAPI-Key": "e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6",
+      },
+    };
+
+    let { data } = await axios.request(options);
+    results = data.hints;
     response.status(200).json(results);
   } catch (e) {
     response.status(400).render("errors/400", { error: e });
