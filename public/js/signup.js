@@ -213,17 +213,23 @@ function adminCodeValidation(code){
 
 }
 
+function passwordValidation(password, passwordCheck){
+    password = password.trim()
+    passwordCheck = passwordCheck.trim()
+    if(password.length < 1 || passwordCheck.length < 1) throw "All strings must be at least 1 character!"
+}
 
 function createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
     
     if(arguments.length !== 12) throw "Incorrect number of arguments!"
     //string checks
-    stringChecks([firstName, lastName, email, password, passwordCheck, dob, activityLevel, gender])
+    stringChecks([firstName, lastName, email, dob, activityLevel, gender])
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
     //email & password check
+    passwordValidation(password, passwordCheck)
     emailPasswordValidation(email, password, passwordCheck)
     //dob check
     dobValidation(dob)

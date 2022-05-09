@@ -89,9 +89,16 @@ b/main/LICENSE)
   }
 }
 
-#card1{
+#card-1{
   background-image: url("../images/stockFood.jpg");
+}
 
+#card-2 {
+  background-image: url('/public/images/fitnessStock.jpg')
+}
+
+#card-3 {
+  background-image: url('/public/images/stockStats.jpg')
 }
 
 body {

@@ -387,24 +387,6 @@ async function calculateDailyFoodStats(id, currentDate) {
   return stats;
 }
 
-async function searchFoods(food) {
-  //1. validations
-  if (arguments.length !== 1) throw "Invalid number of arguments";
-  food = validations.stringChecks([food]);
-
-  const options = {
-    method: "GET",
-    url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
-    params: { ingr: food },
-    headers: {
-      "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com",
-      "X-RapidAPI-Key": "e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6",
-    },
-  };
-
-  let { data } = await axios.request(options);
-  return data.hints;
-}
 
 function getRecommendations(calories) {
   //1. validations
@@ -538,9 +520,6 @@ user = await usersCollection.findOne({ _id: ObjectId(id) })
 }
 
 
-
-
-
 module.exports = {
   addExercise,
   getExercisesByDate,
@@ -551,7 +530,6 @@ module.exports = {
   removeFoodEntry,
   calculateDailyFoodCalories,
   calculateDailyFoodStats,
-  searchFoods,
   getRecommendations,
   updateUser,
   logCurrentWeight,
