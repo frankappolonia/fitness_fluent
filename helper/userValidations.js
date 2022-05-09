@@ -301,6 +301,7 @@ function exercisePostRouteValidation(requestBody){
     let { date, exercise, calories } = requestBody;
 
     stringChecks([date, exercise])
+    alphabetCheck([exercise])
     stringtrim(arguments)
     checkCalories(calories)
     exerciseFoodLogDateValidation(date)
@@ -312,6 +313,7 @@ function deleteFoodExerciseRouteValidation(requestBody){
     if(! requestBody.calories) throw "No calories given!"
     let {exerciseName, calories } = requestBody;
     stringChecks([exerciseName])
+    alphabetCheck([exerciseName])
     checkCalories(calories)
 }
 
@@ -376,6 +378,7 @@ function checkNewFood(date, foodName, calories, protein, carbs, fat){
 
     exerciseFoodLogDateValidation(date)
     stringChecks([foodName])
+    alphabetCheck([foodName])
     checkCalories(calories)
     checkMacros(carbs, fat, protein)
 
@@ -439,6 +442,7 @@ function ageValidation(age){
 module.exports = {
     stringtrim,
     stringChecks,
+    alphabetCheck,
     nameValidation,
     emailPasswordValidation,
     dobValidation,
