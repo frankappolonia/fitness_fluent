@@ -3,10 +3,13 @@ $("button").click(function () {
     let children = $("#row" + id).children();
     if (children.length > 1) {
       let exerciseData = {
-        exerciseName: children[0].innerText,
-        calories: children[1].innerText,
+        exerciseName: children[1].innerText,
+        calories: children[2].innerText,
       };
       let date = $("#date").val();
+
+      //validatons
+      deleteExerciseRouteValidation(exerciseData.exerciseName, exerciseData.calories)
   
       $.ajax({ type: "DELETE", 
                 url: `/exercise-log/${date}`, 
@@ -35,14 +38,14 @@ $("button").click(function () {
       }
     });
 
-//validations
+//validation for form submit
 $('#exercise-log-form').submit((event =>{
   let date = $('#date').val()
   let exercise = $('#exercise').val()
   let calories = $('#calories').val()
 
   try {
-    $('#food-log-error').empty()
+    $('#exercise-log-error').empty()
     validateNewExercise(date, exercise, calories)
 
   } catch (error) {
@@ -54,6 +57,15 @@ $('#exercise-log-form').submit((event =>{
 
 }));
 
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+  str.forEach(s =>{
+      if(s.match( /(<([^>]+)>)/ig)){
+          throw "Cannot input html tags!"
+      }
+  })
+}
+
 function validateNewExercise(date, exercise, calories){
   if(! date) throw "No date given!"
   if(! exercise) throw "No exercise given!"
@@ -63,6 +75,8 @@ function validateNewExercise(date, exercise, calories){
   stringtrim(arguments)
   exerciseFoodLogDateValidation(date)
   checkCalories(calories)
+  checkHtmlTags([date, exercise, calories])
+
 }
 
 
@@ -71,6 +85,7 @@ function checkCalories(calories){
   if(calories !== calories) throw "Calories is not a number!"
   if(isNaN(parseInt(calories))) throw "Calories is not a number!"
   if(calories % 1 !== 0) throw "Calories must be a whole number!"
+  if(calories.search(/e/) !== -1) throw "Invalid number!"
   calories = parseInt(calories)
   if(typeof(calories) !== 'number') throw "Calories must be a number!"
   if(calories < 1) throw "Calories must be a number greater than 1!"
@@ -103,8 +118,8 @@ function dateValidation(date){
 function exerciseFoodLogDateValidation(date){
 //first checks if its a valid date
   dateValidation(date)
-  date = new Date(date)
-  if(date.getTime() > new Date().getTime()) throw "Cannot use a date later than the current date!"
+  //date = new Date(date)
+  if(compareDates(date) === false) throw "Cannot use a date later than the current date!"
 }
 
 function stringtrim(argsObj){
@@ -124,4 +139,32 @@ function stringChecks(strings){
       if(e.length < 1) throw "All strings must be at least 1 character!"
       
   });
+}
+
+function compareDates(date){
+  let currentDate = new Date(new Date().toLocaleDateString())
+  let enteredDate = new Date(new Date(date).toLocaleDateString())
+
+  console.log(currentDate)
+  console.log(enteredDate)
+
+  if (currentDate.getFullYear() < enteredDate.getFullYear()) return false
+
+  if (currentDate.getFullYear() === enteredDate.getFullYear()){
+
+      if(currentDate.getMonth() < enteredDate.getMonth()) return false
+      if(currentDate.getMonth() === enteredDate.getMonth()){
+          if(currentDate.getDate() < enteredDate.getDate()) return false
+      }
+    }
+
+  return true
+
+}
+
+function deleteExerciseRouteValidation(exerciseName, calories){
+  if(! exerciseName) throw "No exercise given!"
+  if(! calories) throw "No calories given!"
+  stringChecks([exerciseName])
+  checkCalories(calories)
 }

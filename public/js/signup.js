@@ -28,9 +28,9 @@ signUp.submit((event =>{
     try{
         signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode)
         $('#email').val(email.toLowerCase())
+
     }catch(e){
         event.preventDefault()
-        console.log('im here')
         $('#signup-error').show()
         $('#signup-error').empty()
         $('#signup-error').append(e)
@@ -40,7 +40,16 @@ signUp.submit((event =>{
 
 
 /**All error checking validations for signup */
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+    str.forEach(s =>{
+        if(s.match( /(<([^>]+)>)/ig)){
+            throw "Cannot input html tags!"
+        }
+    })
+ }
 
+ 
 function signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode){
     /**Validates the request body data of the /signup post route */
     if(! firstName) throw "No first name given!"
@@ -56,6 +65,8 @@ function signUpValidation(firstName, lastName, email, password, passwordCheck, d
     if(! goal) throw "No goal specified!"
     if ( password !== passwordCheck) throw "Passwords do not match!"
     if(! adminCode) throw "No admin goal entered! Must be the correct code, or 0 by default for non-admin users!"
+
+
 
     createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode)
 
@@ -81,6 +92,15 @@ function stringChecks(args){
         
     });
     return
+}
+
+function alphabetCheck(args) {
+    var letters = /^[A-Za-z]+$/;
+    args.forEach(e => {
+        if (!e.match(letters)){
+            throw "Invalid characters!"
+        }
+    })
 }
 
 function nameValidation(first, last){
@@ -159,6 +179,8 @@ function heightWeightValidation(height, weight){
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
+    if(String(weight).search(/e/) !== -1) throw "Invalid number!"
+    if(String(height).search(/e/) !== -1) throw "Invalid number!"
     height = parseInt(height)
     weight = parseInt(weight)
     if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
@@ -212,17 +234,24 @@ function adminCodeValidation(code){
 
 }
 
+function passwordValidation(password, passwordCheck){
+    password = password.trim()
+    passwordCheck = passwordCheck.trim()
+    if(password.length < 1 || passwordCheck.length < 1) throw "All strings must be at least 1 character!"
+}
 
 function createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
     
     if(arguments.length !== 12) throw "Incorrect number of arguments!"
     //string checks
-    stringChecks([firstName, lastName, email, password, passwordCheck, dob, activityLevel, gender])
+    stringChecks([firstName, lastName, email, dob, activityLevel, gender])
+    alphabetCheck([firstName, lastName, gender, activityLevel])
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
     //email & password check
+    passwordValidation(password, passwordCheck)
     emailPasswordValidation(email, password, passwordCheck)
     //dob check
     dobValidation(dob)
@@ -236,5 +265,7 @@ function createUserValidation(firstName, lastName, email, password, passwordChec
     weeklyGoalValidation(weeklyWeightGoal)
 
     adminCodeValidation(adminCode)
+    checkHtmlTags([firstName, lastName, email, password, passwordCheck, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode])
+
     return
 }

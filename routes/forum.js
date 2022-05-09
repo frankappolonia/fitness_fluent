@@ -17,6 +17,22 @@ router.get('/', (request, response, next)=>{
       next()
     }
 })
+router.get('/new', (request, response, next)=>{
+    if (! request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
+router.get('/:id', (request, response, next)=>{
+    if (! request.session.user) {
+      return response.redirect('/');
+    } else {
+      next()
+    }
+})
+
 
 router.route('/') //route for all posts/forum home
     .get(async(request, response)=>{
@@ -27,14 +43,15 @@ router.route('/') //route for all posts/forum home
             
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
+            authObj = {...authObj, ...nutrients}
             authObj['css'] = "/public/css/forum_styles.css"
             //---------------------------------------
 
             let allPosts = await postsFuncs.getAllPosts()
             authObj['posts'] = allPosts
+            authObj['script'] = "/public/js/filler.js"
+            authObj['script2'] = "/public/js/filler.js"
             response.status(200).render('pages/forum', authObj)
 
         } catch (e) {
@@ -51,13 +68,14 @@ router.route('/new') //route for a new post
            
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
+            authObj = {...authObj, ...nutrients}
+            // authObj['name'] = nutrients.name
 
             //---------------------------------------
 
             authObj['script'] = "/public/js/newPost.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/forum_styles.css"
 
             response.status(200).render('pages/newPost', authObj)
@@ -80,8 +98,7 @@ router.route('/new') //route for a new post
 
             
         } catch (e) {
-            let error = {error: e}
-            response.status(404).render("errors/400", e)
+            response.status(400).render("errors/400", {error: e})
             
         }
 
@@ -97,12 +114,12 @@ router.route('/:id')
 
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
+            authObj = {...authObj, ...nutrients}
             //---------------------------------------
             
             authObj['script'] = "/public/js/existingPost.js"
+            authObj['script2'] = "/public/js/filler.js"
             authObj['css'] = "/public/css/forumComments.css"
 
             let post = await postsFuncs.getPostById(xss(postId))
@@ -113,7 +130,7 @@ router.route('/:id')
             response.status(200).render("pages/comments", {...authObj, ...post})
 
         }catch(e){
-            response.status(404).render("errors/404")
+            response.status(400).render("errors/400", {error: e})
         }
 
     })

@@ -1,0 +1,65 @@
+
+  {{#> caloriesRemainingWidget}}
+{{/caloriesRemainingWidget}}
+<div class="container d-flex justify-content-center">
+  <div class="d-flex flex-column justify-content-between">
+    <form id="edit-profile-form" method="post">
+      <div class="card two bg-white px-5 py-4 mb-3">
+        <div id="edit-profile-error2" role="alert">{{{error}}}</div>
+        <div class="form-group">
+          <label class="form-control-placeholder" for="firstName">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            value="{{firstName}}"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-control-placeholder" for="lastName">Last Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            value="{{lastName}}"
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-control-placeholder" for="height">Height</label>
+          <input
+            type="number"
+            class="form-control"
+            id="height"
+            name="height"
+            value="{{height}}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="activityLevel">Activity level: </label>
+          <select name="activityLevel" id="activityLevel">
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Light</option>
+            <option value="moderate">Moderate</option>
+            <option value="heavy">Heavy</option>
+            <option value="hardcore">Hardcore</option>
+          </select>
+        </div>
+        <div class="form-group" role="form">
+          <label for="goal">Fitness Goal: </label>
+          <select name="goal" id="goal">
+            <option value="-2">Lose 2 pounds per week</option>
+            <option value="-1">Lose 1 pound per week</option>
+            <option value="0">Maintain weight</option>
+            <option value="1">Gain 1 pound per week</option>
+            <option value="2">Gain 2 pounds per week</option>
+          </select>
+        </div>
+        <div id="edit-profile-error"></div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-1 mb-2" role="button">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

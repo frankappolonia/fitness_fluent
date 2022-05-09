@@ -8,7 +8,20 @@
  * Bootstrap v5.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * Licensed under MIT (https://github.com/twbs/bootstrap/bloHomepage (not logged in)
+Homepage (logged in)
+Login
+Signup
+Progress page
+Exercise Log
+Profile
+editProfile
+Food log
+Forum home
+New post
+Existing post
+Edit post
+b/main/LICENSE)
  */
 :root {
   --bs-blue: #0d6efd;
@@ -74,6 +87,18 @@
   :root {
     scroll-behavior: smooth;
   }
+}
+
+#card-1{
+  background-image: url("../images/stockFood.jpg");
+}
+
+#card-2 {
+  background-image: url('/public/images/fitnessStock.jpg')
+}
+
+#card-3 {
+  background-image: url('/public/images/stockStats.jpg')
 }
 
 body {
@@ -11303,7 +11328,7 @@ textarea.form-control-lg {
 header.masthead {
   position: relative;
   background-color: #343a40;
-  background: url("../assets/img/bg-masthead.jpg") no-repeat center center;
+  background: url("../images/headerStock.jpg") no-repeat center center;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -11356,24 +11381,6 @@ header.masthead h1, header.masthead .h1 {
   box-shadow: 0px 5px 5px 0px #adb5bd;
 }
 
-.call-to-action {
-  position: relative;
-  background-color: #343a40;
-  background: url("../assets/img/bg-masthead.jpg") no-repeat center center;
-  background-size: cover;
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-.call-to-action:before {
-  content: "";
-  position: absolute;
-  background-color: #1c375e;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0.5;
-}
 
 footer.footer {
   padding-top: 4rem;

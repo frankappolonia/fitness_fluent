@@ -24,18 +24,17 @@ router.route('/')
 
             //stuff for daily goals widget
             authObj.authenticated = true        
-            let cals = await userFuncs.getRemainingCalories(id)
-            authObj['calories'] = cals.cals
-            authObj['name'] = cals.name
+            let nutrients = await userFuncs.getRemainingCalories(xss(id))
+            authObj = {...authObj, ...nutrients}
             //---------------------------------------
 
             //scripts
             authObj['script2'] = '/public/js/progress.js'
             authObj['script'] = "https://cdn.jsdelivr.net/npm/chart.js"
-            authObj['css'] = "/public/css/main_styles.css"
+            authObj['css'] = "/public/css/progress.css"
             
             //this gets their overall weight progress when the page is initially loaded
-            let weightProgress = await userFuncs.getOverallWeightProgress(id)
+            let weightProgress = await userFuncs.getOverallWeightProgress(xss(id))
             authObj['lostOrGain'] = weightProgress.weightChange
             authObj['weight'] = weightProgress.weight
             

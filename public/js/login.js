@@ -8,8 +8,8 @@ login.submit((event=>{
      */
     let email = $('#username').val()
     let password = $('#password').val()
-    console.log('jquery test')
     try{
+        $('#login-error-container2').empty()
         validateLogin(email, password)
         $('#username').val(email.toLowerCase())
 
@@ -25,12 +25,22 @@ login.submit((event=>{
 }));
 
 /**Validations for above */
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+    str.forEach(s =>{
+        if(s.match( /(<([^>]+)>)/ig)){
+            throw "Cannot input html tags!"
+        }
+    })
+ }
 
 function validateLogin(username, password){
     if(! username) throw "No username given!"
     if(! password) throw "No password given!"
     checkUsername(username)
     checkPassword(password)
+    checkHtmlTags([username, password])
+
     return
 }
 

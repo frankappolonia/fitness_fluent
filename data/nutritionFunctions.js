@@ -26,6 +26,10 @@ function calculateTDE(activityLevel, gender, height, weight, age){
     /**Calculation for total daily energy expenditure (total cals spent each day) */
     if(arguments.length !== 5) throw "Invalid number of arguments!"
     validations.activityLevelValidation(activityLevel)
+    validations.genderValidation(gender)
+    validations.heightWeightValidation(height, weight)
+    validations.ageValidation(age)
+    
     let BMR = calculateBMR(gender, height, weight, age)
 
     let activityLevels = {'sedentary':1.2, 'light':1.375, 'moderate':1.55, 'heavy':1.725, 'hardcore':1.9}
@@ -38,6 +42,8 @@ function calculateCalsNeeded(weeklyGoal, TDEE){
     if (arguments.length !== 2) throw "Invaliad number of arguments"
     validations.weeklyGoalValidation(weeklyGoal)
     weeklyGoal = parseInt(weeklyGoal)
+    if(isNaN(TDEE)) throw "TDEE must be a number!"
+    if(TDEE < 0) throw "Calories must be greater than 0!"
 
     switch (weeklyGoal){
         case -2: 
@@ -71,6 +77,28 @@ function calculateAge(dob){
     return age
 }
 
+function calculateMacroBreakdown(dailyCals, carbs, fat, protein){
+    if (arguments.length !== 4) throw "Invalid number of arguments"
+    validations.checkMacroGoal(dailyCals, carbs, fat, protein)
+
+    let carbCals = parseFloat(dailyCals) * parseFloat(carbs)
+    let fatCals = parseFloat(dailyCals) * parseFloat(fat)
+    let proteinCals = parseFloat(dailyCals) * parseFloat(protein)
+
+    let totalCarbs = Math.round(carbCals/4)
+    let totalFat = Math.round(fatCals/9)
+    let totalProtein = Math.round(proteinCals/4)
+
+    let macroBreakdown = {"carbs": totalCarbs, "fats": totalFat, "protein": totalProtein}
+    return macroBreakdown
+
+}
+
+function calculateBMI(height, weight){
+    validations.heightWeightValidation(height, weight)
+    let bmi = parseFloat(((weight*703)/ Math.pow(height, 2)).toFixed(1))
+    return bmi
+}
 
 
 module.exports = {
@@ -78,4 +106,6 @@ module.exports = {
     calculateTDE, 
     calculateCalsNeeded,
     calculateAge,
+    calculateMacroBreakdown,
+    calculateBMI
 }

@@ -3,17 +3,7 @@ h1, h2, h3, p{
 
 }
 
-#calsBurned{
-    color: rgb(28, 2, 224);
-    text-align: center;
-}
 
-#enter-exercise{
-    padding-top: 10%;
-    padding-bottom: 1%;
-    color: rgb(36, 104, 241);
-    font-size: x-large;
-}
 h1{
     text-align: center;
     font-size: xx-large;
@@ -29,9 +19,17 @@ h3{
     font-size: larger;
 }
 
-.food-log-intro {
-    margin-top: 20px;
-    margin-bottom: 20px;
+#progressTitle{
+    padding-top: 10px;
+}
+
+#results-div{
+    color: rgb(36, 104, 241);
+}
+#progress-graph-error{
+    background-color: rgb(245, 155, 155);
+    color: rgb(160, 0, 0);
+    border: rgb(255, 99, 99);
 }
 
 .date-selector {
@@ -49,20 +47,4 @@ h3{
 
 body {
     overflow-x: clip;
-}
-
-.progressbar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.progressbar label {
-    font-size: .85rem;
-}
-
-.progress-container {
-    margin: auto;
-    max-width: 90%;
-    margin-bottom: 20px;
 }

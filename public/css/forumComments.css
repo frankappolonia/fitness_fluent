@@ -1,32 +1,49 @@
-.profilepic{
+.profilepic {
     width: 50px;
     height: 50px;
     padding-right: 1%;
 }
 
-
-
-body{
-
-	background-color: #eee;
+#post-title{
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-.card{
-	
-	background-color: #fff;
-	border: none;
+#post-author{
+    font-size: larger;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
 }
 
-.form-color{
-  
-   background-color: #fafafa;
+#post-body{
+    font-size: large;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+
+body {
+
+    background-color: #eee;
+}
+
+.card {
+
+    background-color: #fff;
+    border: none;
+}
+
+.form-color {
+
+    background-color: #fafafa;
 
 }
 
-.form-control{
+.form-control {
 
-	height: 48px;
-	border-radius: 25px;
+    height: 48px;
+    border-radius: 25px;
 }
 
 .form-control:focus {
@@ -38,8 +55,8 @@ body{
     text-indent: 10px;
 }
 
-.c-badge{
-	background-color: #35b69f;
+.c-badge {
+    background-color: #35b69f;
     color: white;
     height: 20px;
     font-size: 11px;
@@ -51,18 +68,25 @@ body{
     margin-top: 2px;
 }
 
-.comment-text{
-	font-size: 13px;
+.comment-text {
+    font-size: 13px;
 }
 
-.wish{
-
-	color:#35b69f;
+.wish {
+    color: #35b69f;
 }
 
 
-.user-feed{
+.user-feed {
+    font-size: 14px;
+    margin-top: 12px;
+}
 
-	    font-size: 14px;
-	    margin-top: 12px;
+#main-post h3 {
+    color: #6a6a6a;
+    font-size: 1rem;
+}
+
+#post-body {
+    margin-bottom: 20px;
 }

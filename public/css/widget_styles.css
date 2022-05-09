@@ -1,0 +1,57 @@
+
+#food-widget-header{
+    justify-content: center;
+    text-align: center;
+    background-color: #337ab7;
+}
+
+#widget-username{
+    font-size: x-large;
+    color: aliceblue;
+}
+
+#widget-desc{
+    color: white;
+}
+
+.description-header{
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+.description-text{
+    font-size: large;
+    font-weight: lighter;
+}
+
+.widget-user-image{
+    padding-top: 1%;
+    margin: auto;
+    display: block;
+}
+
+#widget-profile{
+    height: 60px;
+}
+
+.box-footer .description-block{
+    justify-content: center;
+    text-align: center;
+}
+
+.food-widget{
+    width: 100%;
+    margin: 0 auto;
+}
+
+#body-container{
+    position: relative;
+}
+
+#forum-container{
+    padding-top: 10%;
+}
+
+.nutrition-widget {
+    margin: auto;
+}

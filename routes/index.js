@@ -6,6 +6,7 @@ const foodLog = require('./foodLog')
 const progress = require('./progress')
 const exerciseLog = require('./exerciseLog')
 const forum = require('./forum')
+const profile = require('./profile')
 
 const constructorMethod = (app) => {
   //middleware function
@@ -17,6 +18,7 @@ const constructorMethod = (app) => {
     app.use('/progress', progress);
     app.use('/exercise-log', exerciseLog);
     app.use('/forum', forum);
+    app.use('/profile', profile)
     app.use('*', (req, res) => {
       res.status(404).render('errors/404');
     });

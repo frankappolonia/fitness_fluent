@@ -1,1 +1,203 @@
-{{!-- comment --}}
+ {{#> caloriesRemainingWidget}}
+{{/caloriesRemainingWidget}}
+<section>
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="/public/images/stockProfile.png" alt="avatar"
+              class="rounded-circle img-fluid">
+            <h1 class="my-3">{{firstName}} {{lastName}}</h1>
+            <div class="d-flex justify-content-center mb-2">
+              <a class="btn btn-primary btn-large" href="/profile/editProfile" role="button">Edit Profile</a>
+            </div>
+          </div>
+        </div>
+         <div class="card mb-4">
+          <div class="card-body text center">
+              <h2 class="mb-4"><span class="text-primary font-italic me-1">Calories Remaining:</span>
+                </h2>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Calories :</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{calories}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Carbs :</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{carbs}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Fats :</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{fats}}</p>
+              </div>
+            </div>
+             <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Protein :</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{protein}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{firstName}} {{lastName}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{email}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">DOB</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{dob}}</p>
+              </div>
+            </div>
+             <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Current Weight:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{currentWeight}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Height</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{height}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Body Mass Index (BMI):</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{bmi}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Base Metabolic Rate (BMR):</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{bmr}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Current Activity Level:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{activityLevel}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Current Weekly Weight Goal:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{weeklyWeightGoal}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Current Daily Caloric Goal:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{calorieGoal}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                <p class="mb-4"><span class="text-primary font-italic me-1">Log your current weight to track progress:</span>
+                </p>
+                <form method="post" id="log-weight-form" role="form">
+                    <div class="form-group">
+                        <label class="form-control-placeholder" for="weight"> (in pounds)</label>
+                        <input type="number" class="form-control" id="weight" name="weight" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg mt-1 mb-2" role="button"><span>Log current weight</span></button>
+                </form>
+                <div id="log-weight-error"></div>
+                <p class="mb-4"><span class="text-primary font-italic me-1">Note :</span>Logging a new weight will cause your nutrition profile, including daily calories, to be updated!
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                <p class="mb-4"><span class="text-primary font-italic me-1">Update your daily macro goals:</span>
+                Must be in decimal format (0.5 or 0.03) and all 3 values must add up to 1 (100%)!</p>
+                <form method="post" id="update-macros-form" action="/profile/updateMacros" role="form">
+                    <div class="form-group">
+                        <label class="form-control-placeholder" for="carbs">Carbs %</label>
+                    <input type="number" class="form-control" id="carbs" name="carbs" min="0" max="1" step=".01" required>
+                    
+                </div>
+                 <div class="form-group">
+                     <label class="form-control-placeholder" for="protein">Protein %</label>
+                    <input type="number" class="form-control" id="protein" name="protein" min="0" max="1" step=".01" required>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="form-control-placeholder" for="fat">Fat %</label>
+                    <input type="number" class="form-control" id="fat" name="fat" min="0" max="1" step=".01" required>
+                    
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg mt-1 mb-2" role="button"><span>Update daily macros</span></button>
+                </form>
+                <div id="update-macro-error"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

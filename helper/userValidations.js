@@ -2,6 +2,7 @@ let validate = require('email-validator');
 const { request } = require('express');
 const { type } = require('express/lib/response');
 const { ObjectId } = require('mongodb');
+const moment = require('moment')
 /**Validations for creating a user/signup */
 
 
@@ -107,8 +108,9 @@ function dateValidation(date){
 function exerciseFoodLogDateValidation(date){
     //first checks if its a valid date
     dateValidation(date)
-    date = new Date(date)
-    if(date.getTime() > new Date().getTime()) throw "Cannot add entry later than the current date!"
+    date = moment(date).format("YYYY-MM-DD")
+    let currentDate = moment().format("YYYY-MM-DD");
+    if(date > currentDate) throw "Cannot access journal entry later than the current date!"
 }
 
 function heightWeightValidation(height, weight){
@@ -160,6 +162,7 @@ function adminCodeValidation(code){
     if(arguments.length !== 1) throw "Invalid number of arguments"
     if(code !== code) throw "Admin code must be a number"
     if(isNaN(parseInt(code))) throw "Admin code must be a number"
+
     if(code % 1 !== 0) throw "Admin code must be a whole number!"
     code = parseInt(code)
     if(typeof(code) !== 'number') throw "Admin code must be a number!"
@@ -170,13 +173,13 @@ function adminCodeValidation(code){
 
 }
 
+
 function createUserValidation(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
     
     if(arguments.length !== 11) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, email, password, dob, activityLevel, gender])
-
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
@@ -210,9 +213,9 @@ function signUpRouteValidation(requestBody){
     if(! requestBody.weight) throw "No weight given!"
     if(! requestBody.gender) throw "No gender specified!"
     if(! requestBody.activityLevel) throw "No activty level given!"
-    if(! requestBody.goal) throw "No goal specified!"
+    if(! requestBody.goal === null || requestBody.goal === undefined) throw "No goal specified!"
     if (requestBody.password !== requestBody.passwordCheck) throw "Passwords do not match!"
-    if(! requestBody.adminCode) throw "Must either enter the admin code, or a 0 for regular users!"
+    if(requestBody.adminCode === null || requestBody.adminCode === undefined) throw "Must either enter the admin code, or a 0 for regular users!"
 
     createUserValidation(requestBody.firstName, requestBody.lastName, requestBody.email, requestBody.password,
         requestBody.dob,requestBody.height,requestBody.weight,requestBody.gender,requestBody.activityLevel, requestBody.goal, requestBody.adminCode )
@@ -269,8 +272,16 @@ function checkCalories(calories){
     if(calories%1 !== 0) throw "Calories must be a whole number!"
     calories = parseInt(calories)
     if(typeof(calories) !== 'number') throw "Calories must be a number!"
-    if(calories < 1) throw "Calories must be a number greater than 1!"
-    if(calories > 2000) throw "Maximum calorie value is 2000!"
+    if(calories > 4000) throw "Maximum calorie value is 4000!"
+}
+
+function checkCalories2(calories){
+    if(arguments.length !== 1) throw "Invalid number of arguments!"
+    if(calories !== calories) throw "Calories is not a number!"
+    if(isNaN(parseInt(calories))) throw "Calories is not a number!"
+    if(calories%1 !== 0) throw "Calories must be a whole number!"
+    calories = parseInt(calories)
+    if(typeof(calories) !== 'number') throw "Calories must be a number!"
 }
 
 function exercisePostRouteValidation(requestBody){
@@ -295,6 +306,127 @@ function deleteFoodExerciseRouteValidation(requestBody){
     checkCalories(calories)
 }
 
+function checkMacroGoal(cals, carbs, fat, protein){
+    if(cals !== cals) throw "cals must be a number"
+    if(carbs !== carbs) throw "carbs must be a number"
+    if(fat !== fat) throw "fat must be a number"
+    if(protein !== protein) throw "protein must be a number"
+
+    if (isNaN(parseFloat(cals))) throw "calories must be a number!"
+    if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
+    if (isNaN(parseFloat(fat))) throw "fat must be a number!"
+    if (isNaN(parseFloat(protein))) throw "protein must be a number!"
+
+    carbs = parseFloat(carbs)
+    fat = parseFloat(fat)
+    protein = parseFloat(protein)
+
+    if(cals%1 !== 0) throw "Calories must be a whole number!"
+
+    if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0%! "
+    if (carbs > 1 || fat > 1 || protein > 1) throw "Cannot set a macro value above 100%"
+
+    if((carbs + fat + protein) !== 1) throw "Macro values must add up to 100%!"
+
+}
+
+function checkMacroGoalPostRoute(requestBody){
+    if(! requestBody.carbs) throw "No carbs goal given!"
+    if(! requestBody.fat) throw "No fat goal given!"
+    if(! requestBody.protein) throw "No protein goal given!"
+
+    checkMacroGoal(1000, requestBody.carbs, requestBody.fat, requestBody.protein)
+
+}
+
+function checkMacros(carbs, fat, protein){
+    if(carbs !== carbs) throw "carbs must be a number"
+    if(fat !== fat) throw "fat must be a number"
+    if(protein !== protein) throw "protein must be a number"
+
+    if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
+    if (isNaN(parseFloat(fat))) throw "fat must be a number!"
+    if (isNaN(parseFloat(protein))) throw "protein must be a number!"
+    if(carbs%1 !== 0) throw "Carbs must be a whole number!"
+    if(protein%1 !== 0) throw "Protein must be a whole number!"
+    if(fat%1 !== 0) throw "Fat must be a whole number!"
+
+    if(carbs < 0 || fat < 0 || protein < 0) throw "Cannot set a macro value less than 0! "
+    if(carbs >  1000 || fat > 1000 || protein > 1000) throw "Max macro value is 1000! "
+
+
+}
+
+function checkNewFood(date, foodName, calories, protein, carbs, fat){
+    if(date === null || date === undefined) throw "no date given"
+    if(foodName === null || foodName === undefined) throw "no food given"
+    if(calories === null || calories === undefined) throw "no calories given"
+    if(carbs === null || carbs === undefined) throw "no carbs given"
+    if(fat === null || fat === undefined) throw "no fat given"
+    if(protein === null || protein === undefined) throw "no protein given"
+
+    exerciseFoodLogDateValidation(date)
+    stringChecks([foodName])
+    checkCalories(calories)
+    checkMacros(carbs, fat, protein)
+
+}
+
+function postRouteCheckFood(requestBody){
+    if(! requestBody.date) throw "no date given"
+    if(! requestBody.food) throw "no food name given"
+    if(! requestBody.calories) throw "no calories given"
+    if(! requestBody.carbs) throw "no carbs given"
+    if(! requestBody.fat) throw "no fat given"
+    if(! requestBody.protein) throw "no protein given"
+
+    checkNewFood(requestBody.date, requestBody.food, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
+}
+
+function deleteRouteCheckFood(requestBody, date){
+    if(! requestBody.foodName) throw "no food name given"
+    if(! requestBody.calories) throw "no calories given"
+    if(! requestBody.carbs) throw "no carbs given"
+    if(! requestBody.fat) throw "no fat given"
+    if(! requestBody.protein) throw "no protein given"
+
+    checkNewFood(date, requestBody.foodName, requestBody.calories, requestBody.carbs, requestBody.fat, requestBody.protein)
+}
+
+function validateProfilePatch(requestBody){
+    if(! requestBody.firstName) throw "no first name given"
+    if(! requestBody.lastName) throw "no last name given"
+    if(! requestBody.height) throw "no height given"
+    if(! requestBody.activityLevel) throw "no activity level given"
+    if(! requestBody.goal) throw "no goal given"
+
+    nameValidation(requestBody.firstName, requestBody.lastName)
+    heightWeightValidation(requestBody.height, 80)
+    activityLevelValidation(requestBody.activityLevel)
+    weeklyGoalValidation(requestBody.goal)
+
+}
+
+function validateUpdateProfile(firstName, lastName, height, activityLevel, weeklyWeightGoal){
+    if(firstName === null || firstName === undefined) throw "no first name given"
+    if (lastName === null || lastName === undefined) throw "no last name given"
+    if(height === null || height === undefined) throw "no height given"
+    if(activityLevel === null || activityLevel === undefined) throw "no activity level given"
+    if(weeklyWeightGoal === null || weeklyWeightGoal === undefined) throw "no goal given"
+
+    nameValidation(firstName, lastName)
+    heightWeightValidation(height, 80)
+    activityLevelValidation(activityLevel)
+    weeklyGoalValidation(weeklyWeightGoal)
+
+}
+
+function ageValidation(age){
+    if(isNaN(age)) throw "age must be a number!"
+    if(age > 112 || age < 12) throw "Invalid age!"
+}
+
+
 module.exports = {
     stringtrim,
     stringChecks,
@@ -316,5 +448,14 @@ module.exports = {
     checkCalories,
     exerciseFoodLogDateValidation,
     exercisePostRouteValidation,
-    deleteFoodExerciseRouteValidation
+    deleteFoodExerciseRouteValidation,
+    checkMacroGoal,
+    checkNewFood,
+    postRouteCheckFood,
+    checkCalories2,
+    validateUpdateProfile,
+    validateProfilePatch,
+    checkMacroGoalPostRoute,
+    deleteRouteCheckFood,
+    ageValidation
 }

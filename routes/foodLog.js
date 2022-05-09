@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const foodFunctions = data.exerciseFoodFuncs;
+const userFuncs = data.userFuncs;
+const axios = require("axios");
 const moment = require("moment");
+const errorHandling = require("../helper");
+const validations = errorHandling.userValidations;
+const xss = require("xss");
 
 //if the user is NOT authenticated, redirect to home
 router.get("/", (request, response, next) => {
@@ -19,94 +24,164 @@ router.get("/:date?", (request, response, next) => {
     next();
   }
 });
+router.get("/:date", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
+});
+
+router.get("/calories/:date", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
+});
+
+router.get("/search/:term", (request, response, next) => {
+  if (!request.session.user) {
+    return response.redirect("/");
+  } else {
+    next();
+  }
+});
+
 //---------------------------------------------------------------------
 
 router.route("/:date?").get(async (request, response) => {
- 
-
   try {
-
-    let date = moment(request.params.date);
+    //validations
+    let id = validations.checkId(request.session.user);
+    let date = request.params.date;
     let dateString = "";
+
     if (!date) {
       dateString = moment().format("YYYY-MM-DD");
     } else {
+      validations.exerciseFoodLogDateValidation(request.params.date);
       dateString = moment(date).format("YYYY-MM-DD");
     }
-    let id = request.session.user;
-    if (!id) {
-      throw "User not found!";
-    }
-    let food = await foodFunctions.getFoodsByDate(id, dateString);
+
+    //stuff for daily goals widget
+    let authObj = {};
+    authObj.authenticated = true;
+    let nutrients = await userFuncs.getRemainingCalories(xss(id));
+    authObj = { ...authObj, ...nutrients };
+    //---------------------------------------
+    let nutrientsNeeded = await userFuncs.getTotalNutrients(xss(id));
+    let recommendations = foodFunctions.getRecommendations(nutrients.calories);
+    let food = await foodFunctions.getFoodsByDate(xss(id), xss(dateString));
+    let foodEatenStats = await foodFunctions.calculateDailyFoodStats(
+      xss(id),
+      xss(dateString)
+    );
+
     response.status(200).render("pages/food", {
       food: food,
+      foodStats: { ...nutrientsNeeded, ...foodEatenStats },
       date: dateString,
-      authenticated: true,
       script: "/public/js/foodLog.js",
       css: "/public/css/foodlog.css",
+      ...authObj,
+      recommendations: recommendations,
     });
   } catch (e) {
-    console.error(e);
-    response.status(404).render("errors/404");
+    response.status(400).render("errors/400", { error: e });
   }
 });
 
 router.route("/:date").post(async (request, response) => {
   try {
-    let { date, food, calories } = request.body;
-    let id = request.session.user;
-    // error checking
+    //validations
+    let id = validations.checkId(request.session.user);
+    validations.postRouteCheckFood(request.body);
 
-    await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
-    response.status(200).redirect("/food-log");
+    let { date, food, calories, protein, carbs, fat } = request.body;
+
+    await foodFunctions.addFoodEntry(
+      xss(id),
+      xss(date),
+      xss(food),
+      parseInt(xss(calories)),
+      parseInt(xss(protein)),
+      parseInt(xss(carbs)),
+      parseInt(xss(fat))
+    );
+    response.status(200).redirect(`/food-log/${date}`);
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render("errors/400", { error: e });
   }
 });
 
 router.route("/:date").delete(async (request, response) => {
   try {
+    //validations
+    let id = validations.checkId(request.session.user);
+    validations.exerciseFoodLogDateValidation(request.params.date);
     let date = request.params.date;
+
     let food = request.body;
-    let id = request.session.user;
-    // error checking
-    await foodFunctions.removeFoodEntry(id, date, food);
+    validations.deleteRouteCheckFood(food, date);
+
+    // sanitize contents of object
+    let sanitizedFood = {
+      foodName: xss(food.foodName),
+      calories: xss(food.calories),
+      protein: xss(food.protein),
+      carbs: xss(food.carbs),
+      fat: xss(food.fat),
+    };
+
+    await foodFunctions.removeFoodEntry(xss(id), xss(date), sanitizedFood);
     response.sendStatus(200);
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render("errors/400", { error: e });
   }
 });
 
 router.route("/calories/:date").get(async (request, response) => {
   try {
-    let date = request.params.date;
-    let id = request.session.user;
-    if (!id) {
-      throw "User not found!";
-    }
-    let cals = await foodFunctions.calculateDailyFoodCalories(id, date);
+    //validations
+    let id = validations.checkId(request.session.user);
+    validations.exerciseFoodLogDateValidation(request.params.date);
+
+    let date = moment(request.params.date).format("YYYY-MM-DD");
+
+    let cals = await foodFunctions.calculateDailyFoodCalories(
+      xss(id),
+      xss(date)
+    );
+
     response.status(200).json(cals);
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render("errors/400", { error: e });
   }
 });
 
-router.route("/database").post(async (request, response) => {
+router.route("/search/:term").get(async (request, response) => {
   try {
-    console.log('here')
-    console.log(request.body)
-    //let { date, food, calories } = request.body;
-    //let id = request.session.user;
-    // error checking
+    //validations
+    validations.checkId(request.session.user);
+    validations.stringChecks([request.params.term]);
 
-    //await foodFunctions.addFoodEntry(id, date, food, parseInt(calories));
-    response.status(200).redirect("/food-log");
+    let food = xss(request.params.term);
+    const options = {
+      method: "GET",
+      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+      params: { ingr: food },
+      headers: {
+        "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "X-RapidAPI-Key": "e15ac27b41msh078c9a4ba21df70p1b9e03jsna2a33f434dd6",
+      },
+    };
+
+    let { data } = await axios.request(options);
+    results = data.hints;
+    response.status(200).json(results);
   } catch (e) {
-    console.error(e);
-    response.status(400).send();
+    response.status(400).render("errors/400", { error: e });
   }
 });
 

@@ -5,6 +5,8 @@ const errorHandling = require('../helper')
 const validations = errorHandling.userValidations
 const nutritionFuncs = require('./nutritionFunctions')
 const { ObjectId } = require('mongodb');
+const moment = require("moment");
+
 
 
 //test comment
@@ -35,8 +37,10 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     //5. Calculate initial nutrition data
     let age = nutritionFuncs.calculateAge(dob)
     let BMR = nutritionFuncs.calculateBMR(gender, height, initialWeight, age)
+    let BMI = nutritionFuncs.calculateBMI(height, initialWeight)
     let TDEE = nutritionFuncs.calculateTDE(activityLevel, gender, height, initialWeight, age)
     let calsNeeded = nutritionFuncs.calculateCalsNeeded(weeklyWeightGoal, TDEE)
+    let defaultDailyMacros = nutritionFuncs.calculateMacroBreakdown(calsNeeded, 0.4, 0.3, 0.3)
 
     //6. check if admin
     let adminBoolean = false
@@ -56,9 +60,12 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
         activityLevel: activityLevel,
         weeklyWeightGoal: weeklyWeightGoal,
         BMR: BMR,
+        BMI: BMI,
         TDEE: TDEE,
         totalDailyCalories: calsNeeded,
         dailyCaloriesRemaining: calsNeeded,
+        dailyMacroBreakdown: {'carbs': 0.40, "fats": 0.30, 'protein': 0.30},
+        dailyMacrosRemaining: defaultDailyMacros,
         weightEntries: [{'date': new Date(), 'weight': initialWeight}],
         allFoods: [],
         allExercises: [],
@@ -74,6 +81,7 @@ async function createUser(firstName, lastName, email, password, dob, height, ini
     let user = await usersCollection.findOne({email: email.toLowerCase()})
     return user['_id'].toString()
 }
+
 
 async function checkUser(username, password){
     /**This function is for validating login */
@@ -108,10 +116,10 @@ async function getUserById(id) {
     id = validations.checkId(id)
 
     //2. establish connection to db
-    const userCollection = await users();
+    const usersCollection = await users();
 
     //3. query db for user
-    const user = await userCollection.findOne({ _id: ObjectId(id) });
+    const user = await usersCollection.findOne({ _id: ObjectId(id) });
     if (!user) throw 'Error: User not found';
 
     //4. return the user
@@ -133,42 +141,43 @@ async function getRemainingCalories(id){
     const user = await usersCollection.findOne({ _id: ObjectId(id) })
     if (user === null) throw "Error! No user with the specified ID is found!"
 
-    //4. Extract the daily remaining calories
-    let remainingCals = {cals: user['dailyCaloriesRemaining'], name: user['firstName'] + " "+ user['lastName']}
+    //4. Extract the daily remaining calories and macro info
+    let remainingCals = {calories: user['dailyCaloriesRemaining'], 
+                        name: user['firstName'] + " "+ user['lastName'],
+                        protein: user.dailyMacrosRemaining.protein,
+                        carbs: user.dailyMacrosRemaining.carbs,
+                        fats: user.dailyMacrosRemaining.fats
+                        }
     return remainingCals;
 }
 
-async function logCurrentWeight(id, weight, date){
-     /**This function is for a user logging their weight at a specified date
-      * date must either be the string "current" or a date in YYYY-MM-DD format
-      */
+
+async function getTotalNutrients(id) {
+    /* This function gets the total daily nutrient info for a user 
+    */
 
     //1. Validate inputs
-    if (arguments.length !== 3) throw "Invalid number of arguments"
-    validations.stringChecks([date])
+    if (arguments.length !== 1) throw "Invalid number of arguments"
     id = validations.checkId(id)
-    validations.heightWeightValidation(65, weight)
-    if(date !== "current"){
-        validations.dateValidation(date)
-        date = new Date(date)
-    }
-    else{
-        date = Date() //if date is "current" then it will be a new date obj at the current time
-    }
     
     //2. Establish a connection to the users collection
     const usersCollection = await users() 
 
-    //3. create weight obj
-    let currentWeight = {'date': date, 'weight': weight}
-
-    //4. Query the collection for a user with the specified ID
-    const user = await usersCollection.updateOne({ _id: ObjectId(id) }, {$push: {weightEntries: currentWeight}})
+    //3. Query the collection for a user with the specified ID
+    const user = await usersCollection.findOne({ _id: ObjectId(id) })
     if (user === null) throw "Error! No user with the specified ID is found!"
-
-    return true
-
+    let calsNeeded = user.totalDailyCalories
+    let macroBreakdown = user.dailyMacroBreakdown
+    let defaultDailyMacros = nutritionFuncs.calculateMacroBreakdown(calsNeeded, macroBreakdown.carbs, macroBreakdown.fats, macroBreakdown.protein)
+    //4. Extract the daily remaining calories and macro info
+    let nutrients = { goalCalories: calsNeeded,
+                      goalProtein: defaultDailyMacros.protein,
+                      goalCarbs: defaultDailyMacros.carbs,
+                      goalFats: defaultDailyMacros.fats
+                    }
+    return nutrients;
 }
+
 
 async function getWeights(id, startDate, endDate){
     /**This function returns an object all of the weights a user logged within a specified date range 
@@ -184,6 +193,7 @@ async function getWeights(id, startDate, endDate){
     validations.dateValidation(endDate)
     startDate = new Date(startDate)
     endDate = new Date(endDate)
+
     if (startDate.getTime() > endDate.getTime()) throw "Start date can't be before end date!"
 
 
@@ -193,6 +203,8 @@ async function getWeights(id, startDate, endDate){
     //3. Query the collection for a user with the specified ID
     const user = await usersCollection.findOne({ _id: ObjectId(id) })
     if (user === null) throw "Error! No user with the specified ID is found!"
+    if (user['weightEntries'].length === 0 ) throw "no weights found on record!"
+
 
     //4. Get weight info
     let data = {
@@ -204,7 +216,7 @@ async function getWeights(id, startDate, endDate){
         /**this loops through each weight entry object the user has in the db, and sees if it falls between
          * the start and end dates specified. if itdoes, pushes the weight & date to the data object
          */
-        if(entry.date.getTime() >= startDate.getTime() && entry.date.getTime() <= endDate.getTime()){
+        if(new Date(entry.date).getTime() >= new Date(startDate).getTime() && new Date(entry.date).getTime() <= new Date(endDate).getTime()){
             data.dates.push(entry.date)
             data.weights.push(entry.weight)
         }
@@ -247,6 +259,8 @@ async function getAllWeights(id){
         weights: [], 
         dates: []
     }
+
+    if (user['weightEntries'].length === 0 ) throw "no weights found on record!"
 
     user['weightEntries'].forEach(entry => {
         data.dates.push(entry.date)
@@ -296,15 +310,90 @@ async function calculateDailyCaloriesRemaining(id, currentDate, foodCals, exerci
     let netCals = foodCals - exerciseCals
 
     //3. calculate remaining
-    let user = await getUserById(id)
-    if(! user) throw "User cannot be found!"
+    const usersCollection = await users();
+    let user = await usersCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw "User not found!"
+
     let remainingCals = user['totalDailyCalories'] - netCals
 
     //4. update user
-    let usersCollection = await users()
     await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyCaloriesRemaining: remainingCals}})
     
     return remainingCals
+
+}
+
+async function calculateDailyMacrosRemaining(id, currentDate, foodsArray){
+    //1. validations 
+    if(arguments.length !== 3 ) throw "invalid number of arguments"
+    id = validations.checkId(id)
+    validations.exerciseFoodLogDateValidation(currentDate)
+    if(!(Array.isArray(foodsArray))) throw "foods must be an array!"
+
+    //2. get user 
+    let usersCollection = await users()
+
+    let user = await getUserById(id)
+    if(! user) throw "User cannot be found!"
+
+    //3. get the total macro goal values
+    let totalDailyMacroGoal = nutritionFuncs.calculateMacroBreakdown(user.totalDailyCalories, user.dailyMacroBreakdown.carbs, user.dailyMacroBreakdown.fats, user.dailyMacroBreakdown.protein)
+ 
+    //4. check if the foods array for the day is empty
+    if(foodsArray.length === 0){
+        //if its empty, then the users macros will be just their initial breakdown with no food entered
+        await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyMacrosRemaining: totalDailyMacroGoal}})
+        return 
+    }
+
+    //5. otherwise, calculate how many macros are left by adding up whats in the food
+    let eatenCarbs = 0
+    let eatenProtein = 0
+    let eatenFat = 0
+
+    foodsArray.forEach(foodObj =>{
+        eatenCarbs += foodObj.carbs
+        eatenProtein += foodObj.protein
+        eatenFat += foodObj.fat
+    });
+
+    
+    totalDailyMacroGoal['carbs'] = totalDailyMacroGoal['carbs'] - eatenCarbs
+    totalDailyMacroGoal['protein'] =  totalDailyMacroGoal['protein'] - eatenProtein
+    totalDailyMacroGoal['fats'] = totalDailyMacroGoal['fats'] - eatenFat
+
+    //4. update user
+    await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyMacrosRemaining: totalDailyMacroGoal}})
+    return 
+
+}
+
+async function updateMacros(id, carbs, protein, fat){
+
+    //validations
+    if (arguments.length !== 4) throw "Invalid number of arguments"
+    id = validations.checkId(id)
+    validations.checkMacroGoal(1000, carbs, fat, protein)
+
+    let user = await getUserById(id)
+
+    //set new macro breakdown
+    let usersCollection = await users()
+    let dailyMacroBreakdown = {'carbs': carbs, "fats": fat, 'protein': protein}
+    await usersCollection.updateOne({ _id: ObjectId(id) }, {$set: {dailyMacroBreakdown: dailyMacroBreakdown}})
+
+    //recalculate macros remaining
+    let currentDate = moment().format('YYYY-MM-DD')
+
+    let currentFoods = []
+    user = await usersCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw `User not found! ${id}`;
+    for (foodLog of user.allFoods) {
+        if (foodLog.date == currentDate) {
+        currentFoods = foodLog.foods;
+        }
+    }
+    await calculateDailyMacrosRemaining(id, currentDate, currentFoods)
 
 }
 
@@ -314,9 +403,11 @@ module.exports = {
     checkUser,
     getUserById,
     getRemainingCalories,
-    logCurrentWeight,
     getWeights,
     getAllWeights,
     getOverallWeightProgress,
-    calculateDailyCaloriesRemaining
+    getTotalNutrients,
+    calculateDailyCaloriesRemaining,
+    calculateDailyMacrosRemaining,
+    updateMacros
 }
