@@ -20,12 +20,22 @@ postForm.submit((event=>{
 
 }))
 
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+    str.forEach(s =>{
+        if(s.match( /(<([^>]+)>)/ig)){
+            throw "Cannot input html tags!"
+        }
+    })
+  }
+
 /**Validation functions for above */
 function newPostCheck(title, body){
     if(arguments.length !== 2) throw "Invalid number of arguments"
     if(! title) throw "No title given!"
     if(! body) throw "No body given!"
     stringChecks([title, body])
+    checkHtmlTags([title, body])
     stringtrim(arguments)
     if (title.length < 6) throw "Title must be at least 6 characters!"
     if(body.length <25) throw "Post must be 25 characters minimum!"  
