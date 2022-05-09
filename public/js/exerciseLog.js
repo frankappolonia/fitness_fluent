@@ -57,6 +57,15 @@ $('#exercise-log-form').submit((event =>{
 
 }));
 
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+  str.forEach(s =>{
+      if(s.match( /(<([^>]+)>)/ig)){
+          throw "Cannot input html tags!"
+      }
+  })
+}
+
 function validateNewExercise(date, exercise, calories){
   if(! date) throw "No date given!"
   if(! exercise) throw "No exercise given!"
@@ -66,6 +75,8 @@ function validateNewExercise(date, exercise, calories){
   stringtrim(arguments)
   exerciseFoodLogDateValidation(date)
   checkCalories(calories)
+  checkHtmlTags([date, exercise, calories])
+
 }
 
 
