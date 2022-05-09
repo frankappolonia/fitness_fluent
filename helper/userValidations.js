@@ -173,14 +173,6 @@ function adminCodeValidation(code){
 
 }
 
-function alphabetCheck(args) {
-    var letters = /^[A-Za-z]+$/;
-    args.forEach(e => {
-        if (!e.match(letters)){
-            throw "Invalid characters!"
-        }
-    })
-}
 
 function createUserValidation(firstName, lastName, email, password, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode){
     /**Wrapper function that calls all of the validation functions for the createUser db function */
@@ -188,7 +180,6 @@ function createUserValidation(firstName, lastName, email, password, dob, height,
     if(arguments.length !== 11) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, email, password, dob, activityLevel, gender])
-    alphabetCheck([firsName, lastName, activityLevel, gender])
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
@@ -301,7 +292,6 @@ function exercisePostRouteValidation(requestBody){
     let { date, exercise, calories } = requestBody;
 
     stringChecks([date, exercise])
-    alphabetCheck([exercise])
     stringtrim(arguments)
     checkCalories(calories)
     exerciseFoodLogDateValidation(date)
@@ -313,7 +303,6 @@ function deleteFoodExerciseRouteValidation(requestBody){
     if(! requestBody.calories) throw "No calories given!"
     let {exerciseName, calories } = requestBody;
     stringChecks([exerciseName])
-    alphabetCheck([exerciseName])
     checkCalories(calories)
 }
 
