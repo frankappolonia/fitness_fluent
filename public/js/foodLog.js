@@ -151,6 +151,11 @@ function checkMacros(carbs, fat, protein){
   if (isNaN(parseFloat(carbs))) throw "carbs must be a number!"
   if (isNaN(parseFloat(fat))) throw "fat must be a number!"
   if (isNaN(parseFloat(protein))) throw "protein must be a number!"
+  if(carbs.search(/e/) !== -1) throw "Invalid number!"
+  if(fat.search(/e/) !== -1) throw "Invalid number!"
+  if(protein.search(/e/) !== -1) throw "Invalid number!"
+
+
   if(carbs%1 !== 0) throw "Carbs must be a whole number!"
   if(protein%1 !== 0) throw "Protein must be a whole number!"
   if(fat%1 !== 0) throw "Fat must be a whole number!"
@@ -165,6 +170,8 @@ function checkCalories(calories){
   if(calories !== calories) throw "Calories is not a number!"
   if(isNaN(parseInt(calories))) throw "Calories is not a number!"
   if(calories % 1 !== 0) throw "Calories must be a whole number!"
+  if(calories.search(/e/) !== -1) throw "Invalid number!"
+
   calories = parseInt(calories)
   if(typeof(calories) !== 'number') throw "Calories must be a number!"
   if(calories > 4000) throw "Maximum calorie value is 4000!"
