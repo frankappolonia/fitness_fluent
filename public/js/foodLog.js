@@ -179,10 +179,12 @@ function checkCalories(calories){
 
 function stringChecks(strings){
   /**Takes an array as an argument, where the array contains the data you want to validate */
+  var letters = /^[A-Za-z]+$/;
   strings.forEach(e => {
-      if(typeof(e)!== 'string') throw "An argument is not a string!"
-      e = e.trim()
-      if(e.length < 1) throw "All strings must be at least 1 character!"
+    if(!e.match(letters)) throw "Invalid string!"
+    if(typeof(e)!== 'string') throw "An argument is not a string!"
+    e = e.trim()
+    if(e.length < 1) throw "All strings must be at least 1 character!"
       
   });
 }

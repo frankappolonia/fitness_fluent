@@ -82,6 +82,15 @@ function stringChecks(args){
     return
 }
 
+function alphabetCheck(args) {
+    var letters = /^[A-Za-z]+$/;
+    args.forEach(e => {
+        if (!e.match(letters)){
+            throw "Invalid characters!"
+        }
+    })
+}
+
 function nameValidation(first, last){
     if (arguments.length !== 2) throw "invalid number of arguments for name validation"
 
@@ -225,6 +234,7 @@ function createUserValidation(firstName, lastName, email, password, passwordChec
     if(arguments.length !== 12) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, email, dob, activityLevel, gender])
+    alphabetCheck([firstName, lastName, gender, activityLevel])
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
