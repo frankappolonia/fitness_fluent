@@ -216,7 +216,7 @@ async function getWeights(id, startDate, endDate){
         /**this loops through each weight entry object the user has in the db, and sees if it falls between
          * the start and end dates specified. if itdoes, pushes the weight & date to the data object
          */
-        if(entry.date.getTime() >= startDate.getTime() && entry.date.getTime() <= endDate.getTime()){
+        if(new Date(entry.date).getTime() >= new Date(startDate).getTime() && new Date(entry.date).getTime() <= new Date(endDate).getTime()){
             data.dates.push(entry.date)
             data.weights.push(entry.weight)
         }
