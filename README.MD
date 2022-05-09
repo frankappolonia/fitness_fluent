@@ -11,9 +11,9 @@ To run this application:
     - test@gmail.com
     - test2@gmail.com
     - test3@gmail.com
-    - test4@gmail.com
-    - test5@gmail.com
     - admin@gmail.com
+    
+*test@gmail.com has the most data. it has food and exercises for 3 days, from 5/6 - 5/8
 *all test accounts and admin account have the same password of 'password'
 *If you choose to signup a new account, and would like it to be an admin account, the code
     is '1234'
