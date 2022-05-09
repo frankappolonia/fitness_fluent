@@ -100,7 +100,11 @@ function stringtrim(arguments){
 
 function stringChecks(args){
     /**Takes an array as an argument, where the array contains the data you want to validate */
+    var letters = /^[A-Za-z]+$/;
     args.forEach(e => {
+        if (!e.match(letters)){
+            throw "Invalid characters!"
+        }
         if(!(isNaN(e))) throw "An argument is not a string!"
         e = e.trim()
         if(e.length < 1) throw "All strings must be at least 1 character!"
@@ -116,6 +120,7 @@ function nameValidation(first, last){
     last = last.trim()
     if (first.length < 2) throw "Firstname must be at least 2 characters!"
     if (last.length < 1) throw "Lastname must be at least 1 character!"
+
     return
 }
 
@@ -127,7 +132,7 @@ function heightWeightValidation(height, weight){
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
-    if(height.search(/e/) !== -1) throw "Invalid number!"
+    if(String(height).search(/e/) !== -1) throw "Invalid number!"
 
     height = parseInt(height)
     weight = parseInt(weight)

@@ -94,6 +94,15 @@ function stringChecks(args){
     return
 }
 
+function alphabetCheck(args) {
+    var letters = /^[A-Za-z]+$/;
+    args.forEach(e => {
+        if (!e.match(letters)){
+            throw "Invalid characters!"
+        }
+    })
+}
+
 function nameValidation(first, last){
     if (arguments.length !== 2) throw "invalid number of arguments for name validation"
 
@@ -170,8 +179,8 @@ function heightWeightValidation(height, weight){
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
-    if(weight.search(/e/) !== -1) throw "Invalid number!"
-    if(height.search(/e/) !== -1) throw "Invalid number!"
+    if(String(weight).search(/e/) !== -1) throw "Invalid number!"
+    if(String(height).search(/e/) !== -1) throw "Invalid number!"
     height = parseInt(height)
     weight = parseInt(weight)
     if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
@@ -237,6 +246,7 @@ function createUserValidation(firstName, lastName, email, password, passwordChec
     if(arguments.length !== 12) throw "Incorrect number of arguments!"
     //string checks
     stringChecks([firstName, lastName, email, dob, activityLevel, gender])
+    alphabetCheck([firstName, lastName, gender, activityLevel])
     stringtrim(arguments)
     //name check
     nameValidation(firstName, lastName)
