@@ -367,7 +367,6 @@ function checkNewFood(date, foodName, calories, protein, carbs, fat){
 
     exerciseFoodLogDateValidation(date)
     stringChecks([foodName])
-    alphabetCheck([foodName])
     checkCalories(calories)
     checkMacros(carbs, fat, protein)
 
@@ -431,7 +430,6 @@ function ageValidation(age){
 module.exports = {
     stringtrim,
     stringChecks,
-    alphabetCheck,
     nameValidation,
     emailPasswordValidation,
     dobValidation,
