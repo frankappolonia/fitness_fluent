@@ -182,6 +182,8 @@ function updateUserValidation(firstName, lastName, height, activityLevel, weekly
     activityLevelValidation(activityLevel)
     //weekly weight goal check
     weeklyGoalValidation(weeklyWeightGoal)
+    checkHtmlTags([firstName, lastName, height, activityLevel, weeklyWeightGoal])
+
     return
 }
 
@@ -210,3 +212,12 @@ function checkMacroGoal(carbs, fat, protein){
     if((carbs + fat + protein) !== 1) throw "Macro values must add up to 100%!"
 
 }
+
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+    str.forEach(s =>{
+        if(s.match( /(<([^>]+)>)/ig)){
+            throw "Cannot input html tags!"
+        }
+    })
+ }

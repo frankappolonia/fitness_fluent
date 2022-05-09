@@ -28,6 +28,7 @@ signUp.submit((event =>{
     try{
         signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode)
         $('#email').val(email.toLowerCase())
+
     }catch(e){
         event.preventDefault()
         $('#signup-error').show()
@@ -39,7 +40,16 @@ signUp.submit((event =>{
 
 
 /**All error checking validations for signup */
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+    str.forEach(s =>{
+        if(s.match( /(<([^>]+)>)/ig)){
+            throw "Cannot input html tags!"
+        }
+    })
+ }
 
+ 
 function signUpValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode){
     /**Validates the request body data of the /signup post route */
     if(! firstName) throw "No first name given!"
@@ -55,6 +65,8 @@ function signUpValidation(firstName, lastName, email, password, passwordCheck, d
     if(! goal) throw "No goal specified!"
     if ( password !== passwordCheck) throw "Passwords do not match!"
     if(! adminCode) throw "No admin goal entered! Must be the correct code, or 0 by default for non-admin users!"
+
+
 
     createUserValidation(firstName, lastName, email, password, passwordCheck, dob, height, weight, gender, activityLevel, goal, adminCode)
 
@@ -253,5 +265,7 @@ function createUserValidation(firstName, lastName, email, password, passwordChec
     weeklyGoalValidation(weeklyWeightGoal)
 
     adminCodeValidation(adminCode)
+    checkHtmlTags([firstName, lastName, email, password, passwordCheck, dob, height, initialWeight, gender, activityLevel, weeklyWeightGoal, adminCode])
+
     return
 }

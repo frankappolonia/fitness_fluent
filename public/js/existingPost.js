@@ -159,11 +159,21 @@ function deletePostEvent(btn) {
 
 
 //helper functions
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+    str.forEach(s =>{
+        if(s.match( /(<([^>]+)>)/ig)){
+            throw "Cannot input html tags!"
+        }
+    })
+ }
+
 function newCommentCheck(commentBody){
     if(arguments.length !== 1) throw "Invalid number of arguments"
     if(! commentBody) throw "No comment entered!"
     stringChecks([commentBody])
     stringtrim(arguments)
+    checkHtmlTags([commentBody])
     if(commentBody.length <7) throw "Comment must be 7 characters minimum!" 
 }
 
@@ -173,6 +183,7 @@ function newPostCheck(title, body){
     if(! body) throw "No body given!"
     stringChecks([title, body])
     stringtrim(arguments)
+    checkHtmlTags([title, body])
     if (title.length < 6) throw "Title must be at least 6 characters!"
     if(body.length <25) throw "Post must be 25 characters minimum!"  
     return

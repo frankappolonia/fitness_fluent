@@ -128,6 +128,16 @@ $('#food-log-form').submit((event =>{
 
 }));
 
+
+function checkHtmlTags(str) { //https://www.tutorialspoint.com/how-to-remove-html-tags-from-a-string-in-javascript
+    
+  str.forEach(s =>{
+      if(s.match( /(<([^>]+)>)/ig)){
+          throw "Cannot input html tags!"
+      }
+  })
+}
+
 function checkNewFood(date, foodName, calories, protein, carbs, fat){
   if(! date) throw "no date given"
   if(! foodName) throw "no food given"
@@ -140,6 +150,8 @@ function checkNewFood(date, foodName, calories, protein, carbs, fat){
   stringChecks([foodName])
   checkCalories(calories)
   checkMacros(carbs, fat, protein)
+  checkHtmlTags([date, foodName, calories, protein, carbs, fat])
+
 
 }
 
