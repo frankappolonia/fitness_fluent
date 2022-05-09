@@ -74,6 +74,7 @@ function checkCalories(calories){
   if(calories !== calories) throw "Calories is not a number!"
   if(isNaN(parseInt(calories))) throw "Calories is not a number!"
   if(calories % 1 !== 0) throw "Calories must be a whole number!"
+  if(calories.search(/e/) !== -1) throw "Invalid number!"
   calories = parseInt(calories)
   if(typeof(calories) !== 'number') throw "Calories must be a number!"
   if(calories < 1) throw "Calories must be a number greater than 1!"

@@ -127,6 +127,8 @@ function heightWeightValidation(height, weight){
     if(height !== height || weight !== weight) throw "Height and weight must be numbers!"
     if(isNaN(parseInt(height)) || isNaN(parseInt(weight))) throw "Height and weight must be numbers!"
     if(height%1 !== 0 || weight%1 !== 0) throw "Height and weight must be whole numbers!"
+    if(weight.search(/e/) !== -1) throw "Invalid number!"
+
     height = parseInt(height)
     weight = parseInt(weight)
     if(typeof(height) !== 'number' || typeof(weight) !== 'number') throw "Height and weight must be numbers!"
@@ -134,6 +136,7 @@ function heightWeightValidation(height, weight){
     if (height > 107) throw "You're not that tall!"
     if (weight < 5) throw "You must weigh at least 5 pounds!"
     if (weight > 1400) throw "You're not that heavy!"
+    
 }
 
 function activityLevelValidation(activity){
