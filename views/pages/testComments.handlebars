@@ -5,16 +5,16 @@
     {{/if}} 
     <article id="post-thread">
         <section id="main-post">
-        <h2 id="post-title">{{{title}}}</h2>
-        <h3>Author: {{{poster.name}}}</h3>
-        <p id="post-body">{{{body}}}</p>
+        <h2 id="post-title">{{title}}</h2>
+        <h3>Author: {{poster.name}}</h3>
+        <p id="post-body">{{body}}</p>
         </section>
         <div id="main-post-error"></div>
         <section id="comments">
             {{#each comments}}
             <div>
-                <h4>Author: {{{this.poster.name}}}</h4>
-                <p>{{{this.body}}}</p>
+                <h4>Author: {{this.poster.name}}</h4>
+                <p>{{this.body}}</p>
             </div>
             {{/each}}
         </section>
@@ -29,7 +29,7 @@
             </div>
     </form>
     <div id="newComment-error">
-        {{{error}}}
+        {{error}}
     </div>
     </div>
     <a href="/forum">Back to all posts</a>
