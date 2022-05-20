@@ -1,9 +1,17 @@
 ![fitnessfluent](https://user-images.githubusercontent.com/20481090/169531959-36615631-d50b-4267-ad68-03032a5ec8fc.png)
 
 
-This web application is built using JavaScript, Node.js, express.js, MongoDB, jQuery, Axios, handlebars.js, and bootstrap. 
+FitnessFluent is a full-stack web application built using JavaScript, Node.js, express.js, MongoDB, jQuery, Axios, handlebars.js, and bootstrap. FitnessFluent is a nutrition app that provides various functions for users to track their fitness and nutrition goals.
 
-To run this application:
+**Core Features:**
+1. Food Log - Allows users to track their daily caloric intake. Users can either enter their own food, or search the Edamam food database via a REST API.
+2. Macro tracking - In addition to tracking food calories, users can set macro goals and track the number of macros they consume.
+3. Nutrition profile - Users can specify their weight gain/loss goal, as well as their macro breakdowns, and enter various kinds of nutritional information like daily activity level, height, etc.
+4. Progress Page - Provides statistical information with chart.js that shows the user their weight progress over a specified period of time.
+5. User authentication - This application utilizes express.js and bCrypt for secure user authentication and login.
+
+
+**To run this application:**
 
 1. download Node.js 
 2. download the files from this repo
