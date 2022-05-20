@@ -1,4 +1,7 @@
-MyFitnessPal clone for CS546. This web application is built using JavaScript, Node.js, express.js, MongoDB, & handlebars.js. 
+![fitnessfluent](https://user-images.githubusercontent.com/20481090/169531959-36615631-d50b-4267-ad68-03032a5ec8fc.png)
+
+
+This web application is built using JavaScript, Node.js, express.js, MongoDB, jQuery, Axios, handlebars.js, and bootstrap. 
 
 To run this application:
 
