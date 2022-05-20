@@ -6,9 +6,12 @@ FitnessFluent is a full-stack web application built using JavaScript, Node.js, e
 **Core Features:**
 1. Food Log - Allows users to track their daily caloric intake. Users can either enter their own food, or search the Edamam food database via a REST API.
 2. Macro tracking - In addition to tracking food calories, users can set macro goals and track the number of macros they consume.
-3. Nutrition profile - Users can specify their weight gain/loss goal, as well as their macro breakdowns, and enter various kinds of nutritional information like daily activity level, height, etc.
-4. Progress Page - Provides statistical information with chart.js that shows the user their weight progress over a specified period of time.
-5. User authentication - This application utilizes express.js and bCrypt for secure user authentication and login.
+3. Exercise Log - Allows users to track their daily caloric expenditure from exercise. Users can enter their own exercises and the number of calories it burned.
+4.  Nutrition profile - Users can specify their weight gain/loss goal, as well as their macro breakdowns, and enter various kinds of nutritional information like daily activity level, height, etc.
+5. Progress Page - Provides statistical information with chart.js that shows the user their weight progress over a specified period of time.
+6. Daily Goals Widget - A widget on every page that displays the user's daily remaining calories and macros.
+7. Fitness Discussion Forum - A basic forum for users to discuss fitness and nutrition related topics.
+8. User authentication - This application utilizes express.js and bCrypt for secure user authentication and login.
 
 
 **To run this application:**
